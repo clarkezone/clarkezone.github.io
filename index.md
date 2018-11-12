@@ -13,12 +13,7 @@ description: Still building out this site.. under construction
   {% for post in site.posts %}
     <li>
       <a href="{{ post.url }}">{{ post.title }}</a>
+      {{ post.excerpt }}
     </li>
   {% endfor %}
 </ul>
-
-  {% for post in site.posts %}
-
-      [{{ post.title }}]({{ post.url }})
-
-  {% endfor %}
