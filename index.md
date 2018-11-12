@@ -1,9 +1,16 @@
+---
+layout: page
+title: Front Page
+tagline: Clarkezone's dev place
+description: Still building out this site.. under construction
+---
+
 # Hello World
 
 *some markdown*
 
   {% for post in site.posts %}
 
-      <a href="{{ post.url }}">{{ post.title }}</a>
+      [{{ post.title }}]({{ post.url }})
 
   {% endfor %}
