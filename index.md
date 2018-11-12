@@ -12,6 +12,7 @@ description: Still building out this site.. under construction
 <ul>
   {% for post in site.posts %}
     <li>
+      {{ post.date }}
       <a href="{{ post.url }}">{{ post.title }}</a>
       {{ post.excerpt }}
     </li>
