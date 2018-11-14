@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Image embedding test"
-date: 2018-10-14 15:15:02 +0800
+date: 2018-11-14 15:15:02 +0800
 categories: [blogging]
 tags: 
 ---
