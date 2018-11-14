@@ -17,18 +17,18 @@ collections:
 
 social:
     - icon: fa-facebook
-      link: "#"
+      link: "https://www.facebook.com/Clarkezone"
     - icon: fa-twitter
       link: "https://twitter.com/clarkezone"
     - icon: fa-linkedin
       link: "https://www.linkedin.com/in/clarkezone"
     - icon: fa-stack-exchange
-      link: "#"
+      link: "https://clarkezone.io"
     - icon: fa-github
       link: "https://github.com/clarkezone"
 
 share:
-  twitter_username: agusmakmun6
+  twitter_username: clarkezone
   fb_appid: 1749788565247320
 
 urls:
