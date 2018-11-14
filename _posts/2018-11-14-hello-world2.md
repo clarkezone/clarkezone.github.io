@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Hello world 2"
-date: 2018-10-12 19:51:02 +0700
+date: 2018-11-14 18:31:00 +0700
 categories: [blogging]
 tags: [foo]
 ---
