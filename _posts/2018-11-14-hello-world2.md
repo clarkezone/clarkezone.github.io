@@ -1,6 +1,9 @@
 ---
 layout: post
 title:  "Hello world 2"
+date: 2018-10-12 19:51:02 +0700
+categories: [blogging]
+tags: [foo]
 ---
 This is a second post.  Trying to figure out how to get basic formatting in place for this blog.  So I'm basically needing to create a few test posts with some content.
 
