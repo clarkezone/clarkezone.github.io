@@ -9,8 +9,12 @@ description: Still building out this site.. under construction
 
 *some markdown*
 
+<ul>
   {% for post in site.posts %}
-
-      [{{ post.title }}]({{ post.url }})
-
+    <li>
+      {{ post.date }}
+      <a href="{{ post.url }}">{{ post.title }}</a>
+      {{ post.excerpt }}
+    </li>
   {% endfor %}
+</ul>
