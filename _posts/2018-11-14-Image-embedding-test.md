@@ -8,7 +8,7 @@ tags:
 
 Let's see if we can embed an image in here.
 
-![My helpful screenshot](/assets/Broadcast_Mail.png)
+![My helpful screenshot](/static/img/test/Broadcast_Mail.png)
 
 
 
