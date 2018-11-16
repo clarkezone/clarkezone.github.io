@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Hello world!"
-date: 2018-10-12 19:51:02 +0700
+date: 2018-10-12 19:51:02 -0800
 categories: [jekyll, blogging]
 tags: [foo, bar]
 image: Broadcast_Mail.png
