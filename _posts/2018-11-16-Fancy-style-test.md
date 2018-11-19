@@ -8,4 +8,4 @@ Let's try some fancy stuff
 
  and
 * `-r`     //recursive Download
-* `--no-parent` // Don´t download something from the parent directory
+* `--no-parent` // Dont download something from the parent directory
