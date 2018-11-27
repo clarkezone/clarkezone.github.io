@@ -12,7 +12,7 @@ It's been a long time coming but the UWP Audivisualizer project recently hit the
 PM> Install-Package UWPAudioVisualizer -Version 1.0.7
 `
 
-There is also a demo app that you can grab from the Windows Store [here]() to play around with the built-in controls.
+There is also a demo app that you can grab from the Windows Store [here](https://www.microsoft.com/en-us/p/audio-spectrum-visualizer/9nfrlr613699?activetab=pivot:overviewtab) to play around with the built-in controls.
 
 ### What’s new in V1.0?
 From a feature perspective, we’ve
