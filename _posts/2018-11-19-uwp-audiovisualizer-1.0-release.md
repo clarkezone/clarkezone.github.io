@@ -4,7 +4,6 @@ title:  "UWP Audiovisualizer 1.0 Release"
 date: 2018-11-19 15:43:03 -0800
 categories: [uwp]
 tags:
-draft: true
 ---
 It's been a long time coming but the UWP Audivisualizer project recently hit the 1.0 milestone.  This was entirely due to a sustained and heroic effort from Tonu, my long time collaborator and lead developer on this project these days.  The source is [available on GitHub here](https://github.com/clarkezone/audiovisualizer) and the Nuget package can be installed from Nuget.org with:
 
@@ -16,7 +15,7 @@ There is also a demo app that you can grab from the Windows Store [here](https:/
 
 ### What’s new in V1.0?
 From a feature perspective, we’ve
-- added support for `AudioGraph` in adition to `MediaPlayer` and `MediaPlayerElement`
+- added support for `AudioGraph` in adition to `MediaPlayer`
 - Exposed out the internals of `AudioAnalyzer` so you can perform analysis on raw audio frames
 - added a helper called `SourceConverter` that helps with reshaping and manipulating the visualalization data for easier consumption
 - augmented the built-in controls to now include `AnalogVUMeter`, `DiscreteVUBar`, `SpectrumVisualizer`, `CustomVisualizer`.
