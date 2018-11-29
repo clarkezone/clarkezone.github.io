@@ -5,7 +5,11 @@ date: 2018-11-19 15:43:03 -0800
 categories: [uwp]
 tags:
 ---
-It's been a long time coming but the UWP Audivisualizer project recently hit the 1.0 milestone.  This was entirely due to a sustained and heroic effort from Tonu, my long time collaborator and lead developer on this project these days.  The source is [available on GitHub here](https://github.com/clarkezone/audiovisualizer) and the Nuget package can be installed from Nuget.org with:
+It's been a long time coming but the UWP Audivisualizer project recently hit the 1.0 milestone including some new default controls and a rewrite using c++/WinRT.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nS0scXYIGhU" frameborder="0" allowfullscreen></iframe>
+
+This was entirely due to a sustained and heroic effort from Tonu, my long time collaborator and lead developer on this project these days.  The source is [available on GitHub here](https://github.com/clarkezone/audiovisualizer) and the Nuget package can be installed from Nuget.org with:
 
 `
 PM> Install-Package UWPAudioVisualizer -Version 1.0.7
