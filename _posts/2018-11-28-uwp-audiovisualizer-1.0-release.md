@@ -19,10 +19,10 @@ There is also a demo app that you can grab from the Windows Store [here](https:/
 
 ### What’s new in V1.0?
 From a feature perspective, we’ve
-- added support for `AudioGraph` in adition to `MediaPlayer`
-- Exposed out the internals of `AudioAnalyzer` so you can perform analysis on raw audio frames
-- added a helper called `SourceConverter` that helps with reshaping and manipulating the visualalization data for easier consumption
-- augmented the built-in controls to now include `AnalogVUMeter`, `DiscreteVUBar`, `SpectrumVisualizer`, `CustomVisualizer`.
+- added support for `AudioGraph` in adition to `MediaPlayer`.  AudioGraph is an API set for audio mixing, routing and processing scenarios and you can now use the visualization capabilities in those scenarios fairly trivially.  Documentation can be found [here]( https://docs.microsoft.com/en-us/windows/uwp/audio-video-camera/audio-graphs).
+- Exposed out the internals of `AudioAnalyzer` so you can perform analysis on raw audio frames.
+- added a helper called `SourceConverter` that helps with reshaping and manipulating the visualalization data for easier consumption.
+- augmented the built-in controls to now include `AnalogVUMeter`, `DiscreteVUBar`, `SpectrumVisualizer`, `CustomVisualizer`.  The implementation for AnalogVUMeter also demonstrates how to use visual layer transforms for updating some of the visuals in response to the audio data.
 
 From an implementation perspective one of the big aspects of this release was the move to [https://docs.microsoft.com/en-us/windows/uwp/cpp-and-winrt-apis/intro-to-using-cpp-with-winrt](C++/WinRT) from WRL / manual COM which hugely simplified the implementation and made the code more readable.
 
