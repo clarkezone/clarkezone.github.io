@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "UWP Audiovisualizer 1.0 Release"
-date: 2018-11-19 15:43:03 -0800
+date: 2018-11-28 15:43:03 -0800
 categories: [uwp]
 tags:
 ---
