@@ -25,4 +25,3 @@ And going.
 And going.
 And going.
 And going.
-And going.
