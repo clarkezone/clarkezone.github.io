@@ -10,4 +10,9 @@ One of the features that the Composition team have recently added is support for
 - Creating Window
 - Adding visuals
 - Hello ShapeVisual
+- PathGeometry, CompositionPath’s and CompositionSpriteShapes
+- Animating PathGeometry
+- Lottie: pre-canned animations
+- Lottie: full authoring pipeline
+
 
