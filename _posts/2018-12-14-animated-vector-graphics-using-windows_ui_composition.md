@@ -9,5 +9,5 @@ One of the features that the Composition team have recently added is support for
 
 - Creating Window
 - Adding visuals
-- 
+- Hello ShapeVisual
 
