@@ -15,4 +15,4 @@ One of the features that the Composition team have recently added is support for
 - Lottie: pre-canned animations
 - Lottie: full authoring pipeline
 
-
+Final
