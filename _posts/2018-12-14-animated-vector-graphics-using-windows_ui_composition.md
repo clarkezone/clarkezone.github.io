@@ -17,4 +17,3 @@ One of the features that the Composition team have recently added is support for
 
 Final edit.
 Keep going.
-And going.
