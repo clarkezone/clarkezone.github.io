@@ -16,3 +16,7 @@ One of the features that the Composition team have recently added is support for
 - Lottie: full authoring pipeline
 
 More stuff at the end.  And more.  And this is autoupdated.  And again. dd. aa.ss
+
+```cppwinrt
+auto foo = std::
+```
