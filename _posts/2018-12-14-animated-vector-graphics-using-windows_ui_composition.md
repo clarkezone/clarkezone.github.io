@@ -23,4 +23,6 @@ auto foo = std::
 
 And then we continue on.  Not clear when it will add this new content?  Let's see if push works.
 
-More stuff added.  So now my workflow is nearly working minus Jekyll integration
+More stuff added.  So now my workflow is nearly working minus Jekyll integration.
+
+And now side by side test with Jekyll
