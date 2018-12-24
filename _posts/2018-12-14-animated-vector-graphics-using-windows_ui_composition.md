@@ -21,4 +21,4 @@ More stuff at the end.  And more.  And this is autoupdated.  And again. dd. aa.s
 auto foo = std::
 ```
 
-WinRT is much better than cx becuase it's faster
+WinRT is much better than cx becuase it's faster.  Finally we have the daemon running.
