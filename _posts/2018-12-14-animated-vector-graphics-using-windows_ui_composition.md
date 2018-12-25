@@ -22,3 +22,4 @@ auto foo = std::
 ```
 
 WinRT is much better than cx becuase it's faster.  Finally we have the daemon running.
+Fun can be had.
