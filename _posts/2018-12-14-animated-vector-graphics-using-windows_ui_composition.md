@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Animated vector graphics using Windows::UI::Composition part 1"
-date: 2019-02-25 16:00:45 -0800
+date: 2019-02-25 01:00:45 -0800
 categories: [blogging, WUC]
 tags: [animation]
 ---
