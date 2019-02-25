@@ -10,7 +10,7 @@ Since the mists of time [Windows Vista to be precise], the Desktop Window Manage
 ```xaml
 <Button/>
 ```
- tag becomes an A8 texture with pre-rendered antialised text and another RGB texture representing the colored rectangle and border.  Furthermore, if your application has a desire to use more exotic XAML shapes, these also need to be rasterized as bitmaps and handed to the Compositor as well.  While there is nothing wrong with this approach, it means that applications and/or UI frameworks have to work harder to animate things.
+tag becomes an A8 texture with pre-rendered antialised text and another RGB texture representing the colored rectangle and border.  Furthermore, if your application has a desire to use more exotic XAML shapes, these also need to be rasterized as bitmaps and handed to the Compositor as well.  While there is nothing wrong with this approach, it means that applications and/or UI frameworks have to work harder to animate things.
 
 That was the world of the compositor circa Windows 8.  In Windows 8.1 we had desires to start moving beyond bitmaps.  The reason back then was to fix the Airspace issue that existed with XAML and Webview.  But we also had a desire to push forward and expand the capabilites of the compositor to offer frameworks and apps a way richer palette of graphical primitives.  By Windows 10 RS1 we had built out the modern Windows.UI.Composition API surface and moved XAML completely on top of it for basic rendering.  Text is to this day still rendered to A8 textures but buttons, rectangles, borders etc use the corresponding composition primitives.
 
