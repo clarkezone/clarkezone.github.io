@@ -5,7 +5,7 @@ date: 2019-02-24 01:00:45 -0800
 categories: [blogging, WUC]
 tags: [animation]
 ---
-#Some History: Bitmap Composition in Windows
+#Some History: Bitmap Composition in Windows#
 Since the mists of time [Windows Vista to be precise], the Desktop Window Manager has been focussed on composing bitmaps.  What does that mean in practice? Well, if you are creating an application that needs display content like a button your application will ultimately need to produce a bitmap representation in order to give to DWM aka the Windows compositor to display on screen.  In reality, UI frameworks take care of this for you so you are probably none the wiser that your lovingly created 
 ```xaml
 <Button/>
