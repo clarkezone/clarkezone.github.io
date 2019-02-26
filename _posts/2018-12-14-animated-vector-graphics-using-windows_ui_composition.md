@@ -6,18 +6,26 @@ categories: [blogging, WUC]
 tags: [animation]
 ---
 # Some History: Composition in the Windows DWM
+## Give me your bitmaps
+TODO: Picture of DWM in Vista composed desktop
 Since the mists of time [Windows Vista to be precise], the Desktop Window Manager has been focussed on composing bitmaps.  What does that mean in practice? Well, if you are creating an application that needs display content like a button your application will ultimately need to produce a bitmap representation in order to give to DWM aka the Windows compositor to display on screen.  In reality, UI frameworks take care of this for you so you are probably none the wiser that your lovingly created 
 ```xaml
 <Button/>
 ```
-tag becomes an A8 texture with pre-rendered antialised text and another RGB texture representing the colored rectangle and border.  Furthermore, if your application has a desire to use more exotic XAML shapes, these also need to be rasterized as bitmaps and handed to the Compositor as well.  While there is nothing wrong with this approach, it means that applications and/or UI frameworks have to work harder to animate things.
+tag becomes an A8 texture with pre-rendered antialised text and another RGB texture representing the colored rectangle and border.  Furthermore, if your application has a desire to use more exotic XAML shapes, these also need to be rasterized as bitmaps and handed to the Compositor as well.  
 
-# Enter Primitives
+## So how do we animate it then?
+
+While there is nothing wrong with this approach, it means that applications and/or UI frameworks have to work harder to animate things.
+
+## Enter Primitives
 
 That was the world of the compositor circa Windows 8.  By Windows 10 RS1, on the compositor team, we had built out the modern Windows.UI.Composition API surface complete with a new set of content and animation primitives and the XAML framework team was able to consume this, bringing simpli
 
 # Native Animated Vector Graphics
-Fast Forward to today: animated vector graphics have become common place in mobile apps.  It's hard to find a popular mobile app that doesn't have some kind of cute loading screen, welcome animation, app tutorial that doesn't contain a whealth of beautifuly designed characters, dd motion to bring a more playful, human feel. TODO: example GIF.
+## Animated vector all the things
+Fast Forward to today: whilst we never got a vector based operating system [TODO wayback link] but we have got a lot of animated vectors:
+animated vector graphics have become common place in mobile apps.  It's hard to find a popular mobile app that doesn't have some kind of cute loading screen, welcome animation, app tutorial that doesn't contain a whealth of beautifuly designed characters, dd motion to bring a more playful, human feel. TODO: example GIF.
 
 To be able to support this kind of experience on Windows, We set out on a jouney to add a rich set of vector animation primitives to the engine, staring in RS5 and delivering in a complete end to end implementation in 19H1.  We are releasing both a series of API's that bring low level capabilities to the platform, a toolchain to enable a designer developer workflow from After Effects and a new XAML control that makes it easy for UI developers to incorporate vector animation in apps.  
 
