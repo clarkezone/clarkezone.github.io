@@ -65,6 +65,21 @@ and finaly get it in the visual tree:
 	root.Children().InsertAtTop(shape);
 ```
 
+OK, simple stuff.  Now, how about we create a more interesting composition path using Direct2D.  We need a couple of helpers to achieve this, firstly we are going to use a nice linear gradient as our fill, hence the first helper creates one of those using our compositor.  We're going to use three color stops.
+
+```cppwinrt
+// Helper funciton to create a GradientBrush
+Windows::UI::Composition::CompositionLinearGradientBrush CreateGradientBrush(const Compositor & compositor)
+{
+	auto gradBrush = compositor.CreateLinearGradientBrush();
+	gradBrush.ColorStops().InsertAt(0, compositor.CreateColorGradientStop(0.0f, Windows::UI::Colors::Orange()));
+	gradBrush.ColorStops().InsertAt(1, compositor.CreateColorGradientStop(0.5f, Windows::UI::Colors::Yellow()));
+	gradBrush.ColorStops().InsertAt(2, compositor.CreateColorGradientStop(1.0f, Windows::UI::Colors::Red()));
+	return gradBrush;
+}
+```
+
+The next helper is some boilerplate code needed to convert from an ID2D1Geometry object	
 
 - Creating Window
 - Adding visuals
