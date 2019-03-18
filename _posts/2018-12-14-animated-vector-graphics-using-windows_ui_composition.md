@@ -38,7 +38,7 @@ For the remainder of this post I will show how to use the low level primitives d
  Let's start by creating a basic shape using a ShapeVisual
 
 
-```cppwinrt
+```c++
 void Scenario1SimpleShape(const Compositor & compositor, const ContainerVisual & root) {
 
 	// Create a new ShapeVisual that will contain our drawings
@@ -48,7 +48,7 @@ void Scenario1SimpleShape(const Compositor & compositor, const ContainerVisual &
 
 Next we need a gemotry
 
-```cppwinrt
+```c++
 	// Create a circle geometry and set it's radius
 	auto circleGeometry = compositor.CreateEllipseGeometry();
 	circleGeometry.Radius(float2(30, 30));
@@ -56,7 +56,7 @@ Next we need a gemotry
 
 to get the geometry to show up we need to 
 
-```cppwinrt
+```c++
 	// Create a shape object from the geometry and give it a color and offset
 	auto circleShape = compositor.CreateSpriteShape(circleGeometry);
 	circleShape.FillBrush(compositor.CreateColorBrush(Windows::UI::Colors::Orange()));
@@ -65,7 +65,7 @@ to get the geometry to show up we need to
 
 and finaly get it in the visual tree:
 
-```cppwinrt
+```c++
 	// Add the circle to our shape visual
 	shape.Shapes().Append(circleShape);
 
@@ -75,7 +75,7 @@ and finaly get it in the visual tree:
 
 OK, simple stuff.  Now, how about we create a more interesting composition path using Direct2D.  We need a couple of helpers to achieve this, firstly we are going to use a nice linear gradient as our fill, hence the first helper creates one of those using our compositor.  We're going to use three color stops.
 
-```cppwinrt
+```c++
 // Helper funciton to create a GradientBrush
 Windows::UI::Composition::CompositionLinearGradientBrush CreateGradientBrush(const Compositor & compositor)
 {
@@ -86,6 +86,8 @@ Windows::UI::Composition::CompositionLinearGradientBrush CreateGradientBrush(con
 	return gradBrush;
 }
 ```
+
+The next helper object contains some boilerplate code needed to convert from an ID2D1Geometry interface to an interop interface called ```IGeometrySource2DInterop``` that is used by CompositionPath in the constructor. 
 
 ```c++
 // Helper class for converting geometry to a composition compatible geometry source
@@ -116,7 +118,62 @@ private:
 
 ```
 
-The next helper is some boilerplate code needed to convert from an ID2D1Geometry object	
+So, let's use those two helpers to create a simple path using Direct2D.  The ShapeVisual configuration is the same as in the first example.
+
+```c++
+void Scenario2SimplePath(const Compositor & compositor, const ContainerVisual & root) {
+	// Same steps as for SimpleShapeImperative_Click to create, size and host a ShapeVisual
+	ShapeVisual shape = compositor.CreateShapeVisual();
+	shape.Size({ 500.0f, 500.0f });
+	shape.Offset({ 300.0f, 0.0f, 1.0f });
+```
+
+For this example, we are going to use a ```ID2D1GeometrySink``` to build up the actual path.  So we need to create a couple of objects that allow us to get back
+
+```c++
+	// Create a D2D Factory
+	com_ptr<ID2D1Factory> d2dFactory;
+	check_hresult(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, d2dFactory.put()));
+
+	com_ptr<GeoSource> result;
+	com_ptr<ID2D1PathGeometry> path;
+
+	// use D2D factory to create a path geometry
+	check_hresult(d2dFactory->CreatePathGeometry(path.put()));
+
+	// for the path created above, create a Geometry Sink used to add points to the path
+	com_ptr<ID2D1GeometrySink> sink;
+	check_hresult(path->Open(sink.put()));
+
+	// Add points to the path
+	sink->SetFillMode(D2D1_FILL_MODE_WINDING);
+	sink->BeginFigure({ 1, 1 }, D2D1_FIGURE_BEGIN_FILLED);
+	sink->AddLine({ 300, 300 });
+	sink->AddLine({ 1, 300 });
+	sink->EndFigure(D2D1_FIGURE_END_CLOSED);
+	
+	// Close geometry sink
+	check_hresult(sink->Close());
+
+	// Create a GeoSource helper object wrapping the path
+	result.attach(new GeoSource(path));
+	CompositionPath trianglePath = CompositionPath(result.as<Windows::Graphics::IGeometrySource2D>());
+
+	// create a CompositionPathGeometry from the composition path
+	CompositionPathGeometry compositionPathGeometry = compositor.CreatePathGeometry(trianglePath);
+
+	// create a SpriteShape from the CompositionPathGeometry, give it a gradient fill and add to our ShapeVisual
+	CompositionSpriteShape spriteShape = compositor.CreateSpriteShape(compositionPathGeometry);
+	spriteShape.FillBrush(CreateGradientBrush(compositor));
+
+	// Add the SpriteShape to our shape visual
+	shape.Shapes().Append(spriteShape);
+
+	// Add to the visual tree
+	root.Children().InsertAtTop(shape);
+}
+```
+
 
 - Creating Window
 - Adding visuals
