@@ -87,6 +87,35 @@ Windows::UI::Composition::CompositionLinearGradientBrush CreateGradientBrush(con
 }
 ```
 
+```c++
+// Helper class for converting geometry to a composition compatible geometry source
+struct GeoSource final : implements<GeoSource,
+	Windows::Graphics::IGeometrySource2D,
+	ABI::Windows::Graphics::IGeometrySource2DInterop>
+{
+public:
+	GeoSource(com_ptr<ID2D1Geometry> const & pGeometry) :
+		_cpGeometry(pGeometry)
+	{ }
+
+	IFACEMETHODIMP GetGeometry(ID2D1Geometry** value) override
+	{
+		_cpGeometry.copy_to(value);
+		return S_OK;
+	}
+
+	IFACEMETHODIMP TryGetGeometryUsingFactory(ID2D1Factory*, ID2D1Geometry** result) override
+	{
+		*result = nullptr;
+		return E_NOTIMPL;
+	}
+
+private:
+	com_ptr<ID2D1Geometry> _cpGeometry;
+};
+
+```
+
 The next helper is some boilerplate code needed to convert from an ID2D1Geometry object	
 
 - Creating Window
