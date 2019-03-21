@@ -174,8 +174,6 @@ For this example, we are going to use a ```ID2D1GeometrySink``` to build up the 
 }
 ```
 
-Test. 2
-
 - Creating Window
 - Adding visuals
 - Hello ShapeVisual
