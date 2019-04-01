@@ -9,20 +9,26 @@ tags: [animation]
 <iframe src='//gifs.com/embed/native-animated-vector-graphics-in-windows-q7Ql1D' frameborder='0' scrolling='no' width='400px' height='300px' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>
 
 ## Native vector graphics in Windows
-This post describes some new vector graphics APIs recently added to the Windows platform (```ShapeVisual```, ```SpriteShape``` and friends), some scenarios they can unlock and how to use them from C++ in win32 desktop applications.  The sample I walk through along with versions written in C# are available in this repo: http://github.com:clarkezone/UWPCompositionDemos.
+This post describes some new vector graphics APIs recently added to the Windows platform (```ShapeVisual```, ```SpriteShape``` and friends), some scenarios they can unlock for you and how to use them from C++ in win32 desktop applications.  The sample I walk through along with versions written in C# are available in this repo: http://github.com:clarkezone/UWPCompositionDemos.
 
 ## Some History: Composition in the Windows DWM
+Since Windows Vista, all roads from a Windows application's UI tree to the monitor have gone via the Desktop Window Manager (DWM for short).  Thankfully we never got the kind of craziness shown in early Longhorn builds like this:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/p2rQrd_uocI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+but having a composing window manager or system compositor has [brought many advantages to your desktop](https://en.wikipedia.org/wiki/Compositing_window_manager).  Remember when you could "paint" the screen with your hung app?  Those were not fun times.
+ 
 # Give me your bitmaps
-TODO: Picture of DWM in Vista composed desktop
-Since Windows Vista, all roads from your applications UI tree to the monitor have gone via the Desktop Window Manager in the form of bitmaps.  In practice, if you need to display content like a button containing some text your application will ultimately need to produce a flattened bitmap representation of the button using either GDI bitmaps or DirectX textures in order for Windows it to draw.  Furthermore, if your application has a desire to use more exotic shapes, these also need to be rasterized as bitmaps as well.  Oh and animations? you will need a bitmap for every frame at display refresh rate (60Hz).  This probably sounds horrendously complex and indeed it is unless you happen to be a low level framework dev.  Luckily since the majority of us use frameworks like WPF or Windows::UI::Xaml we rarely have to worry about such details.
+What you may not realize is up until recently, DWM has been working with bitmaps as it's primary input type.  For example if you are writing an application need to display content like a button your application will ultimately need to produce a bitmap representation of the button using either GDI or DirectX in order for DWM to be able to draw it.  Furthermore, if your application has a desire to use more exotic content such as text or non-rectangular shapes, these also need to be rasterized as bitmaps as well.  Oh and animations? you will need to produce a bitmap for every frame at display refresh rate (60Hz).  
+
+Luckily the reality we live in is that UI frameworks are doing all this hard work for us.
 
 # Enter Primitives
-
-Since Windows 8, DWM has got a lot smarter adding support for a number of content primitives such as SpriteVisual, SolidColorVisual etc to both make framework developrs lives simpler and also to provide direct access to the power of the composition engine from application code.  In otherwords, your code can "call down" bellow the UI framework and directly program the visual tree.
+Since Windows 8, DWM has got a lot smarter adding support for a number of content primitives such as ```SpriteVisual```, ```SolidColorVisual`` etc to both make framework developrs lives simpler and also to provide direct access to the power of the Windows composition engine from application code.  In otherwords, your code can "call down" bellow the UI framework and directly program the visual tree.
 
 ## Native Animated Vector Graphics
 # Animated vector all the things
-It's hard to find a popular mobile app these days that doesn't have some kind of cute loading screen, welcome animation, app tutorial that doesn't contain a whealth of beautifuly designed characters, dd motion to bring a more playful, human feel. TODO: example GIF.
+It's hard to find a popular consumer app these days that doesn't have some kind of cute loading screen, welcome animation, app tutorial that doesn't contain a whealth of beautifuly crafted characters, that bring a more playful, human feel to the scenario. 
 
 To be bring this capability to Windows in an efficient way, the composition team set out on a jouney to add a rich set of vector animation primitives to the engine, staring in RS5 and delivering in a complete end to end implementation in 19H1.  We are releasing both a series of API's that bring low level capabilities to the platform, a toolchain to enable a designer developer workflow from After Effects and a new XAML control that makes it easy for UI developers to incorporate vector animation in apps.  
 
