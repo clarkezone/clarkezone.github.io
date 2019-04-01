@@ -6,7 +6,7 @@ categories: [blogging, WUC]
 tags: [animation]
 ---
 # Native bector graphics in Windows
-This post describes new vector graphics APIs recently added to the Windows platform notably ShapeVisual todo, and how to use them from C++ in win32 desktop applications.  The sample I walk through along with versions written in C# are available in this repo: http://github.com:clarkezone/UWPCompositionDemos.
+This post describes some new vector graphics APIs recently added to the Windows platform (```ShapeVisual```, ```SpriteShape``` and friends), some scenarios they can unlock and how to use them from C++ in win32 desktop applications.  The sample I walk through along with versions written in C# are available in this repo: http://github.com:clarkezone/UWPCompositionDemos.
 
 # Some History: Composition in the Windows DWM
 ## Give me your bitmaps
