@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Animated vector graphics using Windows::UI::Composition part 1"
-date: 2019-02-24 01:00:45 -0800
+date: 2019-04-01 01:00:45 -0800
 categories: [blogging, WUC]
 tags: [animation]
 ---
@@ -24,22 +24,23 @@ What you may not realize is up until recently, DWM has been working with bitmaps
 Luckily the reality we live in is that UI frameworks are doing all this hard work for us.
 
 # Enter Primitives
-Since Windows 8, DWM has got a lot smarter adding support for a number of content primitives such as ```SpriteVisual```, ```SolidColorVisual`` etc to both make framework developrs lives simpler and also to provide direct access to the power of the Windows composition engine from application code.  In otherwords, your code can "call down" bellow the UI framework and directly program the visual tree.
+Since Windows 8, DWM has got a lot smarter adding support for a number of content primitives such as ```SpriteVisual```, ```SolidColorVisual``` etc to both make framework developrs lives simpler and also to provide direct access to the power of the Windows composition engine from application code.  In otherwords, your code can "call down" bellow the UI framework and directly program the visual tree.
 
 ## Native Animated Vector Graphics
 # Animated vector all the things
-It's hard to find a popular consumer app these days that doesn't have some kind of cute loading screen, welcome animation, app tutorial that doesn't contain a whealth of beautifuly crafted characters, that bring a more playful, human feel to the scenario. 
 
-To be bring this capability to Windows in an efficient way, the composition team set out on a jouney to add a rich set of vector animation primitives to the engine, staring in RS5 and delivering in a complete end to end implementation in 19H1.  We are releasing both a series of API's that bring low level capabilities to the platform, a toolchain to enable a designer developer workflow from After Effects and a new XAML control that makes it easy for UI developers to incorporate vector animation in apps.  
+![alt text](https://airbnb.io/lottie/images/ShowcaseWalgreens.gif)
+
+It's hard to find a popular consumer app these days that doesn't have some kind of cute loading screen, welcome animation or app tutorial that doesn't contain a whealth of beautifuly crafted animated characters bringing a more playful, human feel to the scenario. This trend was accelerated with the advent of the [Lottie tool](https://airbnb.io/lottie/#/) from Air BnB which made it much easier for designs to create said animations and dev's to get the resulting assets into their codebase.  
+
+To be bring this capability to Windows in an efficient way, the composition team set out on a jouney to add a rich set of vector animation primitives to the engine, staring in RS5 and delivering in a complete end to end implementation in 19H1.  We are releasing both a series of API's that bring low level capabilities to the platform, a toolchain to enable a Lottie-based designer developer workflow from After Effects and a new XAML control that makes it easy for UI developers to incorporate vector animation in apps.  
 
 Becuase the low-level support is implemented in a framework agnostic way in the Compositor itself, it's possible to get animated vector support in UWP XAML Apps, WPF, Winforms and even desktop win32 apps.
 
 # Hello Shape 
-For the remainder of this post I will show how to use the low level primitives directly in a desktop win32 project in c++/winrt.  In the next post I'll show how to use some of the higher level tooling to 
+For the remainder of this post I will show how to actually use the low level primitives.  I decided to lead with a C++ win32 sample using c++/winrt.  C++ desktop developers have been less well served with good samples and, since the API's here work everywhere, it's as good a place as any to start.  Pluss c++/WINRT makes it super easy to call WinRT API's from win32.  In the next post I'll show how to use some of the higher level tooling to automate the workflow.
 
-
- Let's start by creating a basic shape using a ShapeVisual
-
+Let's start by creating a basic shape using a ShapeVisual:
 
 ```c++
 void Scenario1SimpleShape(const Compositor & compositor, const ContainerVisual & root) {
@@ -49,7 +50,7 @@ void Scenario1SimpleShape(const Compositor & compositor, const ContainerVisual &
 	shape.Size({ 100.0f,100.0f });
 ```
 
-Next we need a gemotry
+next we need a gemotry:
 
 ```c++
 	// Create a circle geometry and set it's radius
@@ -57,7 +58,7 @@ Next we need a gemotry
 	circleGeometry.Radius(float2(30, 30));
 ```
 
-to get the geometry to show up we need to 
+to get the geometry to show up we need to create a SpriteShape from the geometry and set up a brush to fill it with:
 
 ```c++
 	// Create a shape object from the geometry and give it a color and offset
@@ -121,7 +122,7 @@ private:
 
 ```
 
-So, let's use those two helpers to create a simple path using Direct2D.  The ShapeVisual configuration is the same as in the first example.
+Next, let's use those two helpers to create a simple path using Direct2D.  The ShapeVisual configuration is the same as in the first example.
 
 ```c++
 void Scenario2SimplePath(const Compositor & compositor, const ContainerVisual & root) {
@@ -131,7 +132,7 @@ void Scenario2SimplePath(const Compositor & compositor, const ContainerVisual & 
 	shape.Offset({ 300.0f, 0.0f, 1.0f });
 ```
 
-For this example, we are going to use a ```ID2D1GeometrySink``` to build up the actual path.  So we need to create a couple of objects that allow us to get back
+For this example, we are going to use Direct2D to create a custom path using a ```ID2D1GeometrySink``` to help construct the path using line segments of different types:
 
 ```c++
 	// Create a D2D Factory
@@ -157,7 +158,11 @@ For this example, we are going to use a ```ID2D1GeometrySink``` to build up the 
 	
 	// Close geometry sink
 	check_hresult(sink->Close());
+```
 
+we can then take the path geometry and construct a ```CompositionPath``` from that, get a ```CompositionPathGeometry``` back and finally another ```SpriteShape``` object to give to shapevisual and get into the visual tree.
+
+```c++
 	// Create a GeoSource helper object wrapping the path
 	result.attach(new GeoSource(path));
 	CompositionPath trianglePath = CompositionPath(result.as<Windows::Graphics::IGeometrySource2D>());
@@ -176,6 +181,54 @@ For this example, we are going to use a ```ID2D1GeometrySink``` to build up the 
 	root.Children().InsertAtTop(shape);
 }
 ```
+
+At this point you may be wondering, where the animated part comes in.  Fear not, we're getting to that now.  Let's see what it takes to build a morph animation between two shapes.  Here I've encapsulated the path building into a helper function for brevity.
+
+```c++
+void Scenario3PathMorphImperative(const Compositor & compositor, const ContainerVisual & root) {
+	// Same steps as for SimpleShapeImperative_Click to create, size and host a ShapeVisual
+	ShapeVisual shape = compositor.CreateShapeVisual();
+	shape.Size({ 500.0f, 500.0f });
+	shape.Offset({ 600.0f, 0.0f, 1.0f });
+
+	com_ptr<ID2D1Factory> d2dFactory;
+	check_hresult(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, d2dFactory.put()));
+
+	// Call helper functions that use Win2D to build square and circle path geometries and create CompositionPath's for them
+	auto squarePath = BuildSquarePath(d2dFactory);
+
+	auto circlePath = BuildCirclePath(d2dFactory);
+
+	// Create a CompositionPathGeometry, CompositionSpriteShape and set offset and fill
+	CompositionPathGeometry compositionPathGeometry = compositor.CreatePathGeometry(squarePath);
+	CompositionSpriteShape spriteShape = compositor.CreateSpriteShape(compositionPathGeometry);
+	spriteShape.Offset({ 150.0f, 200.0f });
+	spriteShape.FillBrush(CreateGradientBrush(compositor));
+```
+
+
+```c++
+	// Create a PathKeyFrameAnimation to set up the path morph passing in the circle and square paths
+	auto playAnimation = compositor.CreatePathKeyFrameAnimation();
+	playAnimation.Duration(std::chrono::seconds(4));
+	playAnimation.InsertKeyFrame(0, squarePath);
+	playAnimation.InsertKeyFrame(0.3F, circlePath);
+	playAnimation.InsertKeyFrame(0.6F, circlePath);
+	playAnimation.InsertKeyFrame(1.0F, squarePath);
+
+	// Make animation repeat forever and start it
+	playAnimation.IterationBehavior(AnimationIterationBehavior::Forever);
+	playAnimation.Direction(AnimationDirection::Alternate);
+	compositionPathGeometry.StartAnimation(L"Path", playAnimation);
+
+	// Add the SpriteShape to our shape visual
+	shape.Shapes().Append(spriteShape);
+
+	// Add to the visual tree
+	root.Children().InsertAtTop(shape);
+}
+```
+
 
 - Creating Window
 - Adding visuals
