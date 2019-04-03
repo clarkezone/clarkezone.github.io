@@ -6,10 +6,10 @@ categories: [blogging, WUC]
 tags: [animation]
 ---
 
-<iframe src='//gifs.com/embed/native-animated-vector-graphics-in-windows-q7Ql1D' frameborder='0' scrolling='no' width='800px' height='600px' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>
-
 ## Native vector graphics in Windows
 This post describes some new vector graphics APIs recently added to the Windows platform (```ShapeVisual```, ```SpriteShape``` and friends), some scenarios they can unlock for you and how to use them from C++ in win32 desktop applications.  The sample I walk through along with versions written in C# are available in this repo: http://github.com:clarkezone/UWPCompositionDemos.
+
+<iframe src='//gifs.com/embed/native-animated-vector-graphics-in-windows-q7Ql1D' frameborder='0' scrolling='no' width='800px' height='600px' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>
 
 ## Some History: Composition in the Windows DWM
 Since Windows Vista, all roads from a Windows application's UI tree to the monitor have gone via the Desktop Window Manager (DWM for short).  Thankfully we never got the kind of craziness shown in early Longhorn builds like this:
