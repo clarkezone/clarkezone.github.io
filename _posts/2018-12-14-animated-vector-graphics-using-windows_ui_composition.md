@@ -35,7 +35,7 @@ It's hard to find a popular consumer app these days that doesn't have some kind 
 
 # Native Animated Vector Graphics in Windows
 
-To be bring this capability to Windows in an efficient way, the composition team set out on a jouney to add a rich set of vector animation primitives to the engine, staring in RS5 and delivering in a complete end to end implementation in 19H1.  We are releasing both a series of API's that bring low level capabilities to the platform, a toolchain to enable a Lottie-based designer developer workflow from After Effects and a new XAML control that makes it easy for UI developers to incorporate vector animation in apps.  
+To be bring this capability to Windows in an efficient way, the composition team set out on a jouney to add a rich set of vector animation primitives to the engine, staring in the 1809 update and delivering in a complete end to end implementation in the Spring 2019 release.  We are releasing both a series of API's that bring low level capabilities to the platform, a toolchain to enable a Lottie-based designer developer workflow from After Effects and a new XAML control that makes it easy for UI developers to incorporate vector animation in apps.  
 
 Becuase the low-level support is implemented in a framework agnostic way in the Compositor itself, it's possible to get animated vector support in UWP XAML Apps, WPF, Winforms and even desktop win32 apps.
 
@@ -164,7 +164,7 @@ For this example, we are going to use Direct2D to create a custom path using a `
 	check_hresult(sink->Close());
 ```
 
-we can then take the path geometry and construct a ```CompositionPath``` from that, get a ```CompositionPathGeometry``` back and finally another ```SpriteShape``` object to give to shapevisual and get into the visual tree.
+we can then take the path geometry and construct a ```CompositionPath``` from that, get a ```CompositionPathGeometry``` back and finally another ```SpriteShape``` object to give to shapevisual and get into the visual tree.  Phew.
 
 ```c++
 	// Create a GeoSource helper object wrapping the path
@@ -210,6 +210,7 @@ void Scenario3PathMorphImperative(const Compositor & compositor, const Container
 	spriteShape.FillBrush(CreateGradientBrush(compositor));
 ```
 
+and the interesting / magic part comes in where we can use a new overload of ```InsertKeyFrame``` that accepts a CompositionPath as the value parameter which can be different for different keyframes.  The engine will do the right thing and perform path interpolation between keyframes as the animation plays forwards or backwards:
 
 ```c++
 	// Create a PathKeyFrameAnimation to set up the path morph passing in the circle and square paths
@@ -233,17 +234,51 @@ void Scenario3PathMorphImperative(const Compositor & compositor, const Container
 }
 ```
 
+So there we have a nice morph animation running in the system compositor with relatively little code.  But for the majority of us, we typically don't want to programatically define animations.  Simply put, it is very hard to visualize, tweek and get them just right with this approach.  We really want to use a tool that ideally a designer can use to do this for us.  The final example illustrates that approach.  Here, we are taking code generated as output from Lottie Tool, an opensource tool we're shipping
 
-- Creating Window
-- Adding visuals
-- Hello ShapeVisual
-- PathGeometry, CompositionPath’s and CompositionSpriteShapes
-- Animating PathGeometry
-- Lottie: pre-canned animations
-- Lottie: full authoring pipeline
+If you are a c# developer, the version of the tool that is [shipping in the store is all you need](https://www.microsoft.com/store/productId/9P7X9K692TMW).  If you are a c++ developer, you'll need to grab the PR I have open on the Lottie Windows repo [here](https://github.com/windows-toolkit/Lottie-Windows/pull/64) as a temporary measure until it is completed.
 
-More stuff at the end.  And more.  And this is autoupdated.  And again. dd. aa.ss
+I plan on doing a followup post on the workflow here so for now we'll just use the pre-canned version I already made.
 
+First off, here is a simple helper function to play back the animation.  We're using a "master" animation named Progress to drive progress on the imported animation as a whole.  This enables us to control the playback speed, go forwards / backwards, pause etc.  If you are a XAML developer and looking to integrated animated vector graphics, there is a handy control that can take care of all of this, but since we are looking at the low level example first this is how you need to role.
 
-WinRT is much better than cx becuase it's faster.  Finally we have the daemon running.
-Fun can be had.
+```c++
+ScalarKeyFrameAnimation Play(const Compositor & compositor, Visual const & visual) {
+	auto progressAnimation = compositor.CreateScalarKeyFrameAnimation();
+	progressAnimation.Duration(std::chrono::seconds(5));
+	progressAnimation.IterationBehavior(AnimationIterationBehavior::Forever);
+	progressAnimation.Direction(AnimationDirection::Alternate);
+	auto linearEasing = compositor.CreateLinearEasingFunction();
+	progressAnimation.InsertKeyFrame(0, 0, linearEasing);
+	progressAnimation.InsertKeyFrame(1, 1, linearEasing);
+	
+	visual.Properties().StartAnimation(L"Progress", progressAnimation);
+	return progressAnimation;
+}
+```
+
+This is clearly considerably less / simpler code to get a much more impressive results with all of the heavy lifting taken care of us inside the generated code.  Make machines do the hard work!
+
+```c++
+    // configure a container visual
+	float width = 400.0f, height = 400.0f;
+	SpriteVisual container = compositor.CreateSpriteVisual();
+	container.Size({ width, height });
+	container.Offset({ 0.0f, 350.0f, 1.0f });
+	root.Children().InsertAtTop(container);
+
+	AnimatedVisuals::LottieLogo1 bmv;
+
+	winrt::Windows::Foundation::IInspectable diags;
+	auto avptr = bmv.TryCreateAnimatedVisual(compositor, diags);
+
+	auto visual = avptr.RootVisual();
+	container.Children().InsertAtTop(visual);
+
+	//// Calculate a scale to make the animation fit into the specified visual size
+	container.Scale({ width / avptr.Size().x, height / avptr.Size().y, 1.0f });
+
+	auto playanimation = Play(compositor, visual);
+```
+
+Thanks for reading to the end, if you are interested in reading more details check out the documentation as well as the [source code](https://github.com/windows-toolkit/Lottie-Windows) for the Lottie Windows tool mentioned above as well as the official documentation for the API's [here](https://docs.microsoft.com/en-us/windows/communitytoolkit/animations/lottie) and we'd love feedback on twitter [@windowsui](https://twitter.com/windowsui) or to me personally [@clarkezone](https://twitter.com/clarkezone).
