@@ -76,9 +76,11 @@ and finaly get it in the visual tree by adding the circle to our ```ShapeVisual`
 	root.Children().InsertAtTop(shape);
 ```
 
+OK, pretty simple stuff.
+
 ![example](/static/img/vectors/circle.PNG)
 
-OK, pretty simple stuff.  Now, how about we create a more interesting composition path using Direct2D.  We need a couple of helpers to achieve this, firstly we are going to use a nice linear gradient as our fill, hence the first helper creates one of those using our compositor.  We're going to use three color stops.
+Now, how about we create a more interesting composition path using Direct2D.  We need a couple of helpers to achieve this, firstly we are going to use a nice linear gradient as our fill, hence the first helper creates one of those using our compositor.  We're going to use three color stops.
 
 ```c++
 // Helper funciton to create a GradientBrush
@@ -228,6 +230,8 @@ and the interesting / magic part comes in where we can use a new overload of ```
 	root.Children().InsertAtTop(shape);
 }
 ```
+
+![example](/static/img/vectors/morph.gif)
 
 So there we have a nice morph animation running in the system compositor with relatively little code.  But for the majority of us, we typically don't want to programatically define animations.  Simply put, it is very hard to visualize, tweek and get them just right with this approach.  We really want to use a tool that ideally a designer can use to do this for us.  The final example illustrates that approach.  Here, we are taking code generated as output from Lottie Tool, an opensource tool we're shipping
 
