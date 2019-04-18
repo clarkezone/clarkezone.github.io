@@ -19,9 +19,9 @@ Since Windows Vista, all roads from a Windows application's UI tree to the monit
 but having a composing window manager or system compositor has [brought many advantages to your desktop](https://en.wikipedia.org/wiki/Compositing_window_manager).  Remember when you could "paint" the screen with your hung app?  Those were not fun times.
  
 # Give me your bitmaps
-What you may not realize is up until recently, DWM has been working with bitmaps as it's primary input type.  For example if you are writing an application need to display content like a button your application will ultimately need to produce a bitmap representation of the button using either GDI or DirectX in order for DWM to be able to draw it.  Furthermore, if your application has a desire to use more exotic content such as text or non-rectangular shapes, these also need to be rasterized as bitmaps as well.  Oh and animations? you will need to produce a bitmap for every frame at display refresh rate (60Hz).  
+What you may not realize is that, up until recently, DWM has only supported bitmaps as it's primary input type.  For example if you are writing an application and need to display content like a button your application will ultimately need to produce a bitmap representation of the button using either GDI or DirectX in order for DWM to be able to draw it.  Furthermore, if your application has a desire to use more exotic content such as text or non-rectangular shapes, these also need to be rasterized as bitmaps as well.  Oh and animations? you will need to produce a bitmap for every frame at display refresh rate (~60Hz).  
 
-Luckily, as app developers, the reality we live in is that UI frameworks are doing all this heavy lifting for us.  Thankfully.
+In reality, as app developers, we are not aware of any of this byzantine complexity because our friendly UI frameworks are doing all this heavy lifting for us.  Thankfully.
 
 # Enter Primitives
 Since Windows 8, DWM has got a lot smarter adding support for a number of content primitives such as ```SpriteVisual```, ```SolidColorVisual``` etc to both make framework developrs lives simpler and also to provide direct access to the power of the Windows composition engine from application code.  In otherwords, your code can "call down" bellow the UI framework and directly program the visual tree.
@@ -37,12 +37,12 @@ It's hard to find a popular consumer app these days that doesn't have some kind 
 
 To be bring this capability to Windows in an efficient way, the composition team set out on a jouney to add a rich set of vector animation primitives to the engine, staring in the 1809 update and delivering in a complete end to end implementation in the Spring 2019 release.  We are releasing both a series of API's that bring low level capabilities to the platform, a toolchain to enable a Lottie-based designer developer workflow from After Effects and a new XAML control that makes it easy for UI developers to incorporate vector animation in apps.  
 
-Becuase the low-level support is implemented in a framework agnostic way in the Compositor itself, it's possible to get animated vector support in UWP XAML Apps, WPF, Winforms and even desktop win32 apps.
+Becuase the low-level support is implemented in a framework agnostic way in the DWM itself, it's possible to get animated vector support in UWP XAML Apps, WPF, Winforms and even desktop win32 apps.
 
 # Hello Shape 
 For the remainder of this post I will show how to actually use the low level primitives the team has added.  I figured we'd start off at the lowest level and build up from there.
 
-Since we are starting low level, I decided to lead with a C++ win32 sample using c++/winrt.  C++ desktop developers have been less well served with good samples and, since the API's here work everywhere, it's as good a place as any to start.  Pluss c++/WINRT makes it super easy to call WinRT API's from win32.  In the next post I'll show how to use some of the higher level tooling to automate the workflow.
+Since we are starting low level, I decided to lead with a C++ win32 sample using [c++/winrt](https://docs.microsoft.com/en-us/windows/uwp/cpp-and-winrt-apis/intro-to-using-cpp-with-winrt).  C++ desktop developers have been less well served with good samples and, since the API's here work everywhere, it's as good a place as any to start.  Pluss c++/WINRT makes it super easy to call WinRT API's from win32.  In the next post I'll show how to use some of the higher level tooling to automate the workflow.
 
 Let's start by creating a basic shape using a ShapeVisual:
 
