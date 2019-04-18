@@ -238,7 +238,7 @@ So there we have a nice morph animation running in the system compositor with re
 
 If you are a c# developer, the version of the tool that is [shipping in the store is all you need](https://www.microsoft.com/store/productId/9P7X9K692TMW).  If you are a c++ developer, you'll need to grab the PR I have open on the Lottie Windows repo [here](https://github.com/windows-toolkit/Lottie-Windows/pull/64) as a temporary measure until it is completed.
 
-I plan on doing a followup post on the workflow here so for now we'll just use the pre-canned version I already made.
+I plan on doing a followup post on the workflow here so for now we'll just use the pre-canned version I already made. 
 
 First off, here is a simple helper function to play back the animation.  We're using a "master" animation named Progress to drive progress on the imported animation as a whole.  This enables us to control the playback speed, go forwards / backwards, pause etc.  If you are a XAML developer and looking to integrated animated vector graphics, there is a handy control that can take care of all of this, but since we are looking at the low level example first this is how you need to role.
 
