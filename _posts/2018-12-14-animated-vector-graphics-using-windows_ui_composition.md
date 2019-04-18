@@ -240,7 +240,7 @@ If you are a c# developer, the version of the tool that is [shipping in the stor
 
 I plan on doing a followup post on the workflow here so for now we'll just use the pre-canned version I already made. 
 
-First off, here is a simple helper function to play back the animation.  We're using a "master" animation named Progress to drive progress on the imported animation as a whole.  This enables us to control the playback speed, go forwards / backwards, pause etc.  If you are a XAML developer and looking to integrated animated vector graphics, there is a handy control that can take care of all of this, but since we are looking at the low level example first this is how you need to role.
+First off, here is a simple helper function to play back the animation.  We're using a "master" animation named Progress to drive progress on the imported animation as a whole.  This enables us to control the playback speed, go forwards / backwards, pause etc.  If you are a XAML developer and looking to integrated animated vector graphics, there is a handy control that can take care of all of this, but since we are looking at the low level example first this is how you need to role. 
 
 ```c++
 ScalarKeyFrameAnimation Play(const Compositor & compositor, Visual const & visual) {
