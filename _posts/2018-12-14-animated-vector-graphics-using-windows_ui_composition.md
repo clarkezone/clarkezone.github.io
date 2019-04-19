@@ -136,55 +136,58 @@ void Scenario2SimplePath(const Compositor & compositor, const ContainerVisual & 
 	shape.Offset({ 300.0f, 0.0f, 1.0f });
 ```
 
-For this example, we are going to use Direct2D to create a custom path using a ```ID2D1GeometrySink``` to help construct the path using line segments of different types:
+For this example, we are going to use Direct2D to create a custom path.  Specifically, we will use a ```ID2D1GeometrySink``` to help construct the path using line segments of different types.  Let's create a D2D factory object and a variable to hold the pth geometry:
 
 ```c++
-	// Create a D2D Factory
 	com_ptr<ID2D1Factory> d2dFactory;
 	check_hresult(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, d2dFactory.put()));
-
-	com_ptr<GeoSource> result;
 	com_ptr<ID2D1PathGeometry> path;
+```
 
-	// use D2D factory to create a path geometry
+then we'll create the path geometry using the factory and, for the path created above, create a Geometry Sink used to add points to the path
+
+```c++
 	check_hresult(d2dFactory->CreatePathGeometry(path.put()));
 
-	// for the path created above, create a Geometry Sink used to add points to the path
 	com_ptr<ID2D1GeometrySink> sink;
 	check_hresult(path->Open(sink.put()));
+```
 
-	// Add points to the path
+It's then just a matter of defining how we want to fill the object and add some line segments.  Of course these could have been curved bezier segements, but we're starting simple here.
+```c++
 	sink->SetFillMode(D2D1_FILL_MODE_WINDING);
 	sink->BeginFigure({ 1, 1 }, D2D1_FIGURE_BEGIN_FILLED);
 	sink->AddLine({ 300, 300 });
 	sink->AddLine({ 1, 300 });
 	sink->EndFigure(D2D1_FIGURE_END_CLOSED);
-	
-	// Close geometry sink
+```
+
+lastly, we'll close the geometry sink:
+```c++
 	check_hresult(sink->Close());
 ```
 
-we can then take the path geometry and construct a ```CompositionPath``` from that, get a ```CompositionPathGeometry``` back and finally another ```SpriteShape``` object to give to shapevisual and get into the visual tree.  Phew.
+we can then take the path geometry and construct a ```CompositionPath``` from that
 
 ```c++
-	// Create a GeoSource helper object wrapping the path
+	com_ptr<GeoSource> result;
 	result.attach(new GeoSource(path));
 	CompositionPath trianglePath = CompositionPath(result.as<Windows::Graphics::IGeometrySource2D>());
+```
 
-	// create a CompositionPathGeometry from the composition path
+Create a ```CompositionPathGeometry``` from the ```CompositionPath``` created above:
+```c++
 	CompositionPathGeometry compositionPathGeometry = compositor.CreatePathGeometry(trianglePath);
+```
 
-	// create a SpriteShape from the CompositionPathGeometry, give it a gradient fill and add to our ShapeVisual
+and finally we get to create a ```SpriteShape``` using the ```CompositionPathGeometry```
+```c++
 	CompositionSpriteShape spriteShape = compositor.CreateSpriteShape(compositionPathGeometry);
 	spriteShape.FillBrush(CreateGradientBrush(compositor));
-
-	// Add the SpriteShape to our shape visual
-	shape.Shapes().Append(spriteShape);
-
-	// Add to the visual tree
-	root.Children().InsertAtTop(shape);
 }
 ```
+
+
 
 At this point you may be wondering, where the animated part comes in.  Fear not, we're getting to that now.  Let's see what it takes to build a morph animation between two shapes.  Here I've encapsulated the path building into a helper function for brevity.
 
