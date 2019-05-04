@@ -257,9 +257,6 @@ ScalarKeyFrameAnimation Play(const Compositor & compositor, Visual const & visua
 	return progressAnimation;
 }
 ```
-
-This is clearly considerably less / simpler code to get a much more impressive results with all of the heavy lifting taken care of us inside the generated code.  Make machines do the hard work! Note that if you are able to use XAML in your application and looking to integrated animated vector graphics, there is a [handy control that can take care of all of this](https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.xaml.controls.animatedvisualplayer?view=winui-2.2), but since we are looking at the low level example first this is how you we will roll. 
-
 Let's configure up a visual to hold the animation:
 ```c++
 	float width = 400.0f, height = 400.0f;
@@ -268,28 +265,25 @@ Let's configure up a visual to hold the animation:
 	container.Offset({ 0.0f, 350.0f, 1.0f });
 	root.Children().InsertAtTop(container);
 ```
-
 now Will create the code generated class, in this case LottieLogo1:
 ```c++
 	auto static bmv = winrt::make_self< AnimatedVisuals::LottieLogo1>();
 ```
-
 we can then call the ```TryCreateAnimatedVisual``` method to instantiate the animation
 ```c++
 	winrt::Windows::Foundation::IInspectable diags;
 	auto avptr = bmv.TryCreateAnimatedVisual(compositor, diags);
 ```
-
 insert it into the tree, scaling to fit our visual
 ```c++
 	auto visual = avptr.RootVisual();
 	container.Children().InsertAtTop(visual);
 	container.Scale({ width / avptr.Size().x, height / avptr.Size().y, 1.0f });
 ```
-
 and finally play back
 ```c++
 	auto playanimation = Play(compositor, visual);
 ```
+This is clearly considerably less / simpler code to get a much more impressive results with all of the heavy lifting taken care of us inside the generated code.  Make machines do the hard work! Note that if you are able to use XAML in your application and looking to integrated animated vector graphics, there is a [handy control that can take care of all of this](https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.xaml.controls.animatedvisualplayer?view=winui-2.2),
 
 Thanks for reading to the end, if you are interested in reading more details check out the documentation as well as the [source code](https://github.com/windows-toolkit/Lottie-Windows) for the Lottie Windows tool mentioned above as well as the official documentation for the API's [here](https://docs.microsoft.com/en-us/windows/communitytoolkit/animations/lottie) and we'd love feedback on twitter [@windowsui](https://twitter.com/windowsui) or to me personally [@clarkezone](https://twitter.com/clarkezone).
