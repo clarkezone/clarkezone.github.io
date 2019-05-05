@@ -12,11 +12,11 @@ This post describes some new vector graphics APIs recently added to the Windows 
 ![example](/static/img/vectors/Vectors_in_Win32.gif)
 
 ## Some History: Composition in the Windows DWM
-Since Windows Vista, all roads from a Windows application's UI tree to the monitor have gone via the Desktop Window Manager (DWM for short).  Thankfully we never got the kind of "look, my window is a flag" craziness shown in demos of early Longhorn builds:
+Since Windows Vista, all roads from a Windows application's UI tree to the monitor have gone via the Desktop Window Manager (DWM for short).  We never got the "look, my window is a flag" example from early Longhorn tech demos:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/p2rQrd_uocI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-but having a composing window manager or system compositor has [brought many advantages to your desktop](https://en.wikipedia.org/wiki/Compositing_window_manager).  Remember when you could "paint" the screen with your hung app?  Those were not fun times.
+but having a composing window manager or system compositor has [brought many advantages to your desktop](https://en.wikipedia.org/wiki/Compositing_window_manager).  Remember when you could "paint" the screen with your hung app?
  
 # Give me your bitmaps
 What you may not realize is that, from the inception of the composed desktop in Vista until as recently as in Windows 8.1, DWM has only supported bitmaps/textures as an input type that can be composed from.  As a consequence, if you were writing an application and needed to display content like a button your application will ultimately needed to produce a bitmap representation of the button using either GDI or DirectX for DWM to be able to draw it.  Same deal for more exotic content such as text or non-rectangular shapes.  Oh, and animations? those need a bitmap for every frame at display refresh rate (>= ~60Hz).
