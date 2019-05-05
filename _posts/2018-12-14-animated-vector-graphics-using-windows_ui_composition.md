@@ -284,7 +284,8 @@ and finally play back
 ```c++
 	auto playanimation = Play(compositor, visual);
 ```
+This is clearly considerably less / simpler code to get a much more impressive results with all of the heavy lifting taken care of us inside the generated code.  Make machines do the hard work! 
 ![example](/static/img/vectors/lottie.gif)
-This is clearly considerably less / simpler code to get a much more impressive results with all of the heavy lifting taken care of us inside the generated code.  Make machines do the hard work! Note that if you are able to use XAML in your application and looking to integrated animated vector graphics, there is a [handy control that can take care of all of this](https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.xaml.controls.animatedvisualplayer?view=winui-2.2),
+Note that if you are able to use XAML in your application and looking to integrated animated vector graphics, there is a [handy control that can take care of all of this](https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.xaml.controls.animatedvisualplayer?view=winui-2.2),
 
 Thanks for reading to the end, if you are interested in reading more details check out the documentation as well as the [source code](https://github.com/windows-toolkit/Lottie-Windows) for the Lottie Windows tool mentioned above as well as the official documentation for the API's [here](https://docs.microsoft.com/en-us/windows/communitytoolkit/animations/lottie) and we'd love feedback on twitter [@windowsui](https://twitter.com/windowsui) or to me personally [@clarkezone](https://twitter.com/clarkezone).
