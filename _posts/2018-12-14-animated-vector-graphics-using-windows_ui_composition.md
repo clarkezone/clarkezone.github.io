@@ -12,19 +12,19 @@ This post describes some new vector graphics APIs recently added to the Windows 
 ![example](/static/img/vectors/Vectors_in_Win32.gif)
 
 ## Some History: Composition in the Windows DWM
-Since Windows Vista, all roads from a Windows application's UI tree to the monitor have gone via the Desktop Window Manager (DWM for short).  We never got the "look, my window is a flag" example from early Longhorn tech demos:
+Since Windows Vista, all roads from an application's UI tree to the monitor have gone via the Desktop Window Manager (DWM for short).  We never got the "look, my window is a flag" example from early Longhorn tech demos:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/p2rQrd_uocI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 but having a composing window manager or system compositor has [brought many advantages to your desktop](https://en.wikipedia.org/wiki/Compositing_window_manager).  Remember when you could "paint" the screen with your hung app?
  
 # Give me your bitmaps
-What you may not realize is that, from the inception of the composed desktop in Vista until as recently as in Windows 8.1, DWM has only supported bitmaps/textures as an input type that can be composed from.  As a consequence, if you were writing an application and needed to display content like a button your application will ultimately needed to produce a bitmap representation of the button using either GDI or DirectX for DWM to be able to draw it.  Same deal for more exotic content such as text or non-rectangular shapes.  Oh, and animations? those need a bitmap for every frame at display refresh rate (>= ~60Hz).
+What you may not realize is that, from the inception of the composed desktop in Vista until as recently as in Windows 8.1, DWM has only supported bitmaps/textures as an input format that can be composed from.  As a consequence, if you were writing an application and needed to display content like a button your application would ultimately needed to produce a bitmap representation of the button using either GDI or DirectX to get it on screen.  Same deal for more exotic content such as text or non-rectangular shapes.  Oh, and animations? those need a bitmap for every frame at display refresh rate (>= ~60Hz).
 
-As app developers, we have lived in blissful ignorance of this byzantine complexity because our friendly neighborhood UI frameworks have been doing all the heavy lifting for us.  Thankfully.
+As app developers, we have lived in blissful ignorance of this byzantine complexity since our friendly neighborhood UI frameworks have been doing all the heavy lifting for us.  Thankfully.
 
 # Enter Primitives
-Starting in Windows 10, DWM got a lot smarter with regard to input formats, adding support for a number of non-bitmap based content primitives such as ```SpriteVisual```, ```SolidColorVisual```, ```CompositionLinearGradientBrush``` and others to make framework and more advanced app developers lives simpler by making it easier to express visual concepts directly without the need to rasterize first in application code.
+Starting in Windows 10, DWM got a lot smarter with regard to input formats, adding support for a number of non-bitmap based content primitives such as ```SpriteVisual```, ```SolidColorVisual```, ```CompositionLinearGradientBrush``` and others making framework and more advanced app developers lives simpler.
 
 # Animated vector all the things
 
@@ -41,7 +41,7 @@ Because the low-level support is implemented in a framework agnostic way in the 
 # Hello Shape 
 For the remainder of this post I will show how to use the low-level primitives.  I figured we'd start off at the lowest level and build up from there.
 
-Since we are starting low-level, I decided to lead with a C++ WIN32 sample using [c++/winrt](https://docs.microsoft.com/en-us/windows/uwp/cpp-and-winrt-apis/intro-to-using-cpp-with-winrt).  C++ desktop developers have been less well served with good samples and, since the API's here work everywhere, it's as good a place as any to start.  Plus c++/WINRT makes it super easy to call WinRT API's from WIN32.
+Since we are starting low-level, I decided to lead with a C++ WIN32 sample using [c++/winrt](https://docs.microsoft.com/en-us/windows/uwp/cpp-and-winrt-apis/intro-to-using-cpp-with-winrt).  C++ desktop developers have been less well served with good samples and, since the API's here work everywhere, it's as good a place as any to start.  Plus C++/WINRT makes it super easy to call WinRT API's from WIN32.
 
 Let's start by creating a basic circle using a ```ShapeVisual``` to host it in the visual tree for us:
 
