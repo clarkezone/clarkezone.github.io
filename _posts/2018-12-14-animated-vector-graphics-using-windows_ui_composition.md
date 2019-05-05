@@ -19,14 +19,12 @@ Since Windows Vista, all roads from a Windows application's UI tree to the monit
 but having a composing window manager or system compositor has [brought many advantages to your desktop](https://en.wikipedia.org/wiki/Compositing_window_manager).  Remember when you could "paint" the screen with your hung app?  Those were not fun times.
  
 # Give me your bitmaps
-What you may not realize is that, from the inception of the composed desktop in Vista until as recently as in Windows 8.1, DWM has only supported bitmaps as a primary input type.
-
-For example, if you were writing an application and needed to display content like a button your application will ultimately needed to produce a bitmap representation of the button using either GDI or DirectX for DWM to be able to draw it.  Furthermore, if had a desire to use more exotic content such as text or non-rectangular shapes, these also needed to be rasterized as bitmaps.  Oh, and animations? those need a bitmap for every frame at display refresh rate (>= ~60Hz).
+What you may not realize is that, from the inception of the composed desktop in Vista until as recently as in Windows 8.1, DWM has only supported bitmaps/textures as an input type that can be composed from.  As a consequence, if you were writing an application and needed to display content like a button your application will ultimately needed to produce a bitmap representation of the button using either GDI or DirectX for DWM to be able to draw it.  Same dead for more exotic content such as text or non-rectangular shapes.  Oh, and animations? those need a bitmap for every frame at display refresh rate (>= ~60Hz).
 
 As app developers, we have lived in blissful ignorance of this byzantine complexity because our friendly neighborhood UI frameworks have been doing all the heavy lifting for us.  Thankfully.
 
 # Enter Primitives
-Starting in Windows 10, DWM got a lot smarter with regard to input formats, adding support for a number of non-bitmap based content primitives such as ```SpriteVisual```, ```SolidColorVisual```, ```CompositionLinearGradientBrush``` and others to make framework and more advanced app developers lives simpler by making it easier to express visual concepts directly without the need to rasterize.
+Starting in Windows 10, DWM got a lot smarter with regard to input formats, adding support for a number of non-bitmap based content primitives such as ```SpriteVisual```, ```SolidColorVisual```, ```CompositionLinearGradientBrush``` and others to make framework and more advanced app developers lives simpler by making it easier to express visual concepts directly without the need to rasterize first in application code.
 
 # Animated vector all the things
 
