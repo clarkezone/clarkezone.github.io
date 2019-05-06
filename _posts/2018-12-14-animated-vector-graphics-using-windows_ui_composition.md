@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Animated vector graphics using Windows::UI::Composition part 1"
+title:  "Animated vector graphics in C++ using Windows::UI::Composition"
 date: 2019-05-05 11:00:45 -0800
 categories: [blogging, WUC]
 tags: [animation]
