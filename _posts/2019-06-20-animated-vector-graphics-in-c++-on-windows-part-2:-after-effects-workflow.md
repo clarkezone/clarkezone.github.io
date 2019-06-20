@@ -4,7 +4,6 @@ title:  "Animated vector graphics in C++ on Windows part 2: After Effects workfl
 date: 2019-06-19 10:31:45 -0700
 categories: [blogging, WUC]
 tags: [animation]
-draft: true
 ---
 
 ## The one about Motion graphics tooling
