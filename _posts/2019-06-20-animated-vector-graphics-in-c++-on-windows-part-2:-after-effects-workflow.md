@@ -9,3 +9,5 @@ draft: true
 
 ## The one about Motion graphics tooling
 In my last post I covered investments we've made in the Windows Visual Layer to enable high performance hardware accelerated motion graphics in the platform.  In this post I'm going to dig in to the tooling side.  Once again, I'm approaching this topic through the lens of C++ desktop development although the concepts apply to both UWP and C#
+
+More
