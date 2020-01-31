@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Hello world Let's encrypt via nGrok in Go"
-date: 2020-01-30 09:51:02 -0800
+date: 2020-01-29 09:51:02 -0800
 categories: [golang]
 tags: [ngrok, letsencrypt]
 ---
