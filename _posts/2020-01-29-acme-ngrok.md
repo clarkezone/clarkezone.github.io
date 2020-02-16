@@ -6,7 +6,7 @@ categories: [golang]
 tags: [ngrok, letsencrypt]
 ---
 
-I've been playing with gRPC and microservice recently (more on that later) and one aspect that I've needed to figure out as part of that particular adventure has been getting gRPC endpoint running over SSL.  To do that, I turned to Let's Encrypt as I'm a massive fan of free certs that can be automatically acquired and renewed.  Because I'm working in go, I
+I've been playing with gRPC and microservice recently (more on that later). One aspect that I've needed to figure out as part of that particular adventure has been getting gRPC endpoint running securely over SSL.  To do that, I turned to Let's Encrypt as I'm a massive fan of free certs that can be automatically acquired and renewed.  Since I'm working in go, there are a number of solutions that work off the shelf (the one I'm using is Acme).  Before figuring out how to get letsencrypt working with gRPC, I wanted to establish a way of testing everything locally.
 
 Figuring out how to do this on github pages.
 
@@ -15,17 +15,3 @@ class test {
     string hello;
 }
 ```
-
-**Also looking at editing workflows**
-
-Working Copy and 1writer seems like a pretty great combo.  Amazing. Bla bla ddd ppppjjjjdddddddd
-
-Fancy
-
-Fancy 2
-
-Very sssss
-
-Mumble
-
-Bandjoy
