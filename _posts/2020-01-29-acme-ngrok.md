@@ -6,7 +6,7 @@ categories: [golang]
 tags: [ngrok, letsencrypt]
 ---
 
-I've been playing with gRPC and microservice recently (more on that later) and one aspect that I've needed to figure out as part of that particular adventure has been getting gRPC endpoint running over SSL.  To do that, I turned to Let's Encrypt ss
+I've been playing with gRPC and microservice recently (more on that later) and one aspect that I've needed to figure out as part of that particular adventure has been getting gRPC endpoint running over SSL.  To do that, I turned to Let's Encrypt as I'm a massive fan of free certs that can be automatically acquired and renewed.  Because I'm working in go, I
 
 Figuring out how to do this on github pages.
 
