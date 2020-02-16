@@ -8,8 +8,8 @@ tags: [jekyll,golang]
 
 My git blog is powered by Jekyll, a static site generator.  Because I've been using the iPad for content creation, I've found it quite hard to get previews of blog posts.  Why do I need a preview you may ask?  Well, things like having the Jekyll template applied, seeing the layout, embeds etc often need iteration and tweaking.  And, in order for preview to be useful, I have the following requirements:
 
-1) Preview any branch
-2) Preview before the post is live
-3) Preview can run in the cloud so I can call if from the iPad
+1. Preview any branch
+2. Preview before the post is live
+3. Preview can run in the cloud so I can call if from the iPad
 
 To meet the above requirements I wanted a docker image capable of listening for updates to a branch on git via a webhook and a component for previewing using the template etc.  For the second part, there is a pre-existing docker image Jekyll/Jekyll
