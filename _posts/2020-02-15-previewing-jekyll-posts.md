@@ -12,4 +12,4 @@ My git blog is powered by Jekyll, a static site generator.  Because I've been us
 2) Preview before the post is live
 3) Preview can run in the cloud so I can call if from the iPad
 
-To meet the above requirements I wanted a docker image capable of listening for updates to a branch on git via a webhook and a component for 
+To meet the above requirements I wanted a docker image capable of listening for updates to a branch on git via a webhook and a component for previewing using the template etc.  For the second part, there is a pre-existing docker image Jekyll/Jekyll
