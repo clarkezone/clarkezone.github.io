@@ -18,4 +18,8 @@ My favored solution to this problem is [nGrok](https://ngrok.com) from [Alan Shr
 ngrok http 3000 -subdomain myapp
 ```
 
-which would result
+which would result in any requests to myapp.ngrok.io being routed to port 3000 on my dev box.  That is the simple case, getting ngrok configured to not only route SSL traffic but also allow certificate retreval requires multiple concurrent tunnels.  I'm not going to go into why this is or how it works (you can read about that [here](https://letsencrypt.org/how-it-works/)) but I am going to present my solution as I wasn't able to find an explanation of this elsewhere.
+
+{% gist 0000a9057bd973000057e31f1085ccfc ngrokconfig.yaml %}
+
+The trick is you need two tunnels running simultaniously, one for Acme to handshake with let's encrypt and grab a free certificate and one for the SSL traffic inbound over port 443.  I didn't initially appreciate the need for the first tunnel because I didn't understand the fact that 
