@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Previewing Jekyll posts"
+title:  "Previewing Jekyll blog posts"
 date: 2020-02-15 17:06:57 -0800
 categories: [blogging]
 tags: [jekyll,golang]
@@ -12,4 +12,4 @@ My git blog is powered by Jekyll, a static site generator.  Because I've been us
 2) Preview before the post is live
 3) Preview can run in the cloud so I can call if from the iPad
 
-To meet the above requirements
+To meet the above requirements I wanted a docker image capable of listening for updates to a branch on git via a webhook and a component for 
