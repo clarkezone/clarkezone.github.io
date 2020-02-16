@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Hello world Lets encrypt via nGrok in Go"
+title:  "Enabling local development with SSL and Lets encrypt in Go"
 date: 2020-01-29 09:51:02 -0800
 categories: [golang]
 tags: [ngrok, letsencrypt]
