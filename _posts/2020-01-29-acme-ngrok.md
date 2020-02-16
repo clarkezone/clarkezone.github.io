@@ -15,5 +15,7 @@ Pretty easy right?  But there's one slight problem.. how do we test this locally
 My favored solution to this problem is [nGrok](https://ngrok.com) from [Alan Shreve](https://twitter.com/inconshreveable).  Can't say enough good things about nGrok, have been a pro subscriber for a number of years at this point and have been super happy with the product and service.  nGrok allows you to simply set up a tunnel that maps a remote ip address, subdomain or full on domain name to a local ip address and port on your dev box.  Setting up a trivial tunnel would look something like:
 
 ```console
-
+ngrok http 3000 -subdomain myapp
 ```
+
+which would result
