@@ -2,8 +2,8 @@
 layout: post
 title:  "Tracking coding time and language usage with Wakatime"
 date: 2020-02-20 09:30:30 -0800
-categories: [blogging]
-tags: [foo]
+categories: [timetracking]
+tags: [wakatime]
 ---
 
 One of the themes that has resonated with me aver the past three years is language innovation.  I shipped my first commercial product for root6 using a beta version of .NET 1.0 before the go-live license kicked in.. i fell in love with c# and a 20? year cares arc ensued.
@@ -15,7 +15,15 @@ With my ballooning polyglotness on the rise ive been working on a much more dive
 Twitter poll
 
 Set up in VS Code
+[intsalled local not on WSL2](/static/img/waka-2-20-2019/wakatime-not.PNG)
+[Installed in WSL1](/static/img/waka-2-20-2019/wakatimeboth.png)
+[Enter key](/static/img/waka-2-20-2019/Wakatimekey.png)
 
 Set up in VS
 
 Set up in VIM in WSL
+[Install for VIM](/static/img/waka-2-20-2019/installforvim.png)
+
+[Coding time in VS code](/static/img/waka-2-20-2019/codingtime.png)
+
+[Dashboard](/static/img/waka-2-20-2019/dashboard.png)
