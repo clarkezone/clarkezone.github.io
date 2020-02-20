@@ -12,6 +12,8 @@ Three years ago I started dabbling with GoLang for server-side code and experien
 
 With my ballooning polyglotness on the rise ive been working on a much more diverse range of projects both open and closed source. and being a nerd, I began wondering where my time was going.  Looking around, seemed that Wakatime could provide an answer
 
+Twitter poll
+
 Set up in VS Code
 
 Set up in VS
