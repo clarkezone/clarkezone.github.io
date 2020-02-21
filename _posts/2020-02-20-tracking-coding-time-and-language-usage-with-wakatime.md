@@ -6,9 +6,9 @@ categories: [timetracking]
 tags: [wakatime]
 ---
 
-One of the themes that has resonated with me aver the past three years is innovation and proliferation in programing language.  I shipped my [first commercial product for root6 in 2001](https://www.4rfv.co.uk/industrynews/2872/beam_tv_launch_new_system) using a beta version of .NET 1.0 before the go-live license kicked in.. I fell in love with C# and a 20 year career in software ensued.
+One of the themes that has resonated with me aver the past few years is innovation and proliferation in programing languages.  I shipped my [first commercial product for root6 in 2001](https://www.4rfv.co.uk/industrynews/2872/beam_tv_launch_new_system) using a beta version of .NET 1.0 before the go-live license kicked in.. I fell in love with C# and a 20 year career in software ensued.
 
-Three years ago I started dabbling with GoLang for server-side code and experienced a similar, if not as intese, sense of possibilites.  Then something weird happend.. had the same experience with Kotlin at [Google IO 2017 when Kotlin became the default languages](https://www.youtube.com/watch?v=Hx_rwS1NTiI&list=PLx-LPiGjoc1I8bdan6sYrCAOMquPuJIzD&index=2&t=1091s) for new projects in Android Studio, then Swift, then Modern C++, then Rust and most recently Dart.  On and on it goes! My experience at the awesome rustconf last October also reinforced and reminded me about how the communities around languages are arguably as important / energizing as the tech itself.
+Three years ago I started dabbling with GoLang for server-side code and experienced a similar, if not as intese, sense of possibilites.  Then something weird happend.. I had the same experience with Kotlin at [Google IO 2017 when Kotlin became the default languages](https://www.youtube.com/watch?v=Hx_rwS1NTiI&list=PLx-LPiGjoc1I8bdan6sYrCAOMquPuJIzD&index=2&t=1091s) for new projects in Android Studio, then Swift, then Modern C++, then Rust and most recently Dart.  On and on it goes! My experience at the awesome rustconf last October also reinforced and reminded me about how the communities around languages are arguably as important / energizing as the tech itself.
 
 With my ballooning polyglotness on the rise I've found myself working on a much more diverse range of projects both open and closed source and, being a nerd, I began wondering where my time was going.
 
@@ -42,7 +42,7 @@ Visual Studio also has a plugin.. you can grab that by going to the extensions s
 
 Installing in VIM is [pretty easy using either vundle or pathogen](https://wakatime.com/vim):
 ![Install for VIM](/static/img/waka-2-20-2020/installforvim.png)
-One gotcha to be aware of.. if you already installed the VSCode plugin in your WSL2 instance, the VIM plugin will pick up the existing key so you won't be prompted for it like it says in the instruction.  If in any doubt that the extension is installed, use:
+One gotcha to be aware of.. if you already installed the VSCode plugin in your WSL2 instance, the VIM plugin will pick up the existing key so you won't be prompted for it like it says in the instructions.  If in any doubt that the extension is installed, use:
 
 ```vim
 :WakaTimeToday
