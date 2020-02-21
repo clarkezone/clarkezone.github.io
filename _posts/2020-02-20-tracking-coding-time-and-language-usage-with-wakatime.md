@@ -32,15 +32,24 @@ Get previews of your coding time
 
 ## Set up in VS
 
-Visual Studio also has a plugin.. you can grab that by going to extensions and 
+Visual Studio also has a plugin.. you can grab that by going to extensions and
 
 ## Set up in VIM in WSL
 
 Installing in VIM is [pretty easy using either vundle or pathogen](https://wakatime.com/vim):
 ![Install for VIM](/static/img/waka-2-20-2020/installforvim.png)
-One gotcha to be aware of.. if you already installed the VSCode plugin in your WSL2 instance, the VIM plugin will pick up the existing key so you won't be prompted for it like it says in the instruction.  If in any doubt that the extension is installed, use the :WakaTimeToday command and, if everything is good, you should see:
+One gotcha to be aware of.. if you already installed the VSCode plugin in your WSL2 instance, the VIM plugin will pick up the existing key so you won't be prompted for it like it says in the instruction.  If in any doubt that the extension is installed, use:
 
+```vim
+:WakaTimeToday
+```
 
+and, if everything is good, you should see:
 
+![Install for VIM](/static/img/waka-2-20-2020/timetodayvim.png)
+
+## Dashbaord
+
+Having installed Wakatime in each editor you use, you then start harvesting stats
 
 ![Dashboard](/static/img/waka-2-20-2020/dashboard.png)
