@@ -8,15 +8,21 @@ tags: [wakatime]
 
 One of the themes that has resonated with me aver the past three years is innovation and proliferation in programing language.  I shipped my [first commercial product for root6 in 2001](https://www.4rfv.co.uk/industrynews/2872/beam_tv_launch_new_system) using a beta version of .NET 1.0 before the go-live license kicked in.. I fell in love with C# and a 20 year career in software ensued.
 
-Three years ago I started dabbling with GoLang for server-side code and experienced a similar, if not as intese, sense of possibilites.  Then something weird happend.. had the same experience with Kotlin at Google IO 200?, then Swift, then Modern C++, then Rust and most recently Dart.  My experience at the awesome rustconf last October also reinforced and reminded me about how the communities around languages are arguably as importanf / energizing as thr tech itself.
+Three years ago I started dabbling with GoLang for server-side code and experienced a similar, if not as intese, sense of possibilites.  Then something weird happend.. had the same experience with Kotlin at [Google IO 2017 when Kotlin became the default languages](https://www.youtube.com/watch?v=Hx_rwS1NTiI&list=PLx-LPiGjoc1I8bdan6sYrCAOMquPuJIzD&index=2&t=1091s) for new projects in Android Studio, then Swift, then Modern C++, then Rust and most recently Dart.  On and on it goes! My experience at the awesome rustconf last October also reinforced and reminded me about how the communities around languages are arguably as important / energizing as the tech itself.
 
-With my ballooning polyglotness on the rise ive been working on a much more diverse range of projects both open and closed source. and being a nerd, I began wondering where my time was going.  Looking around, seemed that Wakatime could provide an answer
+With my ballooning polyglotness on the rise I've found myself working on a much more diverse range of projects both open and closed source and, being a nerd, I began wondering where my time was going.
 
 ## Twitter poll
 
+Doing some quick internet searchs lead me to [Wakatime](https://wakatime.com/). Played around a bit and seemed to do the trick and had plugins for each editor I cared about.  There didn't appear to be a more popular option based on a quick twitter poll
+
+[![time tracking tweet](/static/img/waka-2-20-2020/Wakatimekey.png)](https://twitter.com/Clarkezone/status/1214965724436762624)
+
+Hence I went with it.  After a couple of weeks I was hooked and ended up getting a pro subscription.  Haven't looked back.
+
 ## Set up in VS Code
 
-You can grab the extension
+You can grab the extension from the VS Code extension store and get up and running pretty quickly.  If you are running WSL2 (which I highly recommend) make sure you install wakatime on Linux as well as on the host.. you can see that
 
 ![intsalled local not on WSL2](/static/img/waka-2-20-2020/wakatime-not.png)
 
