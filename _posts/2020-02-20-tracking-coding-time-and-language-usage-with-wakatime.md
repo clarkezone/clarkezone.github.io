@@ -16,7 +16,7 @@ With my ballooning polyglotness on the rise I've found myself working on a much 
 
 Doing some quick internet searchs lead me to [Wakatime](https://wakatime.com/). Played around a bit and seemed to do the trick and had plugins for each editor I cared about.  There didn't appear to be a more popular option based on a quick twitter poll
 
-[![time tracking tweet](/static/img/waka-2-20-2020/Wakatimekey.png)](https://twitter.com/Clarkezone/status/1214965724436762624)
+[![time tracking tweet](/static/img/waka-2-20-2020/timetrackingtweet.png)](https://twitter.com/Clarkezone/status/1214965724436762624)
 
 Hence I went with it.  After a couple of weeks I was hooked and ended up getting a pro subscription.  Haven't looked back.
 
