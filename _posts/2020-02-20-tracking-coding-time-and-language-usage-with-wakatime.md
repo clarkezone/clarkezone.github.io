@@ -6,9 +6,9 @@ categories: [timetracking]
 tags: [wakatime]
 ---
 
-One of the themes that has resonated with me aver the past three years is language innovation.  I shipped my first commercial product for root6 using a beta version of .NET 1.0 before the go-live license kicked in.. i fell in love with c# and a 20? year cares arc ensued.
+One of the themes that has resonated with me aver the past three years is innovation and proliferation in programing language.  I shipped my [first commercial product for root6 in 2001](https://www.4rfv.co.uk/industrynews/2872/beam_tv_launch_new_system) using a beta version of .NET 1.0 before the go-live license kicked in.. I fell in love with C# and a 20 year career in software ensued.
 
-Three years ago I started dabbling with GoLang for server-side code and experienced a similar if not as intese sense of possibilites.  The something weird happend.. had the same experience withKotlin at Google IO 200?, then Swift, then Modern C++, then Rust and most recently Dart.  My experience at the awesome rustconf last October also reinforced and reminded me about how the communities around languages are arguably as importanf / energizing as thr tech itself.
+Three years ago I started dabbling with GoLang for server-side code and experienced a similar, if not as intese, sense of possibilites.  Then something weird happend.. had the same experience with Kotlin at Google IO 200?, then Swift, then Modern C++, then Rust and most recently Dart.  My experience at the awesome rustconf last October also reinforced and reminded me about how the communities around languages are arguably as importanf / energizing as thr tech itself.
 
 With my ballooning polyglotness on the rise ive been working on a much more diverse range of projects both open and closed source. and being a nerd, I began wondering where my time was going.  Looking around, seemed that Wakatime could provide an answer
 
