@@ -12,18 +12,35 @@ Three years ago I started dabbling with GoLang for server-side code and experien
 
 With my ballooning polyglotness on the rise ive been working on a much more diverse range of projects both open and closed source. and being a nerd, I began wondering where my time was going.  Looking around, seemed that Wakatime could provide an answer
 
-Twitter poll
+## Twitter poll
 
-Set up in VS Code
-[intsalled local not on WSL2](/static/img/waka-2-20-2019/wakatime-not.PNG)
-[Installed in WSL1](/static/img/waka-2-20-2019/wakatimeboth.png)
-[Enter key](/static/img/waka-2-20-2019/Wakatimekey.png)
+## Set up in VS Code
 
-Set up in VS
+You can grab the extension
 
-Set up in VIM in WSL
-[Install for VIM](/static/img/waka-2-20-2019/installforvim.png)
+![intsalled local not on WSL2](/static/img/waka-2-20-2020/wakatime-not.png)
 
-[Coding time in VS code](/static/img/waka-2-20-2019/codingtime.png)
+![Installed in WSL1](/static/img/waka-2-20-2020/wakatimeboth.png)
 
-[Dashboard](/static/img/waka-2-20-2019/dashboard.png)
+Enter your key
+
+![Enter key](/static/img/waka-2-20-2020/Wakatimekey.png)
+
+Get previews of your coding time
+
+![Coding time in VS code](/static/img/waka-2-20-2020/codingtime.png)
+
+## Set up in VS
+
+Visual Studio also has a plugin.. you can grab that by going to extensions and 
+
+## Set up in VIM in WSL
+
+Installing in VIM is [pretty easy using either vundle or pathogen](https://wakatime.com/vim):
+![Install for VIM](/static/img/waka-2-20-2020/installforvim.png)
+One gotcha to be aware of.. if you already installed the VSCode plugin in your WSL2 instance, the VIM plugin will pick up the existing key so you won't be prompted for it like it says in the instruction.  If in any doubt that the extension is installed, use the :WakaTimeToday command and, if everything is good, you should see:
+
+
+
+
+![Dashboard](/static/img/waka-2-20-2020/dashboard.png)
