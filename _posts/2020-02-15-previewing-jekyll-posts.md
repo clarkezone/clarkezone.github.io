@@ -12,4 +12,8 @@ This github pages blog is powered by [Jekyll](https://jekyllrb.com), a static si
 2. Preview any branch.  I use git branches to author new posts and I'm often writing a number of posts at once
 3. Preview can run in the cloud so I can view it from any device including the iPad
 
-To meet the above requirements I was looking for a docker image for simplicity of deployment capable of running the Jekyll and updating the static content as I push updates into git from my markdown editor.  The solution turned out to be part off the shelf and part bespoke.  For preview there is an [existing docker image of jekyll on docker hub](https://hub.docker.com/r/jekyll/jekyll) which
+To meet the above requirements I was looking for a docker image for simplicity of deployment capable of running the Jekyll and updating the static content as I push updates into git from my markdown editor.  The solution turned out to be part off the shelf and part bespoke.  For preview there is an [existing docker image of jekyll on docker hub](https://hub.docker.com/r/jekyll/jekyll) 
+
+![jekyll image](/static/img/2020-02-15-jekyllpreview/jekylljekyll.png)
+
+which does most of the business for us out of the box including monitoring a folder for changes.  The one missing part is doing the initial clone the relavent github repo and then waiting for webhook updates to pull the relavent branch.  This part required a bit of code.
