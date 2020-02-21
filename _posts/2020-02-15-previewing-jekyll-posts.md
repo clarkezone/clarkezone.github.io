@@ -56,7 +56,7 @@ I opted for using os.exec to interact with git rather than a git library.  The c
 
 ### WebHook configuration
 
-In order to get the webhook triggers, we need to configure webooks on the repo:
+In order to get the webhook triggers, we need to configure webooks on the repo pointing to the server where we'll be deploying the docker image to targeting port 8080 where our webhook listener will be listening.
 
 ![jekyll image](/static/img/2020-02-15-jekyllpreview/webhookconfig.png)
 
@@ -85,7 +85,7 @@ CMD ["sh", "-c", "/app/JekyllBlogPreview"]
 
 ### Docker Compose
 
-This image is [available on docker hub](https://hub.docker.com/repository/docker/clarkezone/jekpreview).  To use it, this simple docker compose file is all you need with blog repo url and the secrect for the webhook
+For simplicity, I've published the image and made [available on docker hub](https://hub.docker.com/repository/docker/clarkezone/jekpreview).  To use it, this simple docker compose file is all you need with blog repo url and the secrect for the webhook.  Make sure that when you configure the webhook, you point it at the server on which you deploy the image.
 
 ```docker-compose
 version: "3.7"
@@ -93,9 +93,13 @@ services:
         grpcservice:
                 image: clarkezone/jekpreview:latest
                 ports:
-                        - "8080:8080"
-                        - "4000:4000"
+                        - "8080:8080"  #wehhook targets this port
+                        - "80:4000" #preview is hosted on port 80
                 environment:
-                        - JEKPREV_REPO=https://github.com/clarkezone/clarkezone.github.io.git
-                        - JEKPREV_SECRET=ONETWOTHREE
+                        - JEKPREV_REPO=<URL to git repo containing blog>
+                        - JEKPREV_SECRET=<Secret you configured on your web hook>
 ```
+
+That's it.  Preview a go-go.
+
+TODO image of preview
