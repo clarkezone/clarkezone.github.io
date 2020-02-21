@@ -12,7 +12,7 @@ Three years ago I started dabbling with GoLang for server-side code and experien
 
 With my ballooning polyglotness on the rise I've found myself working on a much more diverse range of projects both open and closed source and, being a nerd, I began wondering where my time was going.
 
-## Twitter poll
+### Twitter poll
 
 Doing some quick internet searchs lead me to [Wakatime](https://wakatime.com/). Played around a bit and seemed to do the trick and had plugins for each editor I cared about.  There didn't appear to be a more popular option based on a quick twitter poll
 
@@ -20,7 +20,7 @@ Doing some quick internet searchs lead me to [Wakatime](https://wakatime.com/). 
 
 hence I went with it.  After a couple of weeks I was hooked and ended up getting a pro subscription.  Haven't looked back.
 
-## Set up in VS Code
+### Set up in VS Code
 
 You can grab the extension from the VS Code extension store and get up and running pretty quickly.  If you are running WSL2 (which I highly recommend) make sure you install wakatime on Linux as well as on the host.. luckily VS Code prompts you to install in your linux distro so it's pretty quick and seemless.
 
@@ -34,11 +34,11 @@ and you are off to the races.  Easy to get previews of your coding time in the I
 
 ![Coding time in VS code](/static/img/waka-2-20-2020/codingtime.png)
 
-## Set up in VS
+### Set up in VS
 
 Visual Studio also has a plugin.. you can grab that by going to the extensions store.  There are also plugins for most other popular IDE's on Windows, Linux, Mac.
 
-## Set up in VIM in WSL
+### Set up in VIM in WSL
 
 Installing in VIM is [pretty easy using either vundle or pathogen](https://wakatime.com/vim):
 ![Install for VIM](/static/img/waka-2-20-2020/installforvim.png)
@@ -52,7 +52,7 @@ and, if everything is good, you should see:
 
 ![Install for VIM](/static/img/waka-2-20-2020/timetodayvim.png)
 
-## Dashbaord
+### Dashbaord
 
 Having installed Wakatime in each editor you use, you then start harvesting stats
 
