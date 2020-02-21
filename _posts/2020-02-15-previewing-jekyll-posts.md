@@ -102,7 +102,7 @@ services:
 
 That's it.  Preview a go-go.
 
-![jekyll image](/static/img/2020-02-15-jekyllpreview/preview.jpg)
+![jekyll image](/static/img/2020-02-15-jekyllpreview/preview.jpeg)
 
 ![jekyll image](/static/img/2020-02-15-jekyllpreview/webhookfire.png)
 
