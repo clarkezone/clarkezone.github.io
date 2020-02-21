@@ -18,27 +18,25 @@ Doing some quick internet searchs lead me to [Wakatime](https://wakatime.com/). 
 
 [![time tracking tweet](/static/img/waka-2-20-2020/timetrackingtweet.png)](https://twitter.com/Clarkezone/status/1214965724436762624)
 
-Hence I went with it.  After a couple of weeks I was hooked and ended up getting a pro subscription.  Haven't looked back.
+hence I went with it.  After a couple of weeks I was hooked and ended up getting a pro subscription.  Haven't looked back.
 
 ## Set up in VS Code
 
-You can grab the extension from the VS Code extension store and get up and running pretty quickly.  If you are running WSL2 (which I highly recommend) make sure you install wakatime on Linux as well as on the host.. you can see that
+You can grab the extension from the VS Code extension store and get up and running pretty quickly.  If you are running WSL2 (which I highly recommend) make sure you install wakatime on Linux as well as on the host.. luckily VS Code prompts you to install in your linux distro so it's pretty quick and seemless.
 
 ![intsalled local not on WSL2](/static/img/waka-2-20-2020/wakatime-not.png)
 
-![Installed in WSL1](/static/img/waka-2-20-2020/wakatimeboth.png)
-
-Enter your key
+Enter your key from the website when prompted
 
 ![Enter key](/static/img/waka-2-20-2020/Wakatimekey.png)
 
-Get previews of your coding time
+and you are off to the races.  Easy to get previews of your coding time in the IDE
 
 ![Coding time in VS code](/static/img/waka-2-20-2020/codingtime.png)
 
 ## Set up in VS
 
-Visual Studio also has a plugin.. you can grab that by going to extensions and
+Visual Studio also has a plugin.. you can grab that by going to the extensions store.  There are also plugins for most other popular IDE's on Windows, Linux, Mac.
 
 ## Set up in VIM in WSL
 
@@ -59,3 +57,5 @@ and, if everything is good, you should see:
 Having installed Wakatime in each editor you use, you then start harvesting stats
 
 ![Dashboard](/static/img/waka-2-20-2020/dashboard.png)
+
+and can keep track of which languages and projects are taking up your time.  Only quesiton now is how long it will take Github to buy Wakatime :-)
