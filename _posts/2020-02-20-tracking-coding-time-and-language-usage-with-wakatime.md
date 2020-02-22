@@ -54,8 +54,10 @@ and, if everything is good, you should see:
 
 ### Dashbaord
 
-Having installed Wakatime in each editor you use, you then start harvesting stats
+Having installed Wakatime in each editor you use, you then start harvesting stats:
 
 ![Dashboard](/static/img/waka-2-20-2020/dashboard.png)
 
-and can keep track of which languages and projects are taking up your time.  Only quesiton now is how long it will take Github to buy Wakatime :-)
+It's easy to keep track of which languages and projects are taking up your time.  There are more advanced use cases which I haven't looked into (yet) such as being able to overlay your WakaTime stats on your repo's commit history to see how long you coded a particular commit which I definitely plan on checking out at some point.
+
+Only remaining quesiton I have now is how long it will take Github to buy the company and fold into the pro subscription.
