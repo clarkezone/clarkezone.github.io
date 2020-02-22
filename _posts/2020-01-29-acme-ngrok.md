@@ -10,7 +10,7 @@ I've been playing with gRPC and microservice recently (more on that later). One 
 
 {% gist 0000a9057bd973000057e31f1085ccfc main.go %}
 
-Pretty easy right?  But there's one slight problem.. how do we test this locally on our dev box?  In order for autocert to work and get me a certificate for my site from the Let's Encrypt service, you need a domain name, an ip address isn't enough.  That's simply how SSL works.  And with a domain name in play, we need a way to have traffic routed to our dev machine for https requests for that domain.  And for the magic needed for autocert to get a certificate to enable SSL traffic, we also need a secondary tunnel for the let's encrypt certificate acquisition machinery.
+Pretty easy right?  But there's one slight problem.. how do we test this locally on our dev box?  In order for autocert to work and get us a certificate for our site from the Let's Encrypt service, we need a domain name, an ip address isn't enough.  That's simply how SSL works.  With a domain name in play, we need a way to have traffic routed to our dev machine for https requests for that domain.  For the magic needed for autocert to get a certificate to enable SSL traffic, we also need a secondary tunnel for the let's encrypt certificate acquisition machinery.
 
 My favored solution to this problem is [nGrok](https://ngrok.com) from [Alan Shreve](https://twitter.com/inconshreveable).  Can't say enough good things about nGrok, have been a pro subscriber for a number of years at this point and have been super happy with the product and service.  nGrok allows you to simply set up a tunnel that maps a remote ip address, subdomain or full on domain name to a local ip address and port on your dev box.  Setting up a trivial tunnel would look something like:
 
@@ -18,7 +18,7 @@ My favored solution to this problem is [nGrok](https://ngrok.com) from [Alan Shr
 ngrok http 3000 -subdomain myapp
 ```
 
-which would result in any requests to myapp.ngrok.io being routed to port 3000 on my dev box.  That is the simple case, getting ngrok configured to not only route SSL traffic but also allow certificate retreval needed by let's encrypt requires multiple concurrent tunnels.  I'm not going to go into much depth on why this is or how it works (you can read about that [here:https://letsencrypt.org/how-it-works/](https://letsencrypt.org/how-it-works/)) but I am going to present my solution as I wasn't able to find an explanation of this elsewhere.
+which would result in any requests to myapp.ngrok.io being routed to port 3000 on your dev box.  That is the simple case, getting ngrok configured to not only route SSL traffic but also allow certificate retreval needed by let's encrypt requires multiple concurrent tunnels.  I'm not going to go into much depth on why this is or how it works (you can read about that [here: https://letsencrypt.org/how-it-works/](https://letsencrypt.org/how-it-works/)) but I am going to present my solution as I wasn't able to find an explanation of this elsewhere.
 
 {% gist 0000a9057bd973000057e31f1085ccfc ngrokconfig.yaml %}
 
@@ -36,4 +36,4 @@ So with the above ngrokconfig file, all we need is to start nGrok using that:
 
 and we're off to the races.  If you want to try the above, you'll need to replace example.com with an actual domain you own in the Go code, configure that domain in the nGrok portal and update the config file with your matching values.
 
-I was able to get all of that running inside of an Ubuntu session in WSL2 no problem and successfully hit the server over SSL running over an LTE connection on my ARM-based Surface Pro X.
+I was able to get all of that running inside of an Ubuntu session running in WSL2 no problem and successfully hit the server over SSL running over an LTE connection on my ARM-based Surface Pro X.
