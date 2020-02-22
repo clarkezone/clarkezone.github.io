@@ -36,4 +36,4 @@ So with the above ngrokconfig file, all we need is to start nGrok using that:
 
 and we're off to the races.  If you want to try the above, you'll need to replace example.com with an actual domain you own in the Go code, configure that domain in the nGrok portal and update the config file with your matching values.
 
-I was able to get all of that running inside of an Ubuntu session running in WSL2 no problem and successfully hit the server over SSL running over an LTE connection on my ARM-based Surface Pro X.
+I was able to get all of that running inside of an Ubuntu session in WSL2 no problem and successfully hit the server over SSL running over an LTE connection on my ARM-based Surface Pro X.
