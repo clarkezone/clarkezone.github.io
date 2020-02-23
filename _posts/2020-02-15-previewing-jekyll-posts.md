@@ -116,7 +116,6 @@ and jekyll will regenerate the site.
 
 ![jekyll image](/static/img/2020-02-15-jekyllpreview/preview.jpeg)
 
-
 ### Future
 Although this simple solution is functional and working, there are a couple of limitations which I plan on addressing in future revisions:
 
