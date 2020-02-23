@@ -9,20 +9,16 @@ I'm a massive fan of the work the team's been doing on [WSL and the new Windows 
 
 At Ignite 2019, [Paul](https://twitter.com/pag3rd) and I were [doing a talk about the future of WIndows App development](https://myignite.techcommunity.microsoft.com/sessions/81330?source=sessions) and one of our speaking points related to XAML Islands in Win32 and how the Windows terminal was using them to enabled tabbed content.  We wanted to do a demo of this in our session and show how one of the features available in the box (drag and drop reordering) was available "for free".  Turns out that draggable tabs in the terminal was not a thing.  Queue sad trombone.  I didn't get a chance to look into why this was prior to giving the talk but afterward I had a bit of downtime between slots manning the WinUI booth and decided to take a crack at solving this.  Turns out it was suprisingly easy, largely thanks to said built in support in the XAML control!
 
-Got a demo up and running which I tweeted
+Got a demo up and running and sent a video of this to [https://twitter.com/cinnamon_msft?lang=en](Kayla)  
 
-<iframe width="560" height="315" src="https://www.pscp.tv/Clarkezone/1ypJdBXBEWYKW" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![tweet](/static/img/2019-11-23-dragabletabs/tweet.jpeg)](https://www.pscp.tv/Clarkezone/1ypJdBXBEWYKW)
 
-https://www.pscp.tv/Clarkezone/1ypJdBXBEWYKW
-
-![tweet](/static/img/2019-11-23-dragabletabs/tweet.jpeg)
-
-[demo](https://twitter.com/Clarkezone/status/1192524919835283456)
-
-and [which i duly did](https://github.com/microsoft/terminal/pull/3478)
+who encouraged me to get a PR in [which i duly did](https://github.com/microsoft/terminal/pull/3478)
 
 And voila.
 
 ![tabreordering](/static/img/2019-11-23-dragabletabs/terminal-tab-reordering.gif)
 
-Was great to get this into the [https://devblogs.microsoft.com/commandline/windows-terminal-preview-v0-7-release/](Windows Terminal 0.7 release).  I already know the next feature I'm adding :-)
+The power of opensource!
+
+Was great to get this into the [https://devblogs.microsoft.com/commandline/windows-terminal-preview-v0-7-release](Windows Terminal 0.7 release).  I already know the next feature I'm adding :-)
