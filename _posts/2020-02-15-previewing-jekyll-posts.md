@@ -14,7 +14,7 @@ This github pages blog is powered by [Jekyll](https://jekyllrb.com), a static si
 
 ### Jekyll
 
-To meet the above requirements I was looking for a docker image for simplicity of deployment capable of running the Jekyll and updating the static content as I push updates into git from my markdown editor.  The solution turned out to be part off the shelf and part bespoke.  For preview there is an [existing docker image of jekyll on docker hub](https://hub.docker.com/r/jekyll/jekyll) 
+To meet the above requirements I was looking for a docker image for simplicity of deployment capable of running the Jekyll and updating the static content as I push updates into git from my markdown editor.  The solution turned out to be part off-the-shelf and part bespoke.  For Jekyll preview there is an [existing docker image of jekyll on docker hub](https://hub.docker.com/r/jekyll/jekyll) 
 
 ![jekyll image](/static/img/2020-02-15-jekyllpreview/jekylljekyll.png)
 
@@ -22,7 +22,7 @@ which does most of the business for us out of the box including monitoring a fol
 
 ### WebHook
 
-The one missing part is doing the initial clone the relavent github repo and then waiting for webhook updates to pull the relavent branch.  This part required a bit of code.  I found a great library called hookserve that makes it easy to build a webhook in Go: [github.com/phayes/hookserve/hookserve](github.com/phayes/hookserve/hookserve).  It's then trivial to listen for changes and grab them:
+The one missing part is doing the initial clone the relavent github repo and then waiting for webhook updates to pull the relavent branch in response to changes being pushed to the branch.  This part required a bit of code.  I found a great library called hookserve that makes it easy to build a webhook in Go: [github.com/phayes/hookserve/hookserve](github.com/phayes/hookserve/hookserve).  It's then trivial to listen for changes and grab them:
 
 ```go
     for event := range server.Events {
@@ -85,7 +85,7 @@ CMD ["sh", "-c", "/app/JekyllBlogPreview"]
 
 ### Docker Compose
 
-For simplicity, I've published the image and made [available on docker hub](https://hub.docker.com/repository/docker/clarkezone/jekpreview).  To use it, this simple docker compose file is all you need with blog repo url and the secrect for the webhook.  Make sure that when you configure the webhook, you point it at the server on which you deploy the image.
+For simplicity, I've published the image and made [available on docker hub](https://hub.docker.com/repository/docker/clarkezone/jekpreview).  To use it, this simple docker compose file is all you need with blog repo url and the secret for the webhook.  Make sure that when you configure the webhook, you point it at the server on which you deploy the image.
 
 ```docker-compose
 version: "3.7"
