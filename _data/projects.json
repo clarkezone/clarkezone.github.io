@@ -5,13 +5,9 @@
 		"image": "placeholder.jpg",
 		"url": "https://www.google.com",
 		"date": "Jan 2017",
-		"tags": ["C++","UWP"]
-	},
-	{
-		"name": "Cool project 2",
-		"image": "placeholder.jpg",
-		"url": "#",
-		"date": "May 2014",
-		"tags": ["C#"]
+		"tags": [
+			"C++",
+			"UWP"
+		]
 	}
 ]
