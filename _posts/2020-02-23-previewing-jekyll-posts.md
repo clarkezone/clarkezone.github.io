@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Previewing Jekyll blog posts"
-date: 2020-02-15 17:06:57 -0800
+date: 2020-02-23 08:06:57 -0800
 categories: [blogging]
 tags: [jekyll,golang]
 ---
