@@ -98,7 +98,7 @@ For simplicity of deployment, I've published the image [on docker hub](https://h
 version: "3.7"
 services:
         grpcservice:
-                image: clarkezone/jekpreview:latest
+                image: clarkezone/jekpreview:release-0.0.3
                 ports:
                         - "8080:8080"  #wehhook targets this port
                         - "80:4000" #preview is hosted on port 80
