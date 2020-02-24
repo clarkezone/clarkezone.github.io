@@ -2,8 +2,8 @@
 	{
 		"slug": "Audio Visualizer",
 		"name": "UWP Audio Visualizer",
-		"image": "placeholder.jpg",
-		"url": "https://www.google.com",
+		"image": "https://github.com/clarkezone/audiovisualizer/raw/master/readme_images/spectrum.gif",
+		"url": "https://github.com/clarkezone/audiovisualizer",
 		"date": "Jan 2017",
 		"tags": [
 			"C++",
