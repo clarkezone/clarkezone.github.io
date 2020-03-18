@@ -10,7 +10,7 @@ Since 2014 my interest has been progressively broadening to encompass the "gang 
 
 My day job for the last 10 years or so has involved working at Microsoft on the Windows UI Platform team on the Windows Compositor and this has enabled me to keep my hand in on C# for API tests and sample writing.
 
-nnnndddddsssssssssssssssssssssssssssssssssssssiiiiiiiiiiiiiI personally use a wide variety of platforms including iOS, MacOS, Linux and Android running on Surface, Mac, iPad Pro, Pixel, Google Home, Apple TV, Google Home Hub, Apple Watch, Android Wear, iPhone and XBOX.  As much as possible to try and keep and open mind and stay away from being religious about tech and form opinions based on long term usage and inquisitiveness.  Expect to see topics related to all of the above here!
+nnnndddddsssssssssssssssssssssssssssssssssssssiiiiiiiiiiiiijjjjjjjjjjjjjjI personally use a wide variety of platforms including iOS, MacOS, Linux and Android running on Surface, Mac, iPad Pro, Pixel, Google Home, Apple TV, Google Home Hub, Apple Watch, Android Wear, iPhone and XBOX.  As much as possible to try and keep and open mind and stay away from being religious about tech and form opinions based on long term usage and inquisitiveness.  Expect to see topics related to all of the above here!
 
 Finally, this blog is in no way connected with my employer and reflects solely my own opinions and not those of my employer.
 
