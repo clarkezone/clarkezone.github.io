@@ -12,6 +12,6 @@ My day job for the last 10 years or so has involved working at Microsoft on the 
 
 I personally use a wide variety of platforms including iOS, MacOS, Linux and Android running on Surface, Mac, iPad Pro, Pixel, Google Home, Apple TV, Google Home Hub, Apple Watch, Android Wear, iPhone and XBOX.  As much as possible to try and keep and open mind and stay away from being religious about tech and form opinions based on long term usage and inquisitiveness.  Expect to see topics related to all of the above here!
 
-Finally, this blog is in no way connected with my employer and reflects solely my own opinions and not those of my employer.
+Finally, this blog is in no way connected with my Microsoft and reflects solely my own opinions and not those of my employer.
 
 For more visit my primary website here: [https://clarkezone.io](https://clarkezone.io)
