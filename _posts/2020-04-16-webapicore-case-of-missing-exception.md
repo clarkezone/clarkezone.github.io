@@ -6,7 +6,7 @@ categories: [REST]
 tags: [ASP.NET Core]
 ---
 
-I've recently been spending a lot of time getting back into the groove with distributed computing.  As part of that I'm been kicking the tires of .NET Core for the first time (and loving it so far, but that's another story).  A couple of weeks ago, came across a classic problem which I'm sure all backend web developers have come across all too often: a mysterious 400 Bad Request.
+I've recently been spending a lot of time getting back into the groove with distributed computing after a decade or so of absense.  As part of that I'm been kicking the tires of .NET Core for the first time (and loving it so far, but that's another story).  A couple of weeks ago, came across a classic problem which all backend web developers have come across all too often: a mysterious 400 Bad Request.
 
 I had created and deployed a simple REST API using a WebAPI endpoint backed by EFCore and a SQL database. Classic hello world scenario.  I was deploying to Azure Linux App Service using modern shiny containers and then hitting it with a simple golang client to call the API.  Extremely simple stuff.  All of the GET calls were working great but when it came time to test a create operation via a POST I started seeing a 400 Bad Request from WebAPI:
 
@@ -24,7 +24,7 @@ which were super helpful and got me up and running with the client library confi
 
 ![adding](/static/img/2020-5-6-case-of-failing-post/addtelemetry.png)
 
-![telemtry](/static/img/2020-5-6-case-of-failing-post/telemetrythingsadded.png)
+![telemtry](/static/img/2020-5-6-case-of-failing-post/configured.png)
 
 Let's check this is running by deliberately throwing an exception in our view controller:
 
@@ -47,6 +47,8 @@ Furthermore, there is a really nice feature called live metrics which even shows
 I was certainly emblodened by this new found sense of data infused power.  But I did stop short of investigating snapshot debugging which will have to wait for a later foray.
 
 As I dug deeper, it was clear that although the telemetry did show my failing request as a 400 error, becuase the framework was catching the error I was no closer to understanding the problem.
+
+![telemtry](/static/img/2020-5-6-case-of-failing-post/400error.png)
 
 I started off by looking for hooks in the API Controller to try and catch the exceptions and find the cause of the problem.  I came across a `UseExceptionHandler` property on the `IApplicationBuilder` object which, in retrospect, seems more about how to handle and report the error but still seemed like it might help me route-cause the problem:
 
