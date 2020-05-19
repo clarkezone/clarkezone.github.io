@@ -85,4 +85,31 @@ and turn on thown CLR Runtime exceptions.  That immediately yeilded the exceptio
 
 `System.FormatException: THe JSON value is not in a supported Guid format'`
 
-Drilling in further, turned out I'd missed a parameter in my JSON package and actually I was passing NULL.  Doh; well that certainly won't deserialize into a GUID.  But this did cause me to scratch my head and wonder why the heck I don't just get with the program and code generate my API contract like the cool SOAP kids were doing 20 years ago.  An email to Tim Heuer later and I'm now hooked up with swashbuckle and ready to navigate the novel world of Swagger.  Something for a future post.
+Drilling in further, turned out I'd missed a parameter in my JSON package and actually I was passing NULL.  Doh; well that certainly won't deserialize into a GUID.
+
+## Enlightenment
+
+In the course of getting this post proof-read by the most awesome Mark Osborn, a solution to the problem has come to light.  Turns out you can hook model validation errors and log them if desired.  The was a funny co-incidence here in that Mark had faced a similar issue that I was facing and had done a better job at tracking down a workable solution.  Credit for what follows goes entirely to him!
+
+Turns out that there is a property on the base `Controller` object called `ModelSate` and you can query it to see if it is valid.  I chose to do this by overriding `OnActionExecuted`; from there it's pretty trivial to extract which key is invalid.
+
+This is what I ended up doing, logging the result to my Application Insights instance:
+
+```cs
+    public override void OnActionExecuted(ActionExecutedContext context)
+    {
+        if (!base.ModelState.IsValid)
+        {
+            var problemDetails = base.ProblemDetailsFactory.CreateValidationProblemDetails(base.HttpContext, base.ModelState);
+
+            string errors = string.Join(";", problemDetails.Errors.Select(x => "key:" + x.Key + " error:" + x.Value[0]));
+
+            _logger.LogWarning("Client API call failed with invalid model state: key {0} with problem ", errors);
+        }
+        base.OnActionExecuted(context);
+    }
+```
+
+## Can we generate that?
+
+At a high level, this incident did cause me to scratch my head and wonder why the heck I don't just get with the program and code generate my API contract like the cool SOAP kids were doing 20 years ago.  An email to Tim Heuer later and I'm now hooked up with swashbuckle and ready to investigate the novel world of Swagger.  Something for a future post.
