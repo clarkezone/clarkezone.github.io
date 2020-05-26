@@ -46,7 +46,7 @@ Furthermore, there is a really nice feature called live metrics which even shows
 
 ![realtimedetections](/static/img/2020-5-6-case-of-failing-post/lookmatheresmyexception.png)
 
-I was certainly emblodened by this new found sense of data infused power but did stop short of investigating snapshot debugging which will have to wait for a later foray.
+I was certainly emboldened by this new found sense of data infused power but did stop short of investigating snapshot debugging which will have to wait for a later foray.
 
 As I dug deeper, it was clear that although the telemetry did show my failing request as a 400 error, becuase the .NET framework layer was catching the exception and mapping to bad request I was no closer to understanding the problem.
 
