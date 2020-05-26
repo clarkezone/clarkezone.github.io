@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "ASP.NET Core 3.1 WebAPI: The case of the failing POST request"
-date: 2020-04-15 08:51:02 -0800
+date: 2020-05-25 08:51:02 -0800
 categories: [REST]
-tags: [ASP.NET Core]
+tags: [ASP.NET Core, Azure Telemetry]
 ---
 
 I've recently been spending time getting back into the groove with distributed computing after a decade or so of absense.  As part of that I've been kicking the tires of .NET Core for the first time (and loving it so far, but that's another story).  A couple of weeks ago, I came across a classic problem which all backend web developers have encountered all too often: a mysterious 400 Bad Request error originating from a REST request.
@@ -22,11 +22,11 @@ Time to dig in.  The first step was to look at my Azure telemetry to see if I co
 
 Having found that article, was pretty quick to get up and running with the .NET client library and a telemetry endpoint set up in Azure by simply picking Add Application Insights from the project menu in VS:
 
-![adding](/static/img/2020-5-6-case-of-failing-post/addtelemetry.png)
+![adding](/static/img/2020-05-25-case-of-failing-post/addtelemetry.png)
 
 resulting in a configured environment:
 
-![telemtry](/static/img/2020-5-6-case-of-failing-post/configured.png)
+![telemtry](/static/img/2020-05-25-case-of-failing-post/configured.png)
 
 By default the telemetry system is set up to collect bad requests and unhandled exceptions.  Let's quickly check this by deliberately throwing an exception in our view controller:
 
@@ -40,17 +40,17 @@ By default the telemetry system is set up to collect bad requests and unhandled 
 
 Low and behold the exception shows up in the Application Insights blade under the failures tab in the portal:
 
-![telemtry](/static/img/2020-5-6-case-of-failing-post/exceptiondetails.png)
+![telemtry](/static/img/2020-05-25-case-of-failing-post/exceptiondetails.png)
 
 Furthermore, there is a really nice feature called live metrics which even shows events happening in realtime including good / bad request and, yes, exceptions!  Look, ma there it is.
 
-![realtimedetections](/static/img/2020-5-6-case-of-failing-post/lookmatheresmyexception.png)
+![realtimedetections](/static/img/2020-05-25-case-of-failing-post/lookmatheresmyexception.png)
 
 I was certainly emboldened by this new found sense of data infused power but did stop short of investigating snapshot debugging which will have to wait for a later foray.
 
 As I dug deeper, it was clear that although the telemetry did show my failing request as a 400 error, becuase the .NET framework layer was catching the exception and mapping to bad request I was no closer to understanding the problem.
 
-![telemtry](/static/img/2020-5-6-case-of-failing-post/400error.png)
+![telemtry](/static/img/2020-05-25-case-of-failing-post/400error.png)
 
 To dig in further, I started a hunt for aditional places to tap in to the ASP.NET pipeline first of which  was the `UseExceptionHandler` property on the `IApplicationBuilder` object.   Quick test showed no dice:
 
@@ -79,7 +79,7 @@ So now, ASP.NET the gloves come off.
 
 This is the moment, pre-opensource of .NET, that nasty words would have start to have flown liberaly.  Luckily, these days we can simply check a box.
 
-![jekyll image](/static/img/2020-5-6-case-of-failing-post/enablesourcestepping.png)
+![jekyll image](/static/img/2020-05-25-case-of-failing-post/enablesourcestepping.png)
 
 and turn on thown CLR Runtime exceptions.  That immediately yeilded the exception that was being thrown inside of System.Text.Json, specifically:
 
