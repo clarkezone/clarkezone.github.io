@@ -2,7 +2,7 @@
 layout: post
 title:  "ASP.NET Core 3.1 WebAPI: The case of the failing POST request"
 date: 2020-05-25 08:51:02 -0800
-categories: [REST]
+categories: [RPC]
 tags: [ASP.NET Core, Azure Telemetry]
 ---
 
