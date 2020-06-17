@@ -2,7 +2,7 @@
 layout: post
 title:  "Animated vector graphics in C++ using Windows::UI::Composition"
 date: 2019-05-05 11:00:45 -0800
-categories: [blogging, WUC]
+categories: [wincomp,uwp]
 tags: [animation]
 ---
 
