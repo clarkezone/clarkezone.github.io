@@ -6,14 +6,17 @@ categories: [coding]
 tags: [ASP.NET Core, Azure Telemetry]
 ---
 
-I’m writing this post on the last day of 2022.  So first off, thanks for staying subscribed and a very happy holidays and Happy New Year to you all!
+I’m writing this post on my phine on the last night of 2022 backstage at Seatle Symphony about to sing in the new year with Beethoven 9th symphony.  So first off, thanks for staying subscribed and a very happy holidays and Happy New Year to all of you!
 
-Turns out I haven’t posted here in over two and a half years, which I’m not super happy with.  There are various reasons which I’ll get into in subsequent updates, but wanted to ease back into things with a quick end of year wrap up.  Despite this lack of blogging activity and a reduction in social media engagement in general, I have actually been doing a lot of learning and coding so I thought I’d dust this thing off and start by taking a look back at my coding activity for the last year using a tool I’ve been using called Wakatime.
+Turns out I haven’t posted here in over two and a half years.  There are various reasons which I’ll get into in subsequent updates, but wanted to ease back into things with a quick end of year wrap up as 'tis the season for that such things.  Despite a lack of blogging activity and a reduction in social media engagement, I have actually been learning and coding so I thought I’d dust this thing off by taking a look back at my coding activity for 2022.
 
 ## Wakatime
 
-Wakatime integrates with most popular editors and IDEs and tracks coding activity on a fairly granular basis.
+I use Wakatime to track my coding activity; I like it because it integrates with most popular editors I use and tracks activity on a fairly granular basis so I can get a breakdown of editors, languages projects etc.
 
 ![adding](/static/img/2020-05-25-case-of-failing-post/addtelemetry.png)
+
+
+
 
 
