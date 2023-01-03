@@ -14,6 +14,8 @@ For various reasons, I haven’t posted on this blog in over two and a half year
 <br clear="left">
 ## Wakatime
 
+How much codibg did you do this yesr?  Do you know what yiu eorjed on?  Did you have anybparticular goals you were aining for?  Did you neet them?
+
 Part of why I thought I'd start here is because on New Year's we get all of those "here's your stats from the last year emails and I happened to get one of those from Wakatime. I use Wakatime to track my coding activity; I like it because it integrates with most popular editors I use and tracks activity on a fairly granular basis so I can get a breakdown of editors, languages projects etc.
 
 ![Summary](/static/img/2022-12-31-coding-stats/summary.png)
