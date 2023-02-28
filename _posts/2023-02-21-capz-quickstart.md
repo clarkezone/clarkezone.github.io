@@ -26,27 +26,62 @@ Prerequisizes
 - Tilt: https://docs.tilt.dev/install.html
 - kind
 
-### Get tiltsettings.json going:
-1. Login via az CLI:
-`az login`
-2. Get subscription details:
-`az account --output=table`
+### Clone the CAPZ repo
+1. `git clone https://github.com/kubernetes-sigs/cluster-api-provider-azure.git`
 
+### Get tiltsettings.json going:
+1. Create placeholder file named `tilt=settings.json` in the root of the repository as follows:
+
+```json
+{
+  "kustomize_substitutions": {
+    "AZURE_SUBSCRIPTION_ID": "00000000-0000-0000-0000-000000000000",
+    "AZURE_TENANT_ID": "00000000-0000-0000-0000-000000000000",
+    "AZURE_CLIENT_SECRET": "AaA1A~1AaA1111AAAaaaaaAaaaaaa-A1A1aaaaAa",
+    "AZURE_CLIENT_ID": "00000000-0000-0000-0000-000000000000",
+    "AZURE_ENVIRONMENT": "AzurePublicCloud",
+    "AZURE_SSH_PUBLIC_KEY_B64": ""
+  },
+  "worker-templates": {
+    "flavors": {
+      "default": {
+        "WORKER_MACHINE_COUNT": "1",
+        "KUBERNETES_VERSION": "v1.23.6",
+        "AZURE_LOCATION": "westus2",
+        "AZURE_NODE_MACHINE_TYPE": "Standard_D2s_v3",
+        "CONTROL_PLANE_MACHINE_COUNT": "1"
+      }
+    },
+    "metadata": {}
+  }
+}
+```
+
+2. Login via Azure CLI:
+`az login`
+
+
+3. Get subscription details:
+`az account show --output=table`
+
+4. Grab account and foo:
+Get first 3 details from sub
+
+4. 
 Create service principal and grab details
 
-Get first 3 details from sub
 
 Get SP details
 
-2. Run tilt
+### Run tilt
 `make help`
 `make kind-create`
 `make generate-flavors`
 `make tilt-up`
 
-3. Deploy vanilla AKS cluster
+### Deploy vanilla AKS cluster to your supscription
 
-4. Delete vanilla AKS cluster
+### Delete vanilla AKS cluster
 
 5. Create a new receipe
 
@@ -54,6 +89,12 @@ Get SP details
 
 9. Tear down 
 `make kind-reset`
+
+Deploy a cluster without tilt
+
+Delete a cluster without tilt
+
+Next how to install CAPZ into a homeland cluster
 
 
 
