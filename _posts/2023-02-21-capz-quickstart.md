@@ -30,7 +30,7 @@ Prerequisizes
 1. `git clone https://github.com/kubernetes-sigs/cluster-api-provider-azure.git`
 
 ### Get tiltsettings.json going:
-1. Create placeholder file named `tilt=settings.json` in the root of the repository as follows:
+1. Create placeholder file named `tilt-settings.json` in the root of the repository as follows:
 
 ```json
 {
@@ -57,6 +57,9 @@ Prerequisizes
 }
 ```
 
+For convenience you can grab the above with curl -LO 
+
+### Populate subscription and service principal details
 2. Login via Azure CLI:
 `az login`
 
@@ -74,9 +77,15 @@ Create service principal and grab details
 Get SP details
 
 ### Run tilt
-`make help`
+The makefile has a handy dandy help command which you can get via `make help` to help get oriented.
+
+1. Create a kind cluster
 `make kind-create`
+
+2. Generate the machine templates
 `make generate-flavors`
+
+3. Start tilt to enable GUI for creating clusters
 `make tilt-up`
 
 ### Deploy vanilla AKS cluster to your supscription
