@@ -64,17 +64,24 @@ For convenience you can grab the above with curl -LO
 `az login`
 
 
-3. Get subscription details:
-`az account show --output=table`
+3. Get subscription id and tenant id using az cli:
 
-4. Grab account and foo:
-Get first 3 details from sub
+```bash
+# subscription id
+az account show --query id --outpt tsv
 
-4. 
-Create service principal and grab details
+# tenant id
+az account show --query homeTenantId --output tsv
+```
 
+4. Create service principal passing in subscription id from above:
+`az ad sp create-for-rbac --role contributor --scopes="/subscriptions/<REPLACE-WITH-SUBSCRIPTION-ID-FIELD>"`
 
-Get SP details
+5. Update the tilt-settings.json updating
+  - AZURE_SUBSCRIPTION_ID with subscription id
+  - AZURE_TENANT_ID with tenant id
+  - AZURE_CLIENT_SECRET with password from create-for-rbac
+  - AZURE_CLIENT_ID with appId from create-for-rbac
 
 ### Run tilt
 The makefile has a handy dandy help command which you can get via `make help` to help get oriented.
@@ -89,10 +96,24 @@ The makefile has a handy dandy help command which you can get via `make help` to
 `make tilt-up`
 
 ### Deploy vanilla AKS cluster to your supscription
+1. Open a browser and navigate to the tilt web server that you just started above:
+
+2. Click on the AKS-TODO item
+
+3. wait for deploy
+
+4. confirm in subscription
+
+5. take a look at the cluster resource you created in you capz control cluster
+
 
 ### Delete vanilla AKS cluster
+Tilt is just a web front end manipulating resources in the capz control cluster running in kind.  Even though we created the cluster from the GUI, we are going to delete the cluster by manipulating objects in the control cluster.
 
-5. Create a new receipe
+1. `kubectl delete cluster`
+
+## Create a new receipe
+Now that we've created a cluster based on the default template, let's create a new template that alters the recepie of the AKS cluster.
 
 6. Deploy that
 
