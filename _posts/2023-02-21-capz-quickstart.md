@@ -2,14 +2,14 @@
 layout: post
 title:  "Kubernetes Cluster API for Azure quick start"
 date: 2023-02-21 08:51:02 -0800
-categories: [kubernetes]
-tags: [CAPI, CAPZ]
+categories: [kubernetes, AzureKubernetesService, ClusterAPI]
+tags: [CAPI, CAPZ, AKS]
 ---
-Audience for this post: kubernetes admins, SRE, dev ops 
+_Audience for this post: Platform engineers, Kubernetes admins, SREs, dev ops peeps_
 
-This post is a quick primer on leveraging the Cluster API Provider for Azure (CAPZ) to quickly deploy an AKS cluster.
+This post is the first in a series on <a href="https://q6o.to/capzb" target="_blank">Cluster API Provider for Azure (CAPZ).</a>
 
-To quote from the <a href="https://s.clarkezone.dev/capza" target="_blank">introdutory post for this feature</a>, 
+To quote from the <a href="https://q6o.to/capzi" target="_blank">introdutory post from the Azure team</a>: 
 
 > Managing Kubernetes clusters is hard.
 > 
@@ -17,14 +17,17 @@ To quote from the <a href="https://s.clarkezone.dev/capza" target="_blank">intro
 > 
 > The Kubernetes community project Cluster API (CAPI) enables users to manage fleets of clusters across multiple infrastructure providers. The Cluster API Provider for Azure (CAPZ) is the solution for users who need to manage Kubernetes clusters on Azure IaaS. In the past, we have recommended AKS Engine for this common scenario.  While we will continue to provide regular, stable releases for AKS Engine, the Azure team is excited to share that CAPZ is now ready for users and will be our primary tool for enabling customers to operate self-managed Kubernetes clusters on Azure IaaS.
 
-I wasn't personally familar with the Cluster API until I participated in a hackathon with a couple of folks from the AKS team last year.
+I wasn't personally familar with the <a href="https://q6o.to/kcapi" target="_blank">Kubernetes Cluster API</a> until I participated in a hackathon with a couple of folks from the <a href="https://q6o.to/aksa" target="_blank">Azure Kubernetes Service</a> team last year.  I lucked out in that <a href="https://q6o.to/jackfrancis" target="_blank">Jack Francis</a>, one of the AKS devs sponsoring the hackathon,  worked on the project and co-authored the above blog post.  I learned a great deal from Jack on that hack (thank you Sir!); that the Kubernetes Cluster API is a means of representing kubernetes clusters as <a href="https://q6o.to/kcrd" target="_blank">CRD's</a> and using the declaritive nature of <a href="https://q6o.to/kmana" target="_blank">kubernetes manifests</a> to describe and manage kubernetes infrastructure in a cloud neutral way.  CAPZ is the provider that brings Azure support to the cluster API.  CAPZ replaces the erstwhile <a href="https://q6o.to/aksengine" target="_blank">AKS Engine</a> for performing self-managed kubernetes on Azure on <a href="https://q6o.to/vmssa" target="_blank">VM scale sets</a>.  All the things about kustodian.  But I digress.
+
+I'm going to start the series with the place I myself started: cloning the <a href="https://q6o.to/capzr" target="_blank">CAPZ repo</a>, building a local management cluster using <a href="https://q6o.to/kinda" target="_blank">Kind</a> and then using a handy built in <a href="https://q6o.to/tilta" target="_blank">Tilt</a> setup to graphically enable me to create different types of clusters. 
 
 Prerequisizes
-- docker
-- make
-- Azure ClI
-- Tilt: https://docs.tilt.dev/install.html
-- kind
+- git: (<a href="https://q6o.to/giti" target="_blank">install</a>)
+- docker: (<a href="https://q6o.to/dockeri" target="_blank">install</a>)
+- make: (<a href="https://q6o.to/makei" target="_blank">install</a>)
+- Azure CLI: (<a href="https://q6o.to/azclii" target="_blank">install</a>)
+- Tilt: (<a href="https://q6o.to/tilti" target="_blank">install</a>)
+- kind: (<a href="https://q6o.to/kindi" target="_blank">install</a>)
 
 ### Clone the CAPZ repo
 1. `git clone https://github.com/kubernetes-sigs/cluster-api-provider-azure.git`
