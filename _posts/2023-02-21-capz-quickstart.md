@@ -60,7 +60,7 @@ Prerequisizes
 }
 ```
 
-For convenience you can grab the above with curl -LO 
+For convenience you can grab the above with `curl -o tilt-settings.json -L https://raw.githubusercontent.com/clarkezone/cluster-api-provider-azure/blogpost/tilt-settings-template.json`
 
 ### Populate subscription and service principal details
 2. Login via Azure CLI:
@@ -77,8 +77,10 @@ az account show --query id --outpt tsv
 az account show --query homeTenantId --output tsv
 ```
 
-4. Create service principal passing in subscription id from above:
-`az ad sp create-for-rbac --role contributor --scopes="/subscriptions/<REPLACE-WITH-SUBSCRIPTION-ID-FIELD>"`
+4.jCreate service principal passing in subscription id from above:
+```bash
+az ad sp create-for-rbac --role contributor --scopes="/subscriptions/<REPLACE-WITH-SUBSCRIPTION-ID-FIELD>"
+```
 
 5. Update the tilt-settings.json updating
   - AZURE_SUBSCRIPTION_ID with subscription id
