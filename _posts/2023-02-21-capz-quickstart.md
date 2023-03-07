@@ -9,6 +9,7 @@ _Audience for this post: Platform engineers, Kubernetes admins, SREs, dev ops pe
 
 This post is the first in a series on <a href="https://q6o.to/capzb" target="_blank">Cluster API Provider for Azure (CAPZ).</a>
 
+<img style="transform: translatex(0%);left:0; padding-right:20px" src="/static/img/2023-02-21-capz-quickstart/kenny-eliason-uq5RMAZdZG4-unsplash.jpg" align="left"/>
 To quote from the <a href="https://q6o.to/capzi" target="_blank">introdutory post from the Azure team</a>: 
 
 > Managing Kubernetes clusters is hard.
