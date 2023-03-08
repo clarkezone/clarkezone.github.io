@@ -78,7 +78,7 @@ az account show --query id --outpt tsv
 az account show --query homeTenantId --output tsv
 ```
 
-4.jCreate service principal passing in subscription id from above:
+4.Create service principal passing in subscription id from above:
 ```bash
 az ad sp create-for-rbac --role contributor --scopes="/subscriptions/<REPLACE-WITH-SUBSCRIPTION-ID-FIELD>"
 ```
@@ -93,20 +93,59 @@ az ad sp create-for-rbac --role contributor --scopes="/subscriptions/<REPLACE-WI
 The makefile has a handy dandy help command which you can get via `make help` to help get oriented.
 
 1. Create a kind cluster
-`make kind-create`
+```bash
+make kind-create
+```
+If all goes well, the result of this command is a bunch of terminal spew for kind spinning up a cluster.  If you check registered contexts with `kubectl config get-contexts` you should see kind-capz that has been selected as the current.
+
+<img style="" src="/static/img/2023-02-21-capz-quickstart/kindrunning.png" align="left"/>
 
 2. Generate the machine templates
-`make generate-flavors`
+```bash
+make generate-flavors
+```
+This step can take quite a bit of time.  The result is a bunch of under-the-covers template expansion which enabnles subsequent steps.
+
+<img style="" src="/static/img/2023-02-21-capz-quickstart/generate-flavors.png" align="left"/>
 
 3. Start tilt to enable GUI for creating clusters
-`make tilt-up`
+```bash
+make tilt-up
+```
+
+This comand starts a tilt session which you can connect to from your browser.  This is esentially a GUI in front of CAPZ which enables you to create various flavors via the browser.
+
+<img style="" src="/static/img/2023-02-21-capz-quickstart/tiltupcmd.png" align="left"/>
+It's worth noting here that Tilt is incidental to CAPZ.  There is no hard dependency here, if you follow the instructions for installing CAPZ (TODO link) into your own "pilot" cluster, you won't end up with tilt at all.
 
 ### Deploy vanilla AKS cluster to your supscription
-1. Open a browser and navigate to the tilt web server that you just started above:
+1. Open a browser and navigate to the tilt web server that you just started above.  In my case this is `localhost:3333`
 
-2. Click on the AKS-TODO item
+<img style="" src="/static/img/2023-02-21-capz-quickstart/tiltupgui.png" align="left"/>
 
-3. wait for deploy
+2. Click on the AKS link which should take you to a detailed streen as follows:
+
+<img style="" src="/static/img/2023-02-21-capz-quickstart/launchakspng.png" align="left"/>
+
+3. click on the refresh icon.  Result is a bunch of console spew showing up in the window. 
+
+<img style="" src="/static/img/2023-02-21-capz-quickstart/startinstall.png" />
+
+If all went well, you shuold see the final line `Cluster 'aks-20648' created, don't forget to delete`
+
+<img style="" src="/static/img/2023-02-21-capz-quickstart/aksinstallcompletetiltgui.png" align="left"/>
+
+You can now monitor the provision progress in capz:
+
+```bash
+kubectl get cluster
+```
+
+<img style="" src="/static/img/2023-02-21-capz-quickstart/get-cluster.png" align="left"/>
+
+And once it gets beyond a certain point also in the azure portal:
+
+
 
 4. confirm in subscription
 
@@ -116,7 +155,7 @@ The makefile has a handy dandy help command which you can get via `make help` to
 ### Delete vanilla AKS cluster
 Tilt is just a web front end manipulating resources in the capz control cluster running in kind.  Even though we created the cluster from the GUI, we are going to delete the cluster by manipulating objects in the control cluster.
 
-1. `kubectl delete cluster`
+1. `kubectl delete cluster aks-20648`
 
 ## Create a new receipe
 Now that we've created a cluster based on the default template, let's create a new template that alters the recepie of the AKS cluster.
