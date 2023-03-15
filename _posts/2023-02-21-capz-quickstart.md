@@ -67,12 +67,11 @@ For convenience you can grab the above with `curl -o tilt-settings.json -L https
 2. Login via Azure CLI:
 `az login`
 
-
 3. Get subscription id and tenant id using az cli:
 
 ```bash
 # subscription id
-az account show --query id --outpt tsv
+az account show --query id --output tsv
 
 # tenant id
 az account show --query homeTenantId --output tsv
@@ -145,7 +144,19 @@ kubectl get cluster
 
 And once it gets beyond a certain point also in the azure portal:
 
+TODO: screenshot of portal
 
+Once the cluster provisioning has completed, you should see the result of `kubectl get clusters`
+
+Now, you can grab the config and talk to it:
+
+```bash
+az aks list --output table
+az aks get-credentials --admin --name aks-6512 --resource-group aks-6512
+
+```
+
+TODO: screenshot cluster provisioned
 
 4. confirm in subscription
 
