@@ -144,19 +144,21 @@ kubectl get cluster
 
 And once it gets beyond a certain point also in the azure portal:
 
-TODO: screenshot of portal
+<img style="" src="/static/img/2023-02-21-capz-quickstart/node-pools-provisioning-in-portal.png" align="left"/>
 
 Once the cluster provisioning has completed, you should see the result of `kubectl get clusters`
+
+<img style="" src="/static/img/2023-02-21-capz-quickstart/Cluster Provisioned.png" align="left"/>
 
 Now, you can grab the config and talk to it:
 
 ```bash
 az aks list --output table
 az aks get-credentials --admin --name aks-6512 --resource-group aks-6512
-
 ```
 
-TODO: screenshot cluster provisioned
+<img style="" src="/static/img/2023-02-21-capz-quickstart/azaksgetcredentials.png" align="left"/>
+<img style="" src="/static/img/2023-02-21-capz-quickstart/aksgetnodes.png" align="left"/>
 
 4. confirm in subscription
 
