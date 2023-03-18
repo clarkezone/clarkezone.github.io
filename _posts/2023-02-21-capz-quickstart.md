@@ -86,7 +86,9 @@ az ad sp create-for-rbac --role contributor --scopes="/subscriptions/<REPLACE-WI
   - AZURE_SUBSCRIPTION_ID with subscription id
   - AZURE_TENANT_ID with tenant id
   - AZURE_CLIENT_SECRET with password from create-for-rbac
-  - AZURE_CLIENT_ID with appId from create-for-rbac
+  - AZURE_CLIENT_ID with appId from create-for-rbac<br/>
+  Here is a color coded mapping:
+  <img style="" src="/static/img/2023-02-21-capz-quickstart/capzidmapping.png" />
 
 ### Create the management cluster and fire up the management plane UI
 The `makefile` has a handy dandy help command which you can get via `make help` to help get oriented.  You'll see a fairly extensive list of options that come out of the box.  We're going to focus on getting a local management cluster going.
