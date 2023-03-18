@@ -88,16 +88,17 @@ az ad sp create-for-rbac --role contributor --scopes="/subscriptions/<REPLACE-WI
   - AZURE_CLIENT_SECRET with password from create-for-rbac
   - AZURE_CLIENT_ID with appId from create-for-rbac
 
-### Create the management cluster and fire up the GUI control UI
-The makefile has a handy dandy help command which you can get via `make help` to help get oriented.  You'll see a fairly extensive list of options that come out of the box.  We're going to focus on getting a simple cluster going.
+### Create the management cluster and fire up the management plane UI
+The `makefile` has a handy dandy help command which you can get via `make help` to help get oriented.  You'll see a fairly extensive list of options that come out of the box.  We're going to focus on getting a local management cluster going.
 
-1. Create a kind cluster
+1. Create a `kind` cluster
   ```bash
   make kind-create
   ```
   If all goes well, the result of this command will be a bunch of terminal spew from `kind` spinning up the management cluster containing the CAPZ install that will subsequently do the heavy lifting of creating AKS clusters for us on demand.  If you check registered kubernetes contexts with `kubectl config get-contexts` you should see a context for kind-capz that has been selected as the current cluster.  A quick `kubectl get nodes` will confirm that all is ready.
   <img style="" src="/static/img/2023-02-21-capz-quickstart/kindrunning.png" align="left"/>
 2. Generate the machine templates
+  This step is creating the list of templates that you'll see in subsequent steps.  The definitions for these are part of the CAPZ repo.  In the next post in this series I'll show how to add new templates and customize existings ones.
   ```bash
   make generate-flavors
   ```
@@ -118,9 +119,9 @@ The makefile has a handy dandy help command which you can get via `make help` to
   <img style="" src="/static/img/2023-02-21-capz-quickstart/launchakspng.png" />
   3. Trigger an install of an AKS cluster by clicking on the refresh icon next to AKS.  Result is a bunch of console spew showing up in the window:
   <img style="" src="/static/img/2023-02-21-capz-quickstart/startinstall.png" />
-  <br/>If all went well, you shuold see the final line as something similar to `Cluster 'aks-20648' created, don't forget to delete`
+  <br/>If all went well, you shuold see the final line of output as something similar to `Cluster 'aks-20648' created, don't forget to delete`.  This is an important point.  This step is creating an Azure AKS cluster in your subscription.  If you forget to delete it you will be paying for it.  At the end of this excercise, make sure you've deleted any resources you don't intend to keep around.
   <img style="" src="/static/img/2023-02-21-capz-quickstart/aksinstallcompletetiltgui.png" />
-  At this point, the resource representing an AKS cluster has been created in the kind management cluster and, under the covers, CAPZ will go about provisioning the AKS cluster into your subscription.  You can monitor the provisioning progress using `kubectl`:
+  At this point, the management resource representing an AKS cluster has been created in the kind management cluster and, under the covers, CAPZ will go about provisioning the AKS cluster into your subscription.  The resource type that represents a cluster is `cluster` and you can query the management cluster for it via `kubectl`:
   ```bash
   kubectl get cluster
   ```
@@ -129,26 +130,27 @@ The makefile has a handy dandy help command which you can get via `make help` to
   <img style="" src="/static/img/2023-02-21-capz-quickstart/node-pools-provisioning-in-portal.png" />
   Finally, once the cluster provisioning has completed, you should see the status update on the management cluster of `kubectl get clusters`
   <img style="" src="/static/img/2023-02-21-capz-quickstart/Cluster Provisioned.png" />
-  Now, you can grab the kubeconfig and talk to your shiny new AKS cluster humming away in an Azure datacenter:
+  Now, you can grab the `kubeconfig` and talk to your shiny new AKS cluster humming away in an Azure datacenter:
   ```bash
   az aks list --output table
   az aks get-credentials --admin --name aks-6512 --resource-group aks-6512
   ```
-  <img style="" src="/static/img/2023-02-21-capz-quickstart/azaksgetcredentials.png" />
   <img style="" src="/static/img/2023-02-21-capz-quickstart/aksgetnodes.png" />
 
 
 ### Delete AKS and management clusters
-  Time to clean up.  We'll first use the management cluster to delete the AKS cluster running in Azure and then clean up the management cluster itself.  For this task, we'll use the CLI.  As I mentioned above, `Tilt` is providing a web front end manipulating resources in the CAPZ control cluster running in `kind`.  Even though we created the cluster using `Tilt`, we are going to delete the cluster by manipulating Kubernetes objects in the control cluster:
+  Feel free to kick the tyres of your new AKS cluster.  Maybe you could try deploying a test workload.  Once you are done, lets clean up.  We'll first use the management cluster to delete the AKS cluster running in Azure and then clean up the management cluster itself removing it from your dev machine.
+  
+  For this task, we'll use the CLI.  As I mentioned above, `Tilt` is providing a web front end manipulating resources in the CAPZ control cluster running in `kind`.  Even though we created the cluster using `Tilt`, we are going to delete the cluster by manipulating Kubernetes objects in the control cluster directly from `kubectl`:
   1. `kubectl delete cluster aks-20648`
   This will take a while to complete.  When it does so, make sure you confirm in the Azure Portal that the cluster is gone.
   2. Tear down management cluster
   `make kind-reset`
 
 ### Summary and next steps
-Congratulations, you made it!  In this tutorial you learned
+Congratulations, you made it!  In this tutorial you learned:
 1. What the Cluster API (CAPI) and Cluster API for Azure (CAPZ) are
 2. How to install CAPZ on a management cluster from source and run it locally on your devbox
 3. Use declaritive Kubernetes manifests to manipulate resources in Azure
 
-In the next post in this series I'll show you how to customize receipies for creating Azure resources, install CAPZ into an existing Kubernetes homelab and manipulate Azure resources through via `kubectl`.  Thanks for reading, please do drop me a line on twitter () or mastodon ()
+In the next post in this series I'll show you how to customize receipies for creating Azure resources, install CAPZ into an existing Kubernetes homelab and manipulate Azure resources through via `kubectl`.  Thanks for reading, please do drop me a line on <a href="https://q6o.to/czt" target="_blank">`Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a>
