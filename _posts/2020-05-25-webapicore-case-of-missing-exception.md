@@ -3,8 +3,8 @@ layout: post
 commentshortlink: "http://ps-s.clarkezone.dev/p12"
 title:  "ASP.NET Core 3.1 WebAPI: The case of the failing POST request"
 date: 2020-05-25 08:51:02 -0800
-categories: [Web APIs, REST]
-tags: [ASP.NET Core, Azure Telemetry, Troubleshooting]
+categories: [Web APIs,REST]
+tags: [ASP.NET Core,Azure Telemetry,Troubleshooting]
 ---
 
 I've recently been spending time getting back into the groove with distributed computing after a decade or so of absense.  As part of that I've been kicking the tires of .NET Core for the first time (and loving it so far, but that's another story).  A couple of weeks ago, I came across a classic problem which all backend web developers have encountered all too often: a mysterious 400 Bad Request error originating from a REST request.

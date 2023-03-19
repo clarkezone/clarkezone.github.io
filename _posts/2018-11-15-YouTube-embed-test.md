@@ -3,7 +3,7 @@ layout: post
 commentshortlink: "http://ps-s.clarkezone.dev/p2"
 title:  "YouTube embedding test"
 date: 2018-11-15 17:42:02 +0700
-categories: [blogging]
+categories: [Blogging]
 tags: [video]
 ---
 Let's see if this embedding succeeds:

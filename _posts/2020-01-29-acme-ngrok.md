@@ -4,7 +4,7 @@ commentshortlink: "http://ps-s.clarkezone.dev/p8"
 title:  "Enabling local development with SSL and Lets encrypt in Go"
 date: 2020-01-29 09:51:02 -0800
 categories: [Networking,Tunnels]
-tags: [ngrok, letsencrypt]
+tags: [ngrok,letsencrypt]
 ---
 
 I've been playing with gRPC and microservice recently (more on that later). One aspect that I've needed to figure out as part of that particular adventure has been getting gRPC endpoint running securely over SSL.  To do that, I turned to [Let's Encrypt](https://letsencrypt.org) as I'm a massive fan of free certs that can be automatically acquired and renewed.  Since I'm working in GoLang, there are a number of great solutions that work off the shelf (the package I'm using is [http://golang.org/x/crypto/acme/autocert](http://golang.org/x/crypto/acme/autocert)).  Before figuring out how to get autocert working with gRPC, what does a hello world server look like?
