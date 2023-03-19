@@ -2,8 +2,8 @@
 layout: post
 title:  "2022 Coding stats"
 date: 2022-12-31 08:51:02 -0800
-categories: [timetracking]
-tags: [goalng, rust, .net, yarp, vim, solana, fediverse, hachyderm, kubernetes, microservices, buildspace, flutter, linux, tailscale, vim]
+categories: [Timetracking]
+tags: [golang, rust, .net, yarp, vim, solana, fediverse, hachyderm, kubernetes, microservices, buildspace, flutter, linux, tailscale]
 ---
 Audience for this post: software developers
 

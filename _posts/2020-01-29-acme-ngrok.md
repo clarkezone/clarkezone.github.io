@@ -3,7 +3,7 @@ layout: post
 commentshortlink: "http://ps-s.clarkezone.dev/p8"
 title:  "Enabling local development with SSL and Lets encrypt in Go"
 date: 2020-01-29 09:51:02 -0800
-categories: [golang]
+categories: [Networking,Tunnels]
 tags: [ngrok, letsencrypt]
 ---
 

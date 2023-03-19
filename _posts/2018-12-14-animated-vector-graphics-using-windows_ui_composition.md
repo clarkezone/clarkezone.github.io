@@ -4,7 +4,7 @@ commentshortlink: "http://ps-s.clarkezone.dev/p6"
 title:  "Animated vector graphics in C++ using Windows::UI::Composition"
 date: 2019-05-05 11:00:45 -0800
 categories: [UI,Windows]
-tags: [UWP, WinComp]
+tags: [UWP,WinComp,C++]
 ---
 
 ## Native vector graphics in Windows
