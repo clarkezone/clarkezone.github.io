@@ -2,13 +2,13 @@
 layout: post
 title:  "2022 Coding stats"
 date: 2022-12-31 08:51:02 -0800
-categories: [timetracking]
-tags: [goalng, rust, .net, yarp, vim, solana, fediverse, hachyderm, kubernetes, microservices, buildspace, flutter, linux, tailscale, vim]
+categories: [Time Tracking]
+tags: [golang, rust, .net, yarp, vim, solana, fediverse, hachyderm, kubernetes, microservices, buildspace, flutter, linux, tailscale]
 ---
 Audience for this post: software developers
 
 <img style="transform: translatex(0%);left:0; padding-right:20px" src="/static/img/2022-12-31-coding-stats/nwesso.jpeg" align="left"/>
-I’m writing this post on my phone backstage at Seatle Symphony on the last night of 2022. I'm here to sing in the chorus in Beethoven's 9th symphony for the New Year concert.  So first off, let me wish you a very **Happy New Year** and thanks for staying subscribed despite the lack of content!  One of my New Year resolutions for 2022 was to start blogging again which clearly hasn't gone so well; I hope you've had better luck with your goals and resolutions for the year.
+I’m writing this post on my phone backstage at Seatle Symphony on the last night of 2022. I'm here to sing in the chorus in Beethoven's 9th symphony for the New Year concert.  So first off, let me wish you a very **Happy New Year** and thanks for staying subscribed despite the lack of content!  One of my New Year resolutions for 2022 was to start Blogging again which clearly hasn't gone so well; I hope you've had better luck with your goals and resolutions for the year.
 
 Over the course of the last 12 months I have been doing a ton of work with Kubernetes and microservices and I'm hopeful that the fruits of those labors will be manifested in blog posts over the course of 2023.  We will see how that goes; stay subscribed to find out and / or follow me on in the fediverse on hachyderm: <a href="https://hachyderm.io/@clarkezone" target="_blank">https://hachyderm.io/@clarkezone</a>
 <br clear="left">

@@ -1,9 +1,10 @@
 ---
 layout: post
+commentshortlink: "http://ps-s.clarkezone.dev/p7"
 title:  "Adding draggable tabs to the Windows Terminal"
 date: 2019-11-23 07:12:59 -0800
-categories: [windowsterminal]
-tags: [c++]
+categories: [UI,Windows]
+tags: [Terminal,C++,Windows Terminal]
 ---
 I'm a massive fan of the work the team's been doing on [WSL and the new Windows Terminal](https://devblogs.microsoft.com/commandline/) and I am a complete convert.. decades of muscle memory has been retrained to type `term` instead of `cmd` or `PowerShell` into my run prompt on Windows and I'm way happier.
 

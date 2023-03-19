@@ -1,9 +1,10 @@
 ---
 layout: post
+commentshortlink: "http://ps-s.clarkezone.dev/p5"
 title:  "UWP Audiovisualizer 1.0 Release"
 date: 2018-11-28 15:43:03 -0800
-categories: [uwp]
-tags:
+categories: [UI,Windows]
+tags: [UWP,DirectX,C++]
 ---
 It's been a long time coming but the UWP Audivisualizer project recently hit the 1.0 milestone including some new default controls and a rewrite using c++/WinRT.
 
