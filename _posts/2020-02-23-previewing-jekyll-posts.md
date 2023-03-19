@@ -3,7 +3,7 @@ layout: post
 commentshortlink: "http://ps-s.clarkezone.dev/p10"
 title:  "Previewing Jekyll blog posts"
 date: 2020-02-23 08:06:57 -0800
-categories: [Blogging,jekyll]
+categories: [Blogging,Jekyll]
 tags: [golang]
 ---
 
