@@ -23,7 +23,7 @@ timezone:
 
 title: Clarkezone
 
-tagline: Cloud Native, Coding, Media Production, Tech.   # it will display as the sub-title
+tagline: Cloud Native Infra, Programming, Media Production, Tech.   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   James Clarke's blog on Cloud Native, Coding, Media Production, Tech.
