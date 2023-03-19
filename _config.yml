@@ -21,15 +21,15 @@ timezone:
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Clarkezone dev blog
+title: Clarkezone tech blog
 
-tagline: Learnings from self hosting on kubernetes and friends.   # it will display as the sub-title
+tagline: Cloud Native, Coding, Media Production, Tech.   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  A minimal, responsive, and powerful Jekyll theme for presenting professional writing.
+  James Clarke's blog on Cloud Native, Coding, Media Production, Tech.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
-url: ''
+url: 'https://clarkezone.github.io'
 
 github:
   username: clarkezone             # change to your github username
