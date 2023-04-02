@@ -23,9 +23,9 @@ Photo by <a href="">Kenny Aliason</a> on <a href="">Unsplash</a></div>
 CAPZ is the provider that brings Azure support to the Cluster API and the production version <a href="https://q6o.to/capzv1" target="_blank">shipped in November 2021</a>.  It enables two primary classes of scenario: 
 Firstly you get the ability to create managed clusters on AKS much like you can on other clouds via CAPI.  The full list of supported providers / clouds can be found <a href="https://q6o.to/kcapip" target="_blank">here</a>.  Secondly, CAPZ is the answer for Azure self-managed Kubernetes clusters for people who were previously using <a href="https://q6o.to/aksengine" target="_blank">AKS Engine</a>.  For this use-case, CAPZ is the recommended solution for users who need to manage Kubernetes clusters on <a href="https://q6o.to/vmssa" target="_blank">Azure IaaS</a> as I learned from <a href="https://q6o.to/davidtesar" target="_blank">David Tesar</a>, Product Manager for CAPZ. 
 
-Whilst there is an <a href="https://q6o.to/capzi" target="_blank">official quickstart for CAPZ</a>  I struggled to make it work back     in October 2022 and the steps outlined here are what Jack showed me.  I plan on digging into the official quickstart in a subsequent post.  The steps outlined here are specific to the CAPZ contributing flow but do work well for getting started and are mostly automated by the `makefile`.
+Whilst there is an <a href="https://q6o.to/capzi" target="_blank">official quickstart for CAPZ</a>  I struggled to make it work back in October 2022 and the steps outlined here are what Jack showed me; they are specific to the contributing flow but work well for getting started simply.  I plan on digging into the official quickstart in a subsequent post. 
 
-In this post I'm going to show how to get started from the CAPZ repo and:
+The plan we will follow for the remainder for the post will be:
 1. Run CAPZ from the official repo and using the `makefile` to create a local management cluster on your devbox using <a href="https://q6o.to/kinda" target="_blank">`Kind`</a>
 2. Use the <a href="https://q6o.to/tilta" target="_blank">`Tilt`</a>-based GUI front end to manipulate the local management cluster and create an AKS cluster in Azure
 3. How to query the management cluster from the cli using `kubectl` to show the provisioning status of the AKS cluster in Azure
