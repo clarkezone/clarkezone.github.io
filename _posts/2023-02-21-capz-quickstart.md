@@ -9,28 +9,31 @@ _Audience: Platform engineers, Kubernetes admins, SREs, dev ops engineers_
 
 This post is the first in a series on <a href="https://q6o.to/capza" target="_blank">Cluster API Provider for Azure (CAPZ).</a>
 
-What is the cluster API Provider for Azure?  To quote from the <a href="https://q6o.to/capzb" target="_blank">introdutory post from the Azure team</a>: 
-<img style="transform: translatex(0%);left:0; padding-right:20px" src="/static/img/2023-02-21-capz-quickstart/kenny-eliason-uq5RMAZdZG4-unsplash.jpg" align="right"/>
+What is the cluster API Provider for Azure?  To quote from the <a href="https://q6o.to/capzb" target="_blank">introductory post from the Azure team</a>: 
+<div class="french" style="float:right;font-size:60%;margin-left:10px" align="right"><img style="width:200px;height:370px" src="/static/img/2023-02-21-capz-quickstart/kenny-eliason-uq5RMAZdZG4-unsplash.jpg" ><br/>
+Photo by <a href="">Kenny Aliason</a> on <a href="">Unsplash</a></div>
 > Managing Kubernetes clusters is hard.
 > 
 > Managing Kubernetes clusters at scale across a variety of infrastructures is—well—even harder.
 > 
 > The Kubernetes community project Cluster API (CAPI) enables users to manage fleets of clusters across multiple infrastructure providers. The Cluster API Provider for Azure (CAPZ) is the solution for users who need to manage Kubernetes clusters on Azure IaaS. In the past, we have recommended AKS Engine for this common scenario.  While we will continue to provide regular, stable releases for AKS Engine, the Azure team is excited to share that CAPZ is now ready for users and will be our primary tool for enabling customers to operate self-managed Kubernetes clusters on Azure IaaS.
 
-<br clear="right"/>I wasn't familar with the <a href="httpf://q6o.to/kcapi" target="_blank">Kubernetes Cluster API</a> until I participated in a hackathon with a couple of folks from the <a href="https://q6o.to/aksa" target="_blank">Azure Kubernetes Service</a> (AKS) team last year.  I lucked out by getting to work with <a href="https://q6o.to/jackfrancis" target="_blank">Jack Francis</a> who worked on CAPZ and co-authored the above blog post.  I learned a great deal from Jack on that hack; that CAPI is a means of representing kubernetes clusters as <a href="https://q6o.to/kcrd" target="_blank">kubernetes custom resource definitions</a>.  This in turn lets you use the declaritive nature of <a href="https://q6o.to/kmana" target="_blank">kubernetes manifests</a> to simplify provisioning, upgrading, and operating multiple Kubernetes clusters. CAPZ is the provider that brings Azure support to the cluster API and whilst simultaniously replacing the erstwhile <a href="https://q6o.to/aksengine" target="_blank">AKS Engine</a> for provisioning self-managed kubernetes on Azure on <a href="https://q6o.to/vmssa" target="_blank">VM scale sets</a>.
+<br clear="right"/>I wasn't familiar with the <a href="https://q6o.to/kcapi" target="_blank">Kubernetes Cluster API project</a> until I participated in a hackathon with a couple of folks from the <a href="https://q6o.to/aksa" target="_blank">Azure Kubernetes Service</a> (AKS) team last year in October 2022.  I lucked out by getting to work with <a href="https://q6o.to/jackfrancis" target="_blank">Jack Francis</a> who is an engineer working on CAPZ and co-authored the above blog post.  I learned a great deal from Jack on that hack; that Cluster API (CAPI) is a means of representing Kubernetes clusters as <a href="https://q6o.to/kcrd" target="_blank">Kubernetes custom resource definitions</a>.  This in turn lets you use the declarative nature of <a href="https://q6o.to/kmana" target="_blank">Kubernetes manifests</a> to simplify provisioning, upgrading, and operating multiple Kubernetes clusters. It is provider based, enabling different environments and clouds to be supported all through a unified set of CRDs.
 
-Whilst there is an <a href="httpf://q6o.to/capzi" target="_blank">official quickstart for CAPZ</a>  I struggled to make it work back in October 2022 and the steps outlined here are what Jack showed me.  I paln on digging into the quickstart in a subsequent post.  Whilst the steps outlined here are more specific to the CAPZ contributing flow they do work well and are mostly automated by the make file.
+CAPZ is the provider that brings Azure support to the Cluster API and the production version <a href="https://q6o.to/capzv1" target="_blank">shipped in November 2021</a>.  It enables two primary classes of scenario: 
+Firstly you get the ability to create managed clusters on AKS much like you can on other clouds via CAPI.  The full list of supported providers / clouds can be found <a href="https://q6o.to/kcapip" target="_blank">here</a>.  Secondly, CAPZ is the answer for Azure self-managed Kubernetes clusters for people who were previously using <a href="https://q6o.to/aksengine" target="_blank">AKS Engine</a>.  For this use-case, CAPZ is the recommended solution for users who need to manage Kubernetes clusters on <a href="https://q6o.to/vmssa" target="_blank">Azure IaaS</a> as I learned from <a href="https://q6o.to/davidtesar" target="_blank">David Tesar</a>, Product Manager for CAPZ. 
 
-In this post I'm going to show how to get started with CAPZ by:
-1. Running CAPZ from the upstream repo by using the `makefile` to create a local management cluster on your devbox using <a href="https://q6o.to/kinda" target="_blank">`Kind`</a>
+Whilst there is an <a href="https://q6o.to/capzi" target="_blank">official quickstart for CAPZ</a>  I struggled to make it work back     in October 2022 and the steps outlined here are what Jack showed me.  I plan on digging into the official quickstart in a subsequent post.  The steps outlined here are more specific to the CAPZ contributing flow they do work well and are mostly automated by the make file.
+
+In this post I'm going to show how to get started from the CAPZ repo and:
+1. Run CAPZ from the official repo and using the `makefile` to create a local management cluster on your devbox using <a href="https://q6o.to/kinda" target="_blank">`Kind`</a>
 2. Use the <a href="https://q6o.to/tilta" target="_blank">`Tilt`</a>-based GUI front end to manipulate the local management cluster and create an AKS cluster in Azure
 3. How to query the management cluster from the cli using `kubectl` to show the provisioning status of the AKS cluster in Azure
-4. How to customize the flavor of AKS cluster
-5. How to clean up
+4. How to clean up
 
 In subsequent posts, we'll look at other tasks such as how to install CAPI / CAPZ into a pre-existing homelab cluster and perform further customizations and management tasks.
 
-Prerequisizes
+### Prerequisites
 To follow along I'm assuming you know the basics of Kubernetes and Linux administration.  Tools you will need are:
 - git cli: (<a href="https://q6o.to/giti" target="_blank">install</a>)
 - docker: (<a href="https://q6o.to/dockeri" target="_blank">install</a>)
@@ -95,35 +98,35 @@ az ad sp create-for-rbac --role contributor --scopes="/subscriptions/<REPLACE-WI
 ### Create the management cluster and fire up the management plane UI
 The `makefile` has a handy dandy help command which you can get via `make help` to help get oriented.  You'll see a fairly extensive list of options that come out of the box.  We're going to focus on getting a local management cluster going.
 
-1. Create a `kind` cluster
+1. Create a `kind` cluster.  Note that whilst I'm explicitly having you do this and the next step, step 3 should theoretically take care of this automatically (thanks to Jack for pointing this out).
   ```bash
   make kind-create
   ```
-  If all goes well, the result of this command will be a bunch of terminal spew from `kind` spinning up the management cluster containing the CAPZ install that will subsequently do the heavy lifting of creating AKS clusters for us on demand.  If you check registered kubernetes contexts with `kubectl config get-contexts` you should see a context for kind-capz that has been selected as the current cluster.  A quick `kubectl get nodes` will confirm that all is ready.
+  If all goes well, the result of this command will be a bunch of terminal spew from `kind` spinning up the management cluster containing the CAPZ install that will subsequently do the heavy lifting of creating AKS clusters for us on demand.  If you check registered Kubernetes contexts with `kubectl config get-contexts` you should see a context for kind-capz that has been selected as the current cluster.  A quick `kubectl get nodes` will confirm that all is ready.
   <img style="" src="/static/img/2023-02-21-capz-quickstart/kindrunning.png" align="left"/>
 2. Generate the machine templates
-  This step is creating the list of templates that you'll see in subsequent steps.  The definitions for these are part of the CAPZ repo.  In the next post in this series I'll show how to add new templates and customize existings ones.
+  This step is creating the list of templates that you'll see in subsequent steps.  The definitions for these are part of the CAPZ repo.  In the next post in this series I'll show how to add new templates and customize existing ones.
   ```bash
   make generate-flavors
   ```
-  This step can take quite a bit of time.  The result is a bunch of under-the-covers template expansion which enabnles subsequent steps.
+  This step can take quite a bit of time.  The result is a bunch of under-the-covers template expansion which enables subsequent steps.
   <img style="" src="/static/img/2023-02-21-capz-quickstart/generate-flavors.png" align="left"/>
 3. Start tilt to enable GUI for creating clusters
   ```bash
   make tilt-up
   ```
-  This comand starts a `tilt` session which you can connect to from your browser using the generated link.  Tilt is a dev tool that is being used to provide a simple GUI in front of CAPZ which enables you to create various flavors via the browser.
+  This command starts a `tilt` session which you can connect to from your browser using the generated link.  Tilt is a dev tool that is being used to provide a simple GUI in front of CAPZ which enables you to create various flavors via the browser.
   <img style="" src="/static/img/2023-02-21-capz-quickstart/tiltupcmd.png" align="left"/>
-  It's worth noting here that Tilt is incidental to CAPZ and is provided for convenience and testing purposes.  There is no hard dependency here, if you follow the <a href="https://q6o.to/capzi" target="_blank">instructions for installing CAPZ</a> into your own "pilot" cluster, you won't end up with a tilt instance at all.  It is kind of cool
+  It's worth noting here that Tilt is incidental to CAPZ and is provided for convenience and testing purposes.  There is no hard dependency here, if you follow the <a href="https://q6o.to/capzi" target="_blank">instructions for installing CAPZ</a> into your own "pilot" cluster, you won't end up with a tilt instance at all.  It is kind of cool.
 
-### Deploy vanilla AKS cluster into your Azure supscription
+### Deploy vanilla AKS cluster into your Azure subscription
   1. Open a browser and navigate to the tilt web server that you just started above.  In my case this is `localhost:10350`
   <img style="" src="/static/img/2023-02-21-capz-quickstart/tiltupgui.png" align="left"/>
-  2. Click on the AKS link which should take you to a detailed streen as follows showing a list of possible Azure resources that can be created:
+  2. Click on the AKS link which should take you to a detailed screen as follows showing a list of possible Azure resources that can be created:
   <img style="" src="/static/img/2023-02-21-capz-quickstart/launchakspng.png" />
   3. Trigger an install of an AKS cluster by clicking on the refresh icon next to AKS.  Result is a bunch of console spew showing up in the window:
   <img style="" src="/static/img/2023-02-21-capz-quickstart/startinstall.png" />
-  <br/>If all went well, you shuold see the final line of output as something similar to `Cluster 'aks-20648' created, don't forget to delete`.  This is an important point.  This step is creating an Azure AKS cluster in your subscription.  If you forget to delete it you will be paying for it.  At the end of this excercise, make sure you've deleted any resources you don't intend to keep around.
+  <br/>If all went well, you should see the final line of output as something similar to `Cluster 'aks-20648' created, don't forget to delete`.  This is an important point.  This step is creating an Azure AKS cluster in your subscription.  If you forget to delete it, you will be paying for it.  At the end of this exercise, make sure you've deleted any resources you don't intend to keep around.
   <img style="" src="/static/img/2023-02-21-capz-quickstart/aksinstallcompletetiltgui.png" />
   At this point, the management resource representing an AKS cluster has been created in the kind management cluster and, under the covers, CAPZ will go about provisioning the AKS cluster into your subscription.  The resource type that represents a cluster is `cluster` and you can query the management cluster for it via `kubectl`:
   ```bash
@@ -143,7 +146,7 @@ The `makefile` has a handy dandy help command which you can get via `make help` 
 
 
 ### Delete AKS and management clusters
-  Feel free to kick the tyres of your new AKS cluster.  Maybe you could try deploying a test workload.  Once you are done, lets clean up.  We'll first use the management cluster to delete the AKS cluster running in Azure and then clean up the management cluster itself removing it from your dev machine.
+  Feel free to kick the tires of your new AKS cluster.  Maybe you could try deploying a test workload.  Once you are done, lets clean up.  We'll first use the management cluster to delete the AKS cluster running in Azure and then clean up the management cluster itself removing it from your dev machine.
   
   For this task, we'll use the CLI.  As I mentioned above, `Tilt` is providing a web front end manipulating resources in the CAPZ control cluster running in `kind`.  Even though we created the cluster using `Tilt`, we are going to delete the cluster by manipulating Kubernetes objects in the control cluster directly from `kubectl`:
   1. `kubectl delete cluster aks-20648`
@@ -158,8 +161,10 @@ The `makefile` has a handy dandy help command which you can get via `make help` 
 
 ### Summary and next steps
 Congratulations, you made it!  In this tutorial you learned:
-1. What the Cluster API (CAPI) and Cluster API for Azure (CAPZ) are
-2. How to install CAPZ on a management cluster from source and run it locally on your devbox
-3. Use declaritive Kubernetes manifests to manipulate resources in Azure
+1. What the Cluster API (CAPI) and Cluster API for Azure (CAPZ) are.
+2. How to install CAPZ on a management cluster from source and run it locally on your devbox.
+3. Use declarative Kubernetes manifests to manipulate resources in Azure.
 
-In the next post in this series I'll show you how to customize receipies for creating Azure resources, install CAPZ into an existing Kubernetes homelab and manipulate Azure resources through via `kubectl`.  Thanks for reading, please do drop me a line on <a href="https://q6o.to/czt" target="_blank">`Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a>
+In the next post in this series, I'll show you how to customize recipes for creating Azure resources, install CAPZ into an existing Kubernetes homelab and manipulate Azure resources through via `kubectl`.  Thanks for reading, please do drop me a line on <a href="https://q6o.to/czt" target="_blank">`Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a> if you have any questions or comments.
+
+Big thanks to Jack Francis and David Tesar for their kind and patient reviews.
