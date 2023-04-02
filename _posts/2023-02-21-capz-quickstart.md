@@ -7,6 +7,7 @@ tags: [CAPI, CAPZ, AKS]
 ---
 _Audience: Platform engineers, Kubernetes admins, SREs, dev ops engineers_
 
+### Intro
 This post is the first in a series on <a href="https://q6o.to/capza" target="_blank">Cluster API Provider for Azure (CAPZ).</a>
 
 What is the cluster API Provider for Azure?  To quote from the <a href="https://q6o.to/capzb" target="_blank">introductory post from the Azure team</a>: 
@@ -18,14 +19,16 @@ Photo by <a href="">Kenny Aliason</a> on <a href="">Unsplash</a></div>
 > 
 > The Kubernetes community project Cluster API (CAPI) enables users to manage fleets of clusters across multiple infrastructure providers. The Cluster API Provider for Azure (CAPZ) is the solution for users who need to manage Kubernetes clusters on Azure IaaS. In the past, we have recommended AKS Engine for this common scenario.  While we will continue to provide regular, stable releases for AKS Engine, the Azure team is excited to share that CAPZ is now ready for users and will be our primary tool for enabling customers to operate self-managed Kubernetes clusters on Azure IaaS.
 
-<br clear="right"/>I wasn't familiar with the <a href="https://q6o.to/kcapi" target="_blank">Kubernetes Cluster API project</a> until I participated in a hackathon with a couple of folks from the <a href="https://q6o.to/aksa" target="_blank">Azure Kubernetes Service</a> (AKS) team last year in October 2022.  I lucked out by getting to work with <a href="https://q6o.to/jackfrancis" target="_blank">Jack Francis</a> who is an engineer working on CAPZ and co-authored the above blog post.  I learned a great deal from Jack on that hack; that Cluster API (CAPI) is a means of representing Kubernetes clusters as <a href="https://q6o.to/kcrd" target="_blank">Kubernetes custom resource definitions</a>.  This in turn lets you use the declarative nature of <a href="https://q6o.to/kmana" target="_blank">Kubernetes manifests</a> to simplify provisioning, upgrading, and operating multiple Kubernetes clusters. It is provider based, enabling different environments and clouds to be supported all through a unified set of CRDs.
+### Background
+<br clear="right"/>I wasn't familiar with the <a href="https://q6o.to/kcapi" target="_blank">Kubernetes Cluster API project</a> until I participated in a hackathon with a couple of folks from the <a href="https://q6o.to/aksa" target="_blank">Azure Kubernetes Service</a> (AKS) team last year in October 2022.  I lucked out by getting to work with <a href="https://q6o.to/jackfrancis" target="_blank">Jack Francis</a> who is an engineer working on CAPZ and co-authored the above blog post.  I learned a great deal from Jack on that hack; that Cluster API (CAPI) is a means of representing Kubernetes clusters as <a href="https://q6o.to/kcrd" target="_blank">Kubernetes custom resource definitions (CRDs)</a>.  This in turn lets you use the declarative nature of <a href="https://q6o.to/kmana" target="_blank">Kubernetes manifests</a> to simplify provisioning, upgrading, and operating multiple Kubernetes clusters. It is provider based, enabling different environments and clouds to be supported all through a unified set of CRDs.
 
 CAPZ is the provider that brings Azure support to the Cluster API and the production version <a href="https://q6o.to/capzv1" target="_blank">shipped in November 2021</a>.  It enables two primary classes of scenario: 
 Firstly you get the ability to create managed clusters on AKS much like you can on other clouds via CAPI.  The full list of supported providers / clouds can be found <a href="https://q6o.to/kcapip" target="_blank">here</a>.  Secondly, CAPZ is the answer for Azure self-managed Kubernetes clusters for people who were previously using <a href="https://q6o.to/aksengine" target="_blank">AKS Engine</a>.  For this use-case, CAPZ is the recommended solution for users who need to manage Kubernetes clusters on <a href="https://q6o.to/vmssa" target="_blank">Azure IaaS</a> as I learned from <a href="https://q6o.to/davidtesar" target="_blank">David Tesar</a>, Product Manager for CAPZ. 
 
-Whilst there is an <a href="https://q6o.to/capzi" target="_blank">official quickstart for CAPZ</a>  I struggled to make it work back in October 2022 and the steps outlined here are what Jack showed me; they are specific to the contributing flow but work well for getting started simply.  I plan on digging into the official quickstart in a subsequent post. 
+Whilst there is an <a href="https://q6o.to/capzi" target="_blank">official quickstart for CAPZ</a>  I struggled to make it work back in October 2022 and the steps outlined here are what Jack showed me; they are specific to the contributing flow but work well for getting started simply.  I plan on digging into the official quickstart in a subsequent post.  
 
-The plan we will follow for the remainder for the post will be:
+### What we will cover
+In this post I'm going to show how to get started from the CAPZ repo and:
 1. Run CAPZ from the official repo and using the `makefile` to create a local management cluster on your devbox using <a href="https://q6o.to/kinda" target="_blank">`Kind`</a>
 2. Use the <a href="https://q6o.to/tilta" target="_blank">`Tilt`</a>-based GUI front end to manipulate the local management cluster and create an AKS cluster in Azure
 3. How to query the management cluster from the cli using `kubectl` to show the provisioning status of the AKS cluster in Azure
@@ -47,7 +50,7 @@ First, we'll grab CAPZ from the upstream repo:
 `git clone https://github.com/kubernetes-sigs/cluster-api-provider-azure.git`
 
 ### Configure Azure subscription settings
-Next change into the cluster-api-provider-azure directory and create placeholder file named `tilt-settings.json` in the root of the repository as shown below.  For convenience you can grab one I made earlier with `curl -o tilt-settings.json -L https://raw.githubusercontent.com/clarkezone/cluster-api-provider-azure/blogpost/tilt-settings-template.json`
+Next change into the `cluster-api-provider-azure` directory and create placeholder file named `tilt-settings.json` in the root of the repository as shown below.  For convenience you can grab one I made earlier with `curl -o tilt-settings.json -L https://raw.githubusercontent.com/clarkezone/cluster-api-provider-azure/blogpost/tilt-settings-template.json`
 
 ```json
 {
@@ -87,7 +90,7 @@ az account show --query homeTenantId --output tsv
 ```bash
 az ad sp create-for-rbac --role contributor --scopes="/subscriptions/<REPLACE-WITH-SUBSCRIPTION-ID-FIELD> --name=capztest"
 ```
-4. Update the tilt-settings.json updating
+4. Update the `tilt-settings.json` updating
   - AZURE_SUBSCRIPTION_ID with subscription id
   - AZURE_TENANT_ID with tenant id
   - AZURE_CLIENT_SECRET with password from create-for-rbac
