@@ -76,6 +76,8 @@ Next change into the `cluster-api-provider-azure` directory and create placehold
   }
 }
 ```
+Let's fill in all the values we need to make things workwith your subscription.  To do that we'll login to Azure, query some properties and create a service principal that CAPZ will use for creating resources on your behalf:
+
 1. Login via Azure CLI:
 `az login`
 
