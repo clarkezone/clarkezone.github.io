@@ -1,9 +1,10 @@
 ---
 layout: post
+commentshortlink: "http://ps-s.clarkezone.dev/p10"
 title:  "Previewing Jekyll blog posts"
 date: 2020-02-23 08:06:57 -0800
-categories: [jekyll,blogging]
-tags: [jekyll,golang]
+categories: [Blogging,Jekyll]
+tags: [golang]
 ---
 
 This github pages blog is powered by [Jekyll](https://jekyllrb.com), a static site generator.  Because I've been using the iPad for content creation and because the posts are written in raw markdown, I've found it quite hard to get previews of posts; I need a way of  seeing what they will look like in final form when rendered in the context of github pages.  Why do I need a preview you may ask?  Well, things like having the Jekyll template applied, seeing the layout, embeds etc often need iteration and tweaking.  In order for preview to be useful, I have the following requirements:

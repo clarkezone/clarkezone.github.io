@@ -1,8 +1,9 @@
 ---
 layout: post
+commentshortlink: "http://ps-s.clarkezone.dev/p9"
 title:  "Tracking coding time and language usage with Wakatime"
 date: 2020-02-20 09:30:30 -0800
-categories: [timetracking]
+categories: [Time Tracking]
 tags: [wakatime]
 ---
 
