@@ -71,13 +71,60 @@ spec:
   selector:
     app: nginx-tailscale
 ```
+
+## Problem
+
+Long story short, the operator didnt work out of the box.  My testing initially took place on ARM64 ububtu and then 
+
+Result of the above was this issue:
+https://github.com/tailscale/tailscale/issues/8733
+
+I decided to try some of the other kubernetes solutions:
+
+https://tailscale.com/kb/1185/kubernetes/
+
+Conclusiin of this experiment was
+1. sidecar works
+2. proxy doesn't work
+
+So neither proxy nor operetor works  
+
 ## Digging in
 Learnings
 From code
 1. The operator's job is to create a proxy statefulset for service annotated
-2. The proxy statefulset if none
+2. The operator entrypoint is operator.go
+2. The proxy statefulset is none other than tailscale/tailscale same as in the proxy example
+3. The proxy container is backed by the containerboot.go entrypoint and is how tailscaled is configured in all contsiner schenarios
 
 From issues
+https://github.com/tailscale/tailscale/issues/8111
+
+https://github.com/tailscale/tailscale/issues/8244
+
+
+https://github.com/tailscale/tailscale/issues/5621
+
+https://github.com/tailscale/tailscale/issues/391
+
+this recent patch added support for NFTABLES
+https://github.com/tailscale/tailscale/pull/8555
+
+Am I using iptables of NFt.
+
+iptables -v
+
+The conclusion from thr above research is that NFT
+
+## Hypothesis
+since it looks like NFT, can we test out the new experimental support from the PR?  
+
+here is the patch branch
+
+## The fix
+In order to ship a version of this need to add a enum to operator and plumb it through to tailscaled
+
+here is the PR
 
 ## Wrap-up
 
