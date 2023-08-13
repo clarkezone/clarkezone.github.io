@@ -78,22 +78,23 @@ The basic premis of the Tailscale Kubernetes Operator is you install the operato
 Only it didn't.  Long story short, the operator didnt work out of the box for me.  My testing initially took place on a k3s test cluster running ARM64 Ububtu 22.04.  The details of my findings in the above testing is summarized in this issue:
 https://github.com/tailscale/tailscale/issues/8733.  The punchline is that although the Tailscale operator installs fine was correctly detecting my test service, it wasn't able to correctly route traffic to the Kubernetes service through my tailnaet.
 
-Since the Tailscale operator path was blocked, I decided to try some of the other Kubernetes solutions that Tailscale offers as described here: https://tailscale.com/kb/1185/kubernetes/.  Result of that testing was
+Since the Tailscale operator path was blocked, I decided to try some of the other Kubernetes solutions that Tailscale offers as described here: https://tailscale.com/kb/1185/kubernetes/.  Whilst not as elegent as the operator, both the Proxy and Sidecar approaches can achieve a similar result to the Operator albeit with increasingly more manual steps.  Result of that testing was:
 
-1. Tailscale Sidecar for Kubernetes works
-2. Tailscale Proxy for Kubernetes doesn't work
+1. Tailscale Proxy for Kubernetes doesn't work
+2. Tailscale Sidecar for Kubernetes works
 
-So of all options, only the sidecar works for my particular configuration.  Whilst helpful information, the sidecar approach isn't going to scale for me across all the applications I need to support so I decided to double click on the two broken cases and try and figure out what was going wrong.
+So of all Tailscale Kubernetes options, only the Sidecar works for my particular configuration.  Whilst providing helpful information about the state of the solution space, the Sidecar approach wasn't going to be a viable solution for my needs so I decided to double click on the two broken cases and try and figure out what was going wrong.
 
 ## Digging in
-Doing some splunking around in various issues and code, I was able to garner the following:
+Doing some splunking around in various issues and code, I was able to identify the following relavent issues in the tailscale github repo:
 
-(from issues)
 - https://github.com/tailscale/tailscale/issues/8111
 - https://github.com/tailscale/tailscale/issues/8244
 - https://github.com/tailscale/tailscale/issues/5621
 - https://github.com/tailscale/tailscale/issues/391
 - https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006
+
+and from there derive the following learnings of the state of things:
 
 1. A common hypthysis for why the Tailscale proxy doesn't work in some instances is lack of support for NFTABLEs in the current Tailscale implementation.  This will be problematic for hosts running the newer nftables implementation.
 2. iptables provides firewall and route configuration functionality. Due to limitations (performance and stability) a more modern alternative called nftables was developerd.  More details here: https://linuxhandbook.com/iptables-vs-nftables/
@@ -104,7 +105,7 @@ Doing some splunking around in various issues and code, I was able to garner the
 https://github.com/tailscale/tailscale/pull/8555
 7. Full support for ntrables in tailscaled including autodetetcion is sitll in progress, not on by default and not available for Kubetnetes scenarios.
 
-(from code inspection in the Tailscale repo)
+From doing some spelunking around the source in the Tailscale repo:
 
 1. The Tailscale Kubernetes operator code entrypoint lives in `operator.go`
 2. The operator's job is to create a Kubernetes statefulset for every service annotated with `type: LoadBalancer`, `loadBalancerClass: tailscale`
@@ -139,7 +140,7 @@ iptables v1.8.7 (nf_tables)
 james@rapi-c4-n1:~$ 
 ```
 
-The conclusion from thr above research is my issue is the lack of nftables support in tailscaled is biting me due to the fact I'm running on Ubuntu 22.04 which defaults to nftables.
+The hypothesis from the above research is that my issue is the lack of nftables support in tailscaled is biting me due to the fact I'm running on Ubuntu 22.04 on my cluster nodes which defaults to nftables.
 
 ## Testing the hypothetical fix
 Since it looked like my issues is lack of `nftables` support out-of-the-box Tailscale and, as luck would have it, experimental support is suposedly there I set about testing this out to see if it could unblock me.  The approach was:
@@ -152,7 +153,7 @@ Since it looked like my issues is lack of `nftables` support out-of-the-box Tail
 The result of this test was the following branch: https://github.com/clarkezone/tailscale/commits/nftoperatortestfix the testing of which proved very fruitful.
 
 ## The fix
-With a fix in hand, it was time to see if we could build a patch to unblock others hitting this issue by exposing a toggle that would be settable in the Kubernetes manifest
+With a fix in hand, it was time to see if we could build a patch to temporarily unblock myself and others hitting this issue by exposing a toggle that would be settable in the Kubernetes manifest.
 
 here is the PR
 
