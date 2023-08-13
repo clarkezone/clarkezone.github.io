@@ -152,11 +152,13 @@ Since it looked like my issues is lack of `nftables` support out-of-the-box Tail
 
 The result of this test was the following branch: https://github.com/clarkezone/tailscale/commits/nftoperatortestfix the testing of which proved very fruitful.
 
-## The fix
+## The patch
 With a fix in hand, it was time to see if we could build a patch to temporarily unblock myself and others hitting this issue by exposing a toggle that would be settable in the Kubernetes manifest.
 
-here is the PR
+Here is the resulting PR: [TODO](https://github.com/tailscale/tailscale/pull/8749).
+
+As the ongoing work on https://github.com/tailscale/tailscale/issues/5621 continues to land (eg [Title](https://github.com/tailscale/tailscale/pull/8762)) the need for my fix will go away as the scenario will just work, but until then it's a temporary stop-gap for those blocked on adopting the Tailscale Kubernetes Operator.
 
 ## Wrap-up
 
-Thanks for reading this far!  I hope you've been able to learn something new.  Would love to know how you get on your journey into the fun world of Docker and Containers.  Stay in touch here <a href="https://q6o.to/czt" target="_blank">`Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a>
+Thanks for reading this far!  I hope you've been able to learn something new.  Would love to know how you get on your journey into the fun world of Containers, Kubernetes and Tailscale.  Stay in touch here <a href="https://q6o.to/czt" target="_blank">`Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a>
