@@ -6,23 +6,34 @@ categories: [Tailscale]
 tags: [Tailscale, Kubernetes, OpenSourceContribution]
 ---
 ## Audience
-SRE, Dev ops, Platform engineering
+Kubernetes Homelab users, Tailscale users
 
-<img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/tailscaleoperator.png" align="right"> ## Introduction
-I've been a big Tailscale fan for a number of years now and consider Tailscale to be an essential part of my personal infrastructure toolset.  One of the fundamental use cases that I depend on is the ability to use Tailscale for accessing private web applications that I host on a number of kubernetes clusters self-hosted at home.  The approach I've been using up to now is one I learned from David Bond <a href="https://q6o.to/bpdbk3sts" target="_blank">in this post</a>.  In a this approach, each cluster node is individually joined to your tailnet and the cluster itself uses the tailnet for intra-node communication.  The fiddly part of this current approach comes when layering on DNS resolution, SSL and Kubernetes ingress.  The current solutions I'm using for each of these has limitations and annoyances and are ripe for replacement with a more elegent solution. 
+## Introduction
+In this post I tell the story of an attempt to replace my [existing workable but cumbersome Tailscale Kubernetes traffic routing solution](TODO) for my home-lab with the simplicity and elegance of the [Tailscale Operetor for Kubernetes](TODO) using  both the existing incarnation which supports Kubernetes Services (OSI L3) as well as the [awesome new L7 ingresss capability that was recently merged](https://github.com/tailscale/tailscale/pull/9048).  Along the way I share learnings about a compatibility gotcha with work-around impacting more recent Ubuntu distros and a mini tutorial on deploying a private version of the Tailscale operator for Kubernetes from source.
+
+## Tailscale x Kubernetes
+<img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/tailscaleoperator.png" align="right">If you use any number of devices in your digital life bit don’t use [Tailscale](TODO) yet I imhighly recommend looking into it.  If you also happen to use a homelab and self-host web services the case is even stronger (if not and your interested check out [this great resource](TODO))
+
+Homelabs offer a great hands-on way of learning Linux and Kubernetes but they are also a means to regaining control over your digital estate.  I started making the move a few years ago and haven’t looked back since.  I self host Bitwarden, Home Assistant, Gitea, an instance of docker hub and more using a number of home made clusters running in [k3s](TODO), a simplified k8s distribution.  The services I host are largely private in that they don’t need to be internet visible but they do need to be reachable from all devices.  This is where Tailscale comes in.  Putting these services on the tail net that connects all devices already makes them available securely everywhere without the need or risks inherent of exposing these on the external internet.
+
+> If you are selfhosting services in another manner such as using Docker on a Synology home NAS, Tailscale is still worth checkout out as these scenarios are [natively supported](TODO).
+
+The approach I've been using to expose services form Kubernetes cluster up to now is one I learned from [David Bond](TODO) in <a href="https://q6o.to/bpdbk3sts" target="_blank">in this post</a>.  In David's approach (simplified here for brevity), each cluster node is individually joined to your tailnet and the cluster itself uses the tailnet for intra-node communication.  This has some advantages (a home cluster can access tailnet resources such as docker repos hosted on another home cluster) but comes with a complex setup process and more devices on the tailnet to manage keys for.
+
 
 > If you are a tailscale user <a href="https://q6o.to/czt" target="_blank">`Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a>.
 
 ## Tailscale Operator
     
- I first learned about the existance of the Tailscale operator for Kubernetes over lunch with BradA and Mai in Redmond in July 2022.  I was subsequently aware of it <a href="https://q6o.to/bptsk8sop" target="_blank">going into preview albeit in an unstable state</a> but still hadn't had a chance to try it out.  It was only over the last few days (writing this on Sunday July 30th 2023) that I got around to finally trying the operator out in my setup.
+ I first learned about the existance of the Tailscale operator for Kubernetes over lunch with several members of the Tailscale dev team in Redmond in July 2022 when it was a twinkle in [Maism's]() eye.  The feature subsequently<a href="https://q6o.to/bptsk8sop" target="_blank">went into preview albeit in an unstable state</a> but still I hadn't had a chance to try it out.  It was only over the last few days (writing this on Sunday July 30th 2023) that I got around to finally trying the operator out in my setup.
 
- The attraction of the Tailscale operator for me is that it can expose any Kubernetes service in your cluster on your tailnet without the bother of needing to set up an ingress solution.  In my case it replaces the complexity of building out clusters with Tailscale on every node, and gives simple DNS setup via magic DNS.  The remaining gap which is supposedly in the roadmap is a solution for SSL.  Since all traffic is limited to the tailnet which is encrypted, I'm willing to trade off the reduction in complexity against the lack of double encryption for now.
+ The attraction of the Tailscale operator for me is that it can expose any Kubernetes service in your cluster on your tailnet without the bother of needing to set up an ingress solution.  In my case it replaces the complexity of building out clusters with Tailscale on every node, and gives simple DNS setup via magic DNS.  The remaining gap which is supposedly in the roadmap is a solution for ingress with SSL.  Since all traffic is limited to the tailnet which is encrypted, I'm willing to trade off the reduction in complexity against the lack of double encryption for now.
+
+ > After writing the above, [Maisam submitted a patch to add ingress support](https://github.com/tailscale/tailscale/pull/9048) which fully addresses the above gap.  I cover that later in the post.
  
- There is an aditional feature that enables Tailscale to perform the duties of an authenticating proxy for the k8s control plane which sounds interesting and I plan to try out at some point.
 
 ## Kicking the tyres
-I started off by following the seemingly simple instructions outline in the post linked above.  I installed the operator and then created a simple nginx deployment and service to test it out:
+I started off by following the seemingly simple instructions outlined in the [Kubernetes Operator kb entry](https://q6o.to/bptsk8sop).  I installed the operator and then created a simple nginx deployment and service to test it out:
 
 ```yaml
 apiVersion: v1
@@ -76,9 +87,9 @@ The basic premis of the Tailscale Kubernetes Operator is you install the operato
 ## Problem
 
 Only it didn't.  Long story short, the operator didnt work out of the box for me.  My testing initially took place on a k3s test cluster running ARM64 Ububtu 22.04.  The details of my findings in the above testing is summarized in this issue:
-https://github.com/tailscale/tailscale/issues/8733.  The punchline is that although the Tailscale operator installs fine was correctly detecting my test service, it wasn't able to correctly route traffic to the Kubernetes service through my tailnaet.
+[https://github.com/tailscale/tailscale/issues/8733](https://github.com/tailscale/tailscale/issues/8733).  The punchline is that although the Tailscale operator installs fine was correctly detecting my test service, it wasn't able to correctly route traffic to the Kubernetes service through my tailnet.
 
-Since the Tailscale operator path was blocked, I decided to try some of the other Kubernetes solutions that Tailscale offers as described here: https://tailscale.com/kb/1185/kubernetes/.  Whilst not as elegent as the operator, both the Proxy and Sidecar approaches can achieve a similar result to the Operator albeit with increasingly more manual steps.  Result of that testing was:
+Since the Tailscale operator path was blocked, I decided to try some of the other Kubernetes solutions that Tailscale offers as described here: [https://tailscale.com/kb/1185/kubernetes](https://tailscale.com/kb/1185/kubernetes).  Whilst not as elegent as the operator, both the Proxy and Sidecar approaches can achieve a similar result to the Operator albeit with increasingly more manual steps.  Result of that testing was:
 
 1. Tailscale Proxy for Kubernetes doesn't work
 2. Tailscale Sidecar for Kubernetes works
@@ -88,21 +99,22 @@ So of all Tailscale Kubernetes options, only the Sidecar works for my particular
 ## Digging in
 Doing some splunking around in various issues and code, I was able to identify the following relavent issues in the tailscale github repo:
 
-- https://github.com/tailscale/tailscale/issues/8111
-- https://github.com/tailscale/tailscale/issues/8244
-- https://github.com/tailscale/tailscale/issues/5621
-- https://github.com/tailscale/tailscale/issues/391
-- https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006
+- [https://github.com/tailscale/tailscale/issues/8111](https://github.com/tailscale/tailscale/issues/8111)
+- [https://github.com/tailscale/tailscale/issues/8244](https://github.com/tailscale/tailscale/issues/8244)
+- [https://github.com/tailscale/tailscale/issues/5621](https://github.com/tailscale/tailscale/issues/5621)
+[- https://github.com/tailscale/tailscale/issues/391](https://github.com/tailscale/tailscale/issues/391)
+- <a href="https://github.com/tailscale/tailscale/issues/391" target="_blank">https://github.com/tailscale/tailscale/issues/391</a>
+- [https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006]()https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006
 
 and from there derive the following learnings of the state of things:
 
 1. A common hypthysis for why the Tailscale proxy doesn't work in some instances is lack of support for NFTABLEs in the current Tailscale implementation.  This will be problematic for hosts running the newer nftables implementation.
-2. iptables provides firewall and route configuration functionality. Due to limitations (performance and stability) a more modern alternative called nftables was developerd.  More details here: https://linuxhandbook.com/iptables-vs-nftables/
+2. iptables provides firewall and route configuration functionality. Due to limitations (performance and stability) a more modern alternative called nftables was developerd.  More details here: [https://linuxhandbook.com/iptables-vs-nftables/](https://linuxhandbook.com/iptables-vs-nftables/)
 3. Ubuntu 20.04 uses the legacy iptables implementation where-as 22.04 moved to nftables.
 4. Since only one implementaiton is installed / active on a host at one time, it is necessary to detect which is running and use appropriate API's.
-5. This is not a new thing.  The KubeProxy had to accomodate this situation back in 2018 as mentioned in this issue https://github.com/kubernetes/kubernetes/issues/71305
+5. This is not a new thing.  The KubeProxy had to accomodate this situation back in 2018 as mentioned in this issue [https://github.com/kubernetes/kubernetes/issues/71305](https://github.com/kubernetes/kubernetes/issues/71305)
 6. On the Tailscale side, an NFTABLE patch recently landed adding support for NFTABLES albiet experimental and behind a tailscaled flag.
-https://github.com/tailscale/tailscale/pull/8555
+[https://github.com/tailscale/tailscale/pull/8555](https://github.com/tailscale/tailscale/pull/8555)
 7. Full support for ntrables in tailscaled including autodetetcion is sitll in progress, not on by default and not available for Kubetnetes scenarios.
 
 From doing some spelunking around the source in the Tailscale repo:
@@ -150,14 +162,35 @@ Since it looked like my issues is lack of `nftables` support out-of-the-box Tail
 3. verify this with Tailscale proxy
 4. if yes, test with Tailscale operator
 
-The result of this test was the following branch: https://github.com/clarkezone/tailscale/commits/nftoperatortestfix the testing of which proved very fruitful.
+The result of this test was the following branch: [https://github.com/clarkezone/tailscale/commits/nftoperatortestfix](https://github.com/clarkezone/tailscale/commits/nftoperatortestfix) the testing of which proved very fruitful.
 
 ## The patch
 With a fix in hand, it was time to see if we could build a patch to temporarily unblock myself and others hitting this issue by exposing a toggle that would be settable in the Kubernetes manifest.
 
-Here is the resulting PR: [TODO](https://github.com/tailscale/tailscale/pull/8749).
+Here is the resulting PR: [https://github.com/tailscale/tailscale/pull/8749](https://github.com/tailscale/tailscale/pull/8749).
 
-As the ongoing work on https://github.com/tailscale/tailscale/issues/5621 continues to land (eg [Title](https://github.com/tailscale/tailscale/pull/8762)) the need for my fix will go away as the scenario will just work, but until then it's a temporary stop-gap for those blocked on adopting the Tailscale Kubernetes Operator.
+As the ongoing work on [https://github.com/tailscale/tailscale/issues/5621](https://github.com/tailscale/tailscale/issues/5621) continues to land (eg [https://github.com/tailscale/tailscale/pull/8762](https://github.com/tailscale/tailscale/pull/8762)) the need for my fix will go away as the scenario will just work, but until then it's a temporary stop-gap for those blocked on adopting the Tailscale Kubernetes Operator.
+
+If you want to try it out you can:
+
+To try it out
+
+1. (optional) build client docker image: `build_image`
+2. (optional) build operator docker image: `build_image`
+3. Grab manifest from this branch: `curl -LO ddd`
+4. add your clientID and secret per the official instructions
+5. (optional) if you built and pushed your own containers, update x and y
+6. apply `operator.yaml` manifest
+7. apply nginx (from PR or elsewehre)
+8. curl
+
+## Adding Ingress
+Over the course of writing this post, Maism landed the inital PR that adds ingress support to the operator.  This provides the final missing link I was looking for.
+
+## Next steps
+There is an aditional feature that enables Tailscale to perform the duties of an authenticating proxy for the k8s control plane which sounds interesting and I plan to try out at some point.
+
+For the scenario of enabling one cluster to access other tailnet resources, there is also an egress proxy solutoin that I need to look at.
 
 ## Wrap-up
 
