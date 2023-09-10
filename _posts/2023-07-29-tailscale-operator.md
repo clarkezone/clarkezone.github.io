@@ -115,14 +115,14 @@ and from there derive the following learnings of the state of things:
 5. This is not a new thing.  The KubeProxy had to accommodate this situation back in 2018 as mentioned in this issue [https://github.com/kubernetes/kubernetes/issues/71305](https://github.com/kubernetes/kubernetes/issues/71305)
 6. On the Tailscale side, an NFTABLE patch recently landed adding support for NFTABLES albeit experimental and behind a tailscaled flag.
 [https://github.com/tailscale/tailscale/pull/8555](https://github.com/tailscale/tailscale/pull/8555)
-7. Full support for ntrables in tailscaled including autodetetcion is sitll in progress, not on by default and not available for Kubetnetes scenarios.
+7. Full support for ntrables in tailscaled including auto-detetcion is still in progress, not on by default and not available for Kubetnetes scenarios.
 
 From doing some spelunking around the source in the Tailscale repo:
 
 1. The Tailscale Kubernetes operator code entrypoint lives in `operator.go`
 2. The operator's job is to create a Kubernetes statefulset for every service annotated with `type: LoadBalancer`, `loadBalancerClass: tailscale`
 3. The proxy statefulset is instantiated from the docker image `tailscale/tailscale` which turns out to be the self-same container image as used by the Tailscale Kubernetes proxy example
-4. The `tailscale/tailscale` docker image is esentially a wrapper around backed by `tailscaled` is configured and run in all container scenarios
+4. The `tailscale/tailscale` docker image is essentially a wrapper around backed by `tailscaled` is configured and run in all container scenarios
 5. The code entrypoint for the `tailscale/tailscale` docker image is `containerboot.go` 
 
 Interesting stuff.  Based on the above, first step was to set about verifying that Ubuntu 22.04 does indeed run on nftables. I duly ssh'd into one of my cluster nodes, ran iptables -v and:
