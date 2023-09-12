@@ -94,10 +94,10 @@ Since the Tailscale operator path forward was blocked, I decided to try some of 
 1. Tailscale Proxy for Kubernetes doesn't work
 2. Tailscale Sidecar for Kubernetes did work
 
-In summary, of all Tailscale Kubernetes options, only the Sidecar worked for my particular configuration.  Whilst providing helpful information about the state of the solution space, the Sidecar approach wasn't going to be a viable solution for my needs so I decided to double click on the two broken cases and try and figure out what was going wrong.
+In summary, of all Tailscale Kubernetes options, only the Sidecar approach worked for my particular configuration.  Whilst providing helpful information about the state of the solution space, the Sidecar approach wasn't going to be a viable solution for my needs so I decided to double click on the two broken cases and try and figure out what was going wrong.
 
 ## Digging in
-Doing some spelunking around in various issues and code, I was able to identify the following relevant issues in the tailscale github repo:
+Doing some spelunking around in various issues and code, I was able to identify the following relevant issues in the tailscale repo:
 
 - [https://github.com/tailscale/tailscale/issues/8111](https://github.com/tailscale/tailscale/issues/8111)
 - [https://github.com/tailscale/tailscale/issues/8244](https://github.com/tailscale/tailscale/issues/8244)
@@ -106,38 +106,28 @@ Doing some spelunking around in various issues and code, I was able to identify 
 - <a href="https://github.com/tailscale/tailscale/issues/391" target="_blank">https://github.com/tailscale/tailscale/issues/391</a>
 - [https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006]()https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006
 
-and from there derive the following learnings of the state of things:
+and from there derive the following learnings:
 
-1. A common hypothesis for why the Tailscale proxy doesn't work in some instances is lack of support for NFTABLEs in the current Tailscale implementation.  This will be problematic for hosts running the newer nftables implementation.
-2. iptables provides firewall and route configuration functionality. Due to limitations (performance and stability) a more modern alternative called nftables was developed.  More details here: [https://linuxhandbook.com/iptables-vs-nftables/](https://linuxhandbook.com/iptables-vs-nftables/)
-3. Ubuntu 20.04 uses the legacy iptables implementation where-as 22.04 moved to nftables.
-4. Since only one implementation is installed / active on a host at one time, it is necessary to detect which is running and use appropriate API's.
-5. This is not a new thing.  The KubeProxy had to accommodate this situation back in 2018 as mentioned in this issue [https://github.com/kubernetes/kubernetes/issues/71305](https://github.com/kubernetes/kubernetes/issues/71305)
-6. On the Tailscale side, an NFTABLE patch recently landed adding support for NFTABLES albeit experimental and behind a tailscaled flag.
+1. `iptables` provides firewall and route configuration functionality on Linux. Due to limitations (performance and stability) a more modern alternative called `nftables` was developed.  More details here: [https://linuxhandbook.com/iptables-vs-nftables/](https://linuxhandbook.com/iptables-vs-nftables/)
+2. Since only one implementation is installed / active on a host at one time, it is necessary to detect which is running and use appropriate API's.
+3. Older versions of Ubuntu such as 20.04 use the `iptables` implementation where-as 22.04 moved to `nftables`.
+4. Lack of support for `nftables` in the current Tailscale implementation being a common problem.  This impacts tailscale compatibility when running on more recent OS which may default to using `nftables` rather than `iptables`.
+5. This is not a new thing.  The KubeProxy previously had to accommodate this situation back in 2018 as mentioned in this issue [https://github.com/kubernetes/kubernetes/issues/71305](https://github.com/kubernetes/kubernetes/issues/71305)
+6. On the Tailscale side, an `nftables` patch recently landed adding support for `nftables` albeit experimental and behind a tailscaled flag.
 [https://github.com/tailscale/tailscale/pull/8555](https://github.com/tailscale/tailscale/pull/8555)
-7. Full support for ntrables in tailscaled including auto-detetcion is still in progress, not on by default and not available for Kubetnetes scenarios.
+7. Full support for nfttables in tailscaled including auto-detetcion is still in progress, not on by default and not available for Kubetnetes scenarios.
+
+> At the original time of writing, auto-detetcion and switching for `iptables` and `nftables` hadn't been built, it has subsequently landed behind a flag
 
 From doing some spelunking around the source in the Tailscale repo:
 
-1. The Tailscale Kubernetes operator code entrypoint lives in `operator.go`
+1. The code entrypoint for Tailscale Kubernetes operator lives in `operator.go`
 2. The operator's job is to create a Kubernetes statefulset for every service annotated with `type: LoadBalancer`, `loadBalancerClass: tailscale`
-3. The proxy statefulset is instantiated from the docker image `tailscale/tailscale` which turns out to be the self-same container image as used by the Tailscale Kubernetes proxy example
+3. The statefulset is instantiated from the docker image `tailscale/tailscale` which turns out to be the self-same container image as used by the Tailscale Kubernetes Proxy approach.  From my testing Proxy was a non working case in my setup.
 4. The `tailscale/tailscale` docker image is essentially a wrapper around backed by `tailscaled` is configured and run in all container scenarios
 5. The code entrypoint for the `tailscale/tailscale` docker image is `containerboot.go` 
 
-Interesting stuff.  Based on the above, first step was to set about verifying that Ubuntu 22.04 does indeed run on nftables. I duly ssh'd into one of my cluster nodes, ran iptables -v and:
-
-Ubuntu 20.04
-```bash
-james@rapi-c1-n1:~$ lsb_release -a
-No LSB modules are available.
-Distributor ID: Ubuntu
-Description:    Ubuntu 20.04.5 LTS
-Release:        20.04
-Codename:       focal
-james@rapi-c1-n1:~$ iptables -V
-iptables v1.8.4 (legacy)
-```
+Interesting stuff.  Based on the above, first step was to set about verifying that Ubuntu 22.04 does indeed run on `nftables`. I duly ssh'd into one of my cluster nodes, ran `iptables -v` with the following results confirming that 22.04 does indeed run on `nftables`:
 
 Ubuntu 22.04
 ```bash
@@ -151,41 +141,54 @@ james@rapi-c4-n1:~$ iptables -V
 iptables v1.8.7 (nf_tables)
 james@rapi-c4-n1:~$ 
 ```
+Repeating on a 20.04 node, in this case it's running on `iptables`:
 
-The hypothesis from the above research is that my issue is the lack of nftables support in tailscaled is biting me due to the fact I'm running on Ubuntu 22.04 on my cluster nodes which defaults to nftables.
+Ubuntu 20.04
+```bash
+james@rapi-c1-n1:~$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 20.04.5 LTS
+Release:        20.04
+Codename:       focal
+james@rapi-c1-n1:~$ iptables -V
+iptables v1.8.4 (legacy)
+```
+The overall hypothesis from all of the above research is that my issue is the lack of `nftables` support in tailscaled is biting me due to the fact I'm running on Ubuntu 22.04 on my cluster nodes which defaults to nftables.
 
 ## Testing the hypothetical fix
-Since it looked like my issues is lack of `nftables` support out-of-the-box Tailscale and, as luck would have it, experimental support is supposedly there I set about testing this out to see if it could unblock me.  The approach was:
+Since it looked like my issues is lack of `nftables` support out-of-the-box Tailscale and, as luck would have it, experimental support is supposedly there behind a disabled flag, I set about testing this out to see if it could unblock me.  The approach was:
 
 1. forcing on the `TS_DEBUG_USE_NETLINK_NFTABLES` flag in `wengine/router/router_linux.go`
-2. build a private copy of the tailscale/tailscale image
-3. verify this with Tailscale proxy
-4. if yes, test with Tailscale operator
+2. build a private copy of the tailscale/tailscale container image
+3. verify this image with Tailscale proxy since the implementation is shared with the Operator and the scenario is simpler
+4. if yes, test image with Tailscale Operator
 
-The result of this test was the following branch: [https://github.com/clarkezone/tailscale/commits/nftoperatortestfix](https://github.com/clarkezone/tailscale/commits/nftoperatortestfix) the testing of which proved very fruitful.
-
-## The patch
-With a fix in hand, it was time to see if we could build a patch to temporarily unblock myself and others hitting this issue by exposing a toggle that would be settable in the Kubernetes manifest.
-
-Here is the resulting PR: [https://github.com/tailscale/tailscale/pull/8749](https://github.com/tailscale/tailscale/pull/8749).
+The result of working through these steps was the following private fork: [https://github.com/clarkezone/tailscale/commits/nftoperatortestfix](https://github.com/clarkezone/tailscale/commits/nftoperatortestfix) the testing of which proved very fruitful.  In summary, the nftsupport worked as expected.  Since others had cited this problem, I decided to be a good opensource citizen and submit a PR: [https://github.com/tailscale/tailscale/pull/8749](https://github.com/tailscale/tailscale/pull/8749).
 
 As the ongoing work on [https://github.com/tailscale/tailscale/issues/5621](https://github.com/tailscale/tailscale/issues/5621) continues to land (eg [https://github.com/tailscale/tailscale/pull/8762](https://github.com/tailscale/tailscale/pull/8762)) the need for my fix will go away as the scenario will just work, but until then it's a temporary stop-gap for those blocked on adopting the Tailscale Kubernetes Operator.
 
-If you want to try it out you can:
+If you want to follow along you can do the following:
 
 To try it out
 
-1. (optional) build client docker image: `build_image`
-2. (optional) build operator docker image: `build_image`
-3. Grab manifest from this branch: `curl -LO ddd`
-4. add your clientID and secret per the official instructions
-5. (optional) if you built and pushed your own containers, update x and y
-6. apply `operator.yaml` manifest
-7. apply nginx (from PR or elsewehre)
-8. curl
+1. (optional) build client docker image substituting appropriate repos and tags: `PUSH=true REPOS=clarkezone/tsopfixtestclient TAGS=6 TARGET=client ./build_docker.sh`
+2. (optional) build operator docker image substituting appropriate repos and tags: `PUSH=true REPOS=clarkezone/tsopfixtestoperator TAGS=3 TARGET=operator ./build_docker.sh
+`
+3. Grab manifest from this branch: `curl -LO https://github.com/clarkezone/tailscale/raw/nftoperatortestfix/cmd/k8s-operator/manifests/operator.yaml`
+4. add your clientID and secret per the [official instructions](TODO)
+5. (optional) if you built and pushed your own containers, update line 130 and 152 to point to your private images
+6. Apply the operator manifest: `kubectl apply -f operator.yaml`
+7. apply test manifests to publish a nginx server on tailnet: `kubectl apply -f https://gist.github.com/clarkezone/b22a5851f2e4229f5fd29f1115ddee32/raw/277efaa5e099ef055eb445115dd199dc40829df2/tailscaleoperatortest.yaml`
+8. Get the endopoint address for the service on your tailnet with `kubectl get services -n tailscaletest` in the external IP column, you should see a dns entry in your tailnet similar to tailscaletest-nginx-tailscale.tail967d8.ts.net, this is the endpoint your service is exposed on.
+9. You should be able to curl the endpoint and see output from nginx: `curl tailscaletest-nginx-tailscale.tail967d8.ts.net`
 
 ## Adding Ingress
-Over the course of writing this post, Maism landed the inital PR that adds ingress support to the operator.  This provides the final missing link I was looking for.
+The ultimate solution I've been looking for with a Tailscale Operator type of solution is something that works at the http layer and supports DNS and SSL integration to enable a better more secure user exterience for connecting to clusters.i  Over the course of writing this post, my wish came try when Maism landed the [inital PR that adds ingress support to the Tailscale Operator](TODO).  This provides the final missing link I was looking for. So this post wouldn't be complete with a quick tour of that.  It's also worth noting that because Ingress support doesn't depend on the iptables or nftables layer, my original issue is also solved without any of the concerns I've articulated above. 
+
+The revised manifests needed look something like this:
+
+
 
 ## Next steps
 There is an aditional feature that enables Tailscale to perform the duties of an authenticating proxy for the k8s control plane which sounds interesting and I plan to try out at some point.
