@@ -104,7 +104,7 @@ Doing some spelunking around in various issues and code, I was able to identify 
 - [https://github.com/tailscale/tailscale/issues/5621](https://github.com/tailscale/tailscale/issues/5621)
 [- https://github.com/tailscale/tailscale/issues/391](https://github.com/tailscale/tailscale/issues/391)
 - <a href="https://github.com/tailscale/tailscale/issues/391" target="_blank">https://github.com/tailscale/tailscale/issues/391</a>
-- [https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006]()https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006
+- [https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006](https://unix.stackexchange.com/questions/588998/check-whether-iptables-or-nftables-are-in-use/589006#589006)
 
 and from there derive the following learnings:
 
@@ -184,10 +184,88 @@ To try it out
 9. You should be able to curl the endpoint and see output from nginx: `curl tailscaletest-nginx-tailscale.tail967d8.ts.net`
 
 ## Adding Ingress
-The ultimate solution I've been looking for with a Tailscale Operator type of solution is something that works at the http layer and supports DNS and SSL integration to enable a better more secure user exterience for connecting to clusters.i  Over the course of writing this post, my wish came try when Maism landed the [inital PR that adds ingress support to the Tailscale Operator](TODO).  This provides the final missing link I was looking for. So this post wouldn't be complete with a quick tour of that.  It's also worth noting that because Ingress support doesn't depend on the iptables or nftables layer, my original issue is also solved without any of the concerns I've articulated above. 
+The ultimate solution I've been looking for with a Tailscale Operator type of solution is something that works at the http layer and supports DNS and SSL integration to enable a better more secure user exterience for connecting to clusters.  Over the course of writing this post, my wish came try when Maism landed the [inital PR that adds ingress support to the Tailscale Operator](TODO).  This provides the final missing link I was looking for. So this post wouldn't be complete with a quick tour of that.  It's also worth noting that because Ingress support doesn't depend on the iptables or nftables layer, my original issue is also solved without any of the concerns I've articulated above. 
 
-The revised manifests needed look something like this:
+In order to leverage Ingress support, the earlier example is modified by removing anotation from the service and adding an ingress manifest with a modified tailscale annotation:
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tailscaletest
 
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-tailscale
+  namespace: tailscaletest
+  labels:
+    app: nginx-tailscale
+spec:
+  selector:
+    matchLabels:
+      app: nginx-tailscale
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: nginx-tailscale
+    spec:
+      containers:
+      - name: nginx-tailscale
+        image: nginx:1.20-alpine
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-tailscale
+  namespace: tailscaletest
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: nginx-tailscale
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-tailscale
+  namespace: tailscaletest
+spec:
+  ingressClassName: tailscale
+  tls:
+  - hosts:
+    - "foo"
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-tailscale
+            port:
+              number: 80
+```
+
+If you apply the above to a cluster with the latest operator installed, via
+
+`kubectl apply -f https://gist.github.com/clarkezone/f99ea7f0c08a4f0f7a2487cc73871b89`
+
+you will see something simlar to this:
+
+```bash
+k get ingress -n tailscaletest nginx-tailscale
+NAME              CLASS       HOSTS   ADDRESS                       PORTS     AGE
+nginx-tailscale   tailscale   *       nginx-test.tail967d8.ts.net   80, 443   7m52s
+```
 
 
 ## Next steps
