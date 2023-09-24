@@ -265,7 +265,7 @@ NAME              CLASS       HOSTS   ADDRESS                       PORTS     AG
 nginx-tailscale   tailscale   *       nginx-test.tailxxxx.ts.net   80, 443   7m52s
 ```
 
-Assuming you have Tailscales' wonderful [MagicDNS](https://tailscale.com/kb/1081/magicdns/) enabled, you can now visit https://nginx-test.tailxxxx.ts.net from the browser of any device on your tailnet and get SSL secured access to your cluster.  Mission accomplished!  Thx Maisem!
+Assuming you have Tailscales' wonderful [MagicDNS](https://q6o.to/tsckb1081) enabled, you can now visit https://nginx-test.tailxxxx.ts.net from the browser of any device on your tailnet and get SSL secured access to your cluster.  Mission accomplished!  Thx Maisem!
 
 ## Next steps
 There is an aditional feature that enables Tailscale to perform the duties of an authenticating proxy for the k8s control plane which sounds interesting and I plan to try out at some point.
