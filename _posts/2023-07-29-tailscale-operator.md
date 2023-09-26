@@ -12,9 +12,38 @@ Kubernetes Homelab users, Tailscale users
 In this post I tell the story of my attempt to replace an [existing workable but cumbersome solution for Tailscale traffic routing](https://q6o.to/bpdbk3sts) for my Kubernetes home-lab with the simplicity and elegance of the [Tailscale Operetor for Kubernetes](https://q6o.to/bptsk8sop).  Along the way I share learnings about a compatibility gotcha with recent Ubuntu distros including the work-around, as well as a mini tutorial on deploying a private version of the operator from source.  I cover both the existing incarnation of the Tailscale operator which supports Kubernetes Services (OSI L3) as well as the [awesome new L7 ingresss capability that was recently merged](https://q6o.to/ghptsc9048).
 
 ## Tailscale X Kubernetes
-<img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/tailscaleoperator.png" align="right">If you use any number of devices in your digital life but don’t use [Tailscale](https://q6o.to/tsca) yet I highly recommend looking into it.  If you use any kind of homelab setup and self-host web services then the case is even stronger (if not and you are interested check out [the homelab Reddit](https://q6o.to/rehl)).
+<img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/tailscaleoperator.png" align="right">If you use any number of devices in your digital life but don’t use [Tailscale](https://q6o.to/tsca) yet I highly recommend looking into it.  If you use any kind of homelab setup and self-host web services then the case is even stronger (if not and you are interested check out [the homelab Reddit](https://q6o.to/rehl) or the excellent [Selfhosted podcast](https://selfhosted.show)).
 
-Homelabs offer a great hands-on way of learning Linux and Kubernetes but they are also a means to regaining control over your digital estate.  I started making the move a few years ago and haven’t looked back since.  I self-host Bitwarden, Home Assistant, Gitea, an instance of docker hub and more using several home made clusters running [k3s](https://q6o.to/k3sa), a simplified k8s distribution.  The services I host are largely private in the sense that they don’t need to be internet visible but they do need to be reachable from all devices.  This is where Tailscale comes in.  Putting these services on the tailnet that connects all devices makes them available securely everywhere without the need or risks inherent of exposing them on the external internet.
+
+Homelabs offer a great hands-on way of learning Linux and Kubernetes but they are also a means to regaining control over your digital estate.  I started making the move a few years ago and haven’t looked back since.  I self-host Bitwarden, Home Assistant, Gitea, an instance of docker hub and more using several home made clusters running [k3s](https://q6o.to/k3sa), a simplified k8s distribution.  
+
+```mermaid
+graph TD
+    subgraph Internet
+        vpn[Tailscale tailnet private VPN]
+    end
+    subgraph House
+        pc[PC]
+        cluster[Kubernetes Cluster]
+        nas[Synology NAS]
+        service1[Service 1 Bitwarden]
+        service2[Service 2 Gitea]
+        cluster --> service1
+        cluster --> service2
+    end
+    phone[Phone] --> vpn
+    pc --> vpn
+    nas --> vpn
+    laptop[Laptop] --> vpn
+```
+
+after
+
+```mermaid
+
+```
+
+The services I host are largely private in the sense that they don’t need to be internet visible but they do need to be reachable from all devices.  This is where Tailscale comes in.  Putting these services on the tailnet that connects all devices makes them available securely everywhere without the need or risks inherent of exposing them on the external internet.
 
 > If you are selfhosting services in another manner such as using Docker on a Synology home NAS, Tailscale is still worth checkout out as these scenarios are [natively supported](https://q6o.to/tsckb1131).
 
