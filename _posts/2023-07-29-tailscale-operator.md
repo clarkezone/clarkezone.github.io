@@ -4,6 +4,7 @@ title: The one about the Tailscale Kubernetes Operator onion peel
 date: 2023-07-29 10:34:00 -0800
 categories: [Tailscale]
 tags: [Tailscale, Kubernetes, OpenSourceContribution]
+mermaid: true
 ---
 ## Audience
 Kubernetes Homelab users, Tailscale users
@@ -40,6 +41,25 @@ graph TD
 after
 
 ```mermaid
+graph TD
+    subgraph Internet
+        vpn[Tailscale tailnet private VPN]
+    end
+    subgraph House
+        pc[PC]
+        cluster[Kubernetes Cluster]
+        nas[Synology NAS]
+        service1[Service 1 Bitwarden]
+        service2[Service 2 Gitea]
+        cluster --> service1
+        cluster --> service2
+    end
+    phone[Phone] --> vpn
+    pc --> vpn
+    nas --> vpn
+    laptop[Laptop] --> vpn
+    service1 --> vpn
+    service2 --> vpn
 
 ```
 
