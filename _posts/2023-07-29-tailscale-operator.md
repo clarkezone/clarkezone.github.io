@@ -9,14 +9,22 @@ mermaid: true
 ## Audience
 Kubernetes Homelab users, Tailscale users
 
+<img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/matrixoperator.jpg" >
+
 ## Introduction
-In this post I tell the story of my attempt to replace an <a href="https://q6o.to/bpdbk3sts" target="_blank">existing workable but cumbersome solution for Tailscale traffic routing</a> for my Kubernetes home-lab with the simplicity and elegance of the <a href="https://q6o.to/bptsk8sop" target="_blank">Tailscale Operetor for Kubernetes</a>.  Along the way I share learnings about a compatibility gotcha with recent Ubuntu distros including the work-around, as well as a mini tutorial on deploying a private version of the operator from source.  I cover both the existing incarnation of the Tailscale operator which supports Kubernetes Services (OSI L3) as well as the <a href="https://q6o.to/ghptsc9048" target="_blank">awesome new L7 ingresss capability that was recently merged</a>.
+In this post I tell the story of my attempt to replace an <a href="https://q6o.to/bpdbk3sts" target="_blank">existing workable but cumbersome solution for Tailscale traffic routing</a> for my Kubernetes homelab with the simplicity and elegance of the <a href="https://q6o.to/bptsk8sop" target="_blank">Tailscale Operetor for Kubernetes</a>.  Along the way I share learnings about a compatibility gotcha with recent Ubuntu distros including the work-around, as well as a mini tutorial on deploying a private version of the operator from source.  I cover both the existing incarnation of the Tailscale operator which supports Kubernetes Services (OSI L3) as well as the <a href="https://q6o.to/ghptsc9048" target="_blank">awesome new L7 ingresss capability that was recently merged</a>.
 
 ## Tailscale X Kubernetes
-<img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/tailscaleoperator.png" align="right">If you use any number of devices in your digital life but don’t use <a href="https://q6o.to/tsca" target="_blank">Tailscale</a> yet I highly recommend looking into it.  If you use any kind of homelab setup and self-host web services then the case is even stronger (if not and you are interested check out <a href="https://q6o.to/rehl" target="_blank">the homelab Reddit</a> or the excellent <a href="https://selfhosted.show" target="_blank">Selfhosted podcast</a>).
+If you are reading this post you are very likely an existing <a href="https://q6o.to/tsca" target="_blank">Tailscale</a> user or at least familiar with the tech.  I'm also assuming you know the basics of Kubernetes, and you may well be selfhosting one or more clusters at home.  Personally speaking, I'm deep down the rabbit hole with multiple self-hosted clusters running <a href="https://q6o.to/k3sa">k3s</a> as my Kubernetes disto of choice.
 
+Outside of learning Linux and Kubernetes, I have embracd homelabs as part of my strategy to regain control over my digital estate.  I self-host Bitwarden, Home Assistant, Gitea, a private instance of docker hub and much more and this is where my interest in the union of Kubernetes selfhosting and Tailscale comes about.
 
-Homelabs offer a great hands-on way of learning Linux and Kubernetes but they are also a means to regaining control over your digital estate.  I started making the move a few years ago and haven’t looked back since.  I self-host Bitwarden, Home Assistant, Gitea, an instance of docker hub and more using several home made clusters running <a href="https://q6o.to/k3sa" target="_blank">k3s</a>, a simplified k8s distribution.  
+The services I host are largely private in the sense that they don’t need to be internet visible but they do need to be reachable from all devices.  Putting these services on the tailnet that connects all devices makes them available securely everywhere without the need or risks inherent of exposing them on the internet.  It's a bit like a virtual private intranet.
+
+> If you are selfhosting services in another manner such as using Docker on a Synology home NAS, Tailscale is still worth checkout out as these scenarios are <a href="https://q6o.to/tsckb1131" target="_blank">natively supported</a>.
+
+The technique I've been using to expose services from Kubernetes clusters to my tailnet is one learned from <a href="https://q6o.to/davidsbond" target="_blank">David Bond</a> in <a href="https://q6o.to/bpdbk3sts" target="_blank">in this post from 2020</a>.  In David's approach (simplified here for brevity), each cluster node is individually joined to your tailnet and the cluster itself uses the tailnet for intra-node communication.
+
 
 ```mermaid
 graph TD
@@ -38,7 +46,98 @@ graph TD
     laptop[Laptop] --> vpn
 ```
 
-after
+Name resolution and ingress come via public Cloudflare DNS entries for inbound traffic secured by Let's Entrypt for SSL certificates and routed to cluster nodes via the k3s Traefik ingress controller.  This approach works but requires multiple services to be installed and configured on the cluster, each node must be on the tailnet and DNS config is manual and external to the home network.  Definitely sub-optimal.
+
+> If you are a Tailscale user playing with homelab setups would love to hear from you  <a href="https://q6o.to/czt" target="_blank">`X Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a>.
+<div id="canvasholder" style="width:100px;height:100px;background:red">hellonoys
+</div>
+<script> 
+console.log("Hello");
+ch = document.getElementById("canvasholder");
+el = document.createElement("div");
+el.style.width="100px";
+el.style.heigh="100px";
+el.style.color="blue";
+el.innerHTML=("Hello");
+ch.appendChild(el);
+
+class Matrix {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.init();
+            }
+
+init() {
+                this.font_size = 20;
+                this.columns = Math.floor(this.canvas.width / this.font_size);
+                this.matrix = Array(this.columns).fill(1);
+                this.PROBABILITY_SVG = 0.7;
+                this.PROBABILITY_RESET = 0.875;
+                this.TICKS_BEFORE_UPDATE = 5;
+                this.tickCounter = 0;
+                this.images = [];
+                this.imagesLoaded = 0;
+
+const svgData = {
+                    'circle': 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="#0F0"/></svg>'),
+                    'square': 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect x="10" y="10" width="80" height="80" fill="#0F0"/></svg>')
+                };
+
+                for (const svg in svgData) {
+                    const img = new Image();
+                    img.src = svgData[svg];
+                    img.onload = () => {
+                        this.images.push(img);
+                        this.imagesLoaded++;
+                        if (this.imagesLoaded === Object.keys(svgData).length) {
+                            this.start();
+                        }
+                    };
+                }
+            }
+
+            draw() {
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = '#0F0';
+                this.ctx.font = this.font_size + 'px arial';
+
+                this.tickCounter++;
+
+                if (this.tickCounter >= this.TICKS_BEFORE_UPDATE) {
+                    this.matrix = this.matrix.map((y, x) => {
+                        let newY = y;
+
+                        if (Math.random() > this.PROBABILITY_SVG) {
+                            const randomImage = this.images[Math.floor(Math.random() * this.images.length)];
+                            this.ctx.drawImage(randomImage, x * this.font_size, y * this.font_size, this.font_size, this.font_size);
+                            newY = y + 1;
+                        } else {
+                            const text = String.fromCharCode(0x30A0 + Math.random() * (0x30FF - 0x30A0 + 1));
+                            this.ctx.fillText(text, x * this.font_size, y * this.font_size);
+                        }
+
+                        if (y * this.font_size > this.canvas.height && Math.random() > this.PROBABILITY_RESET) newY = 0;
+
+                        return newY;
+                    });
+                    this.tickCounter = 0;
+                }
+            }
+
+            start() {
+                setInterval(() => this.draw(), 16);
+            }
+        }
+
+new Matrix('canvasholder');
+
+</script>
+
+## Tailscale Operator
+    
+The Tailscale Operator vastly simplifies this picture by enabling a single extension to be installed into the cluster which then exposes the desired services to the tailnet with simple annotations of existing Kubernetes manifests.
 
 ```mermaid
 graph TD
@@ -62,20 +161,9 @@ graph TD
     service2 --> vpn
 
 ```
+The feature <a href="https://q6o.to/bptsk8sop" target="_blank">went into preview</a> earlier this year and I got further hyped about it talking to <a href="https://q6o.to/maisenali" target="_blank">Maism Ali</a> at Tailscale Up in May 2023 but it was only over the last few days (writing this on Sunday July 30th 2023) that I finally got around to trying the operator out in my setup.
 
-The services I host are largely private in the sense that they don’t need to be internet visible but they do need to be reachable from all devices.  This is where Tailscale comes in.  Putting these services on the tailnet that connects all devices makes them available securely everywhere without the need or risks inherent of exposing them on the external internet.
-
-> If you are selfhosting services in another manner such as using Docker on a Synology home NAS, Tailscale is still worth checkout out as these scenarios are <a href="https://q6o.to/tsckb1131" target="_blank">natively supported</a>.
-
-The approach I've been using to expose services from Kubernetes clusters up to now is one I learned from <a href="https://q6o.to/davidsbond" target="_blank">David Bond</a> in <a href="https://q6o.to/bpdbk3sts" target="_blank">in this post from 2020</a>.  In David's approach (simplified here for brevity), each cluster node is individually joined to your tailnet and the cluster itself uses the tailnet for intra-node communication.  Name resolution and ingress comes via public Cloudflare DNS entries for inbound traffic secured by Let's Entrypt for SSL certificates and routed to cluster nodes via the k3s Traefik ingress controller.  This approach has some advantages (a cluster can access any tailnet resources such as docker repos hosted on another home cluster) but comes with a complex setup process, more devices on the tailnet to manage keys for, more components in the cluster and exposure of tailnet IP addresses in a publicly visible DNS.
-
-> If you are a Tailscale user playing with homelab setups would love to hear from you  <a href="https://q6o.to/czt" target="_blank">`X Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a>.
-
-## Tailscale Operator
-    
- I first learned about the existance of the Tailscale operator for Kubernetes over lunch with several members of the Tailscale dev team in July 2022 when it was a twinkle in <a href="https://q6o.to/maisenali" target="_blank">Maism Ali</a> - Tailscale's resident Kubernetes wunderkind - eye.  The feature subsequently <a href="https://q6o.to/bptsk8sop" target="_blank">went into preview</a> and still I hadn't had a chance to try it out.  It was only over the last few days (writing this on Sunday July 30th 2023) that I got around to finally trying the operator out in my setup.
-
- The attraction of the Tailscale operator for me is that it can expose any of my Kubernetes services in my tailnet without the need to install any other components in the cluster.  In my case it replaces the complexity of building out clusters with Tailscale on every node, and gives simple DNS setup via magic DNS and I don't need to install another ingress controller.  The remaining gap, which is supposedly in the roadmap, is a solution for L7 ingress with built in SSL.
+The attraction of the Tailscale operator is that it is posible to expose any Kubernetes services in your tailnet without the need to install any other cluster components.  In my case it replaces the complexity of building out clusters with Tailscale on every node, and gives simple DNS setup via magic DNS and I don't need to install another ingress controller.  The remaining gap, which is supposedly in the roadmap, is a solution for L7 ingress with built in SSL.
 
  > After writing the above, <a href="https://q6o.to/ghptsc9048" target="_blank">Maisam submitted a patch to add ingress support</a> which fully addresses the above gap.  I cover that later in the post.
 
@@ -131,9 +219,13 @@ spec:
 
 The basic premise is that, having installed the operator into the cluster, a Kubernetes service object annotated with `loadBalancerClass: tailscale` will be detected by the operator and automatically exposed on your tailnet.  Only in my case, it didn't.
 
-## Houston we have Problem
+## A glitch in The Matrix
 
-Long story short, the operator didn't work out of the box with my setup.  Testing initially took place on a k3s test cluster running ARM64 Ubuntu 22.04 and I documented my findings in this issue:
+Long story short, the operator didn't work out of the box with my setup.
+
+<img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/glitch.jpg" >
+
+Testing initially took place on a k3s test cluster running ARM64 Ubuntu 22.04 and I documented my findings in this issue:
 <a href="https://q6o.to/ghitsc8735" target="_blank">https://github.com/tailscale/tailscale/issues/8733</a>.  The shortform was that although the Tailscale operator installed fine and was correctly detecting my test service, it wasn't able to correctly route traffic to the Kubernetes service through my tailnet.
 
 Since I now found myself blocked with the Operator solution, I decided to try some of the <a href="https://q6o.to/tsckb1185" target="_blank">other Kubernetes solutions that Tailscale offers</a>.  Whilst not as elegant as the operator, both the Proxy and Sidecar approaches can achieve a similar result albeit with increasingly more manual steps.  The result of that testing was:
