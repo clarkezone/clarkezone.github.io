@@ -9,7 +9,11 @@ mermaid: true
 ## Audience
 Kubernetes Homelab users, Tailscale users
 
-<img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/matrixoperator.jpg" >
+<!--<img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/matrixoperator.jpg" >-->
+<div style="position:relative;overflow:hidden;width:100%;padding-top:46%">
+<iframe frameBorder="0" style="position:absolute;top:0px;left:0px;width:100%;height:100%" src="http://clarkezonedevbox5-tr:4000/static/img/2023-tailscaleoperator/index.html">
+</iframe>
+</div>
 
 ## Introduction
 In this post I tell the story of my attempt to replace an <a href="https://q6o.to/bpdbk3sts" target="_blank">existing workable but cumbersome solution for Tailscale traffic routing</a> for my Kubernetes homelab with the simplicity and elegance of the <a href="https://q6o.to/bptsk8sop" target="_blank">Tailscale Operator for Kubernetes</a>.  Along the way I share learnings about a compatibility gotcha with recent Ubuntu distros including the work-around, as well as a mini tutorial on deploying a private version of the operator from source.  I cover both the existing incarnation of the Tailscale operator which supports Kubernetes Services (OSI L3) as well as the <a href="https://q6o.to/ghptsc9048" target="_blank">awesome new L7 ingress capability that was recently merged</a>.
