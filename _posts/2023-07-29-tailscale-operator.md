@@ -21,7 +21,7 @@ In this post I tell the story of my attempt to replace an <a href="https://q6o.t
 ## Tailscale X Kubernetes
 <img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/Redpill.jpg" > <br/>
 
-I've been deep down the Kubernetes selfhosting rabbit hole for a while now with multiple home clusters running <a href="https://q6o.to/k3sa">k3s</a>.  Outside of learning Linux and Kubernetes, I have been embracing homelabs as part of a strategy to regain control over my digital footprint running home instances of a number of services including TODO links Bitwarden, Home Assistant, Gitea and a private instance of docker hub to name a few.  And this is where the interesting union of Kubernetes selfhosting and Tailscale comes about.
+I've been deep down the Kubernetes selfhosting rabbit hole for a while now with multiple home clusters running <a href="https://q6o.to/k3sa">k3s</a>.  Outside of learning Linux and Kubernetes, I have been embracing homelabs as part of a strategy to regain control over my digital footprint running home instances of a number of services including TODO links [Bitwarden](https://github.com/dani-garcia/vaultwarden), [Home Assistant](https://www.home-assistant.io), [Gitea](https://about.gitea.com) and a private instance of docker hub to name a few.  And this is where the interesting union of Kubernetes selfhosting and Tailscale comes about.
 
 The services I host are largely private in the sense that they don’t need to be internet visible but they do need to be reachable from all devices.  Which means internet somehow.  Putting these services on the tailnet that connects all devices makes them available securely everywhere without the need or risks inherent of exposing them publically on the internet.  It's a bit like a virtual private intranet.
 
@@ -420,9 +420,20 @@ nginx-tailscale   tailscale   *       nginx-test.tailxxxx.ts.net   80, 443   7m5
 Assuming you have Tailscales' wonderful <a href="https://q6o.to/tsckb1081" target="_blank">MagicDNS</a> enabled, you can now visit https://nginx-test.tailxxxx.ts.net from the browser of any device on your tailnet and get SSL secured access to your cluster.  Mission accomplished!  Thx Maisem!
 
 ## Funnel
-Fast forward to October and even more of the feature has now landed including support for Tailscale's [funnel functionality](https://tailscale.com/kb/1223/tailscale-funnel/) which .  The [official documentation](https://github.com/tailscale/tailscale/issues/502#issuecomment-1729911852) has also been been updated with instructions for all of this goodness.
+Fast forward to October and even more of the feature has now landed including support for Tailscale's [funnel functionality](https://tailscale.com/kb/1223/tailscale-funnel/) which allows you to route traffic from the wider internet to the cluster curtoursey of the operator.  The [official documentation for the Tailscale operator](https://github.com/tailscale/tailscale/issues/502#issuecomment-1729911852) has also been been updated with instructions for all of this goodness.
 
-To build on the previous example, 
+Funnel support builds on the previous ingress example, my adding a simple annotation:
+
+```yaml
+    annotations:
+       tailscale.com/funnel: "true"
+```
+
+In order for this to work, it's also necessary to ensure that the correct scope is present in the Tailnet policy file as follows:
+
+```json
+"target": ["autogroup:members","tag:k8s"]
+```
 
 ## Next steps
 There is an additional feature that enables Tailscale to perform the duties of an authenticating proxy for the k8s control plane which sounds interesting and I plan to try out at some point.
