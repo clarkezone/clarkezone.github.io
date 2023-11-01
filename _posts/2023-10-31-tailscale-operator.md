@@ -18,12 +18,12 @@ Kubernetes Homelab users, Tailscale users
 ## Introduction
 In this post I tell the story of my attempt to replace an <a href="https://q6o.to/bpdbk3sts" target="_blank">existing workable but cumbersome solution for Tailscale traffic routing</a> for my Kubernetes homelab with the simplicity and elegance of the <a href="https://q6o.to/bptsk8sop" target="_blank">Tailscale Operator for Kubernetes</a> which just went into public beta.  Along the way I share learnings about a compatibility gotcha with recent Ubuntu distros including the work-around, as well as a mini tutorial on deploying a private version of the operator from source.  I cover both the Kubernetes service incarnation as well as the <a href="https://q6o.to/ghptsc9048" target="_blank">awesome new L7 ingress capability that was recently merged</a>.
 
-I also recorded <a href="https://q6o.to/czyttsk8sop" target="_blank">a demo</a> that shows the operator working in a k3s-based home cluster running on Raspberry Pis.
+I also recorded <a href="#wrap-up" target="_blank">a demo</a> that shows the operator working in a k3s-based home cluster running on Raspberry Pis.
 
 ## Tailscale X Kubernetes
 <img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/Redpill.jpg" > <br/>
 
-I've been deep down the Kubernetes selfhosting rabbit hole for a while now with multiple home clusters running <a href="https://q6o.to/k3sa">k3s</a>.  Outside of learning Linux and Kubernetes, I have been embracing homelabs as part of a strategy to regain control over my digital footprint running home instances of a number of services including links <a href="https://github.com/dani-garcia/vaultwarden" target="_blank">Bitwarden</a>, <a href="https://www.home-assistant.io" target="_blank">Home Assistant</a>, <a href="https://about.gitea.com" target="_blank">Gitea</a> and a private instance of docker hub to name a few.  And this is where the interesting union of Kubernetes selfhosting and Tailscale comes about.
+I've been deep down the Kubernetes selfhosting rabbit hole for a while now with multiple home clusters running <a href="https://q6o.to/k3sa" target="_blank">k3s</a>.  Outside of learning Linux and Kubernetes, I have been embracing homelabs as part of a strategy to regain control over my digital footprint running home instances of a number of services including links <a href="https://github.com/dani-garcia/vaultwarden" target="_blank">Bitwarden</a>, <a href="https://www.home-assistant.io" target="_blank">Home Assistant</a>, <a href="https://about.gitea.com" target="_blank">Gitea</a> and a private instance of docker hub to name a few.  And this is where the interesting union of Kubernetes selfhosting and Tailscale comes about.
 
 The services I host are largely private in the sense that they don’t need to be internet visible but they do need to be reachable from all devices.  Which means internet somehow.  Putting these services on the tailnet that connects all devices makes them available securely everywhere without the need or risks inherent of exposing them publicly on the internet.  It's a bit like a virtual private intranet.
 
@@ -40,7 +40,7 @@ The Tailscale Operator vastly simplifies this picture by enabling a single exten
 <img style="width:370;height:270px" src="/static/img/2023-tailscaleoperator/ineedanexitfast.jpg" >
     
 
-The feature <a href="https://q6o.to/bptsk8sop" target="_blank">went into preview</a> earlier this year and I got further hyped about it talking to <a href="https://q6o.to/maisenali" target="_blank">Maism Ali</a> at Tailscale Up in May 2023 but it was only over the last few days (writing this on Sunday July 30th 2023) that I finally got around to trying the operator out in my setup.
+The feature <a href="https://q6o.to/bptsk8sop" target="_blank">went into preview</a> earlier this year and I got further hyped about it talking to <a href="https://q6o.to/maisenali" target="_blank">Maisem Ali</a> at Tailscale Up in May 2023 but it was only over the last few days (writing this on Sunday July 30th 2023) that I finally got around to trying the operator out in my setup.
 
 The attraction of the Tailscale operator is that it makes it possible to expose any Kubernetes service running in a selfhosted cluster into a tailnet without the need to install any other cluster components or perform out-of-band config changes.
 
@@ -68,7 +68,7 @@ graph TD
 ```
 In my case it replaces the complexity of building out clusters with Tailscale on every node, and gives simple DNS setup via magic DNS and I don't need to install another ingress controller.  The remaining gap, which is supposedly in the roadmap, is a solution for L7 ingress with built in SSL.
 
- > After writing the above in late July, <a href="https://q6o.to/ghptsc9048" target="_blank">Maisam submitted a patch to add ingress support</a> which fully addresses the above gap.  I cover that <a href="#adding-ingress" target="_blank">later in the post</a>
+ > After writing the above in late July, <a href="https://q6o.to/ghptsc9048" target="_blank">Maisem submitted a patch to add ingress support</a> which fully addresses the above gap.  I cover that <a href="#adding-ingress" target="_blank">later in the post</a>
 
 ## Kicking the tyres
 I started off by following the instructions outlined in the <a href="https://q6o.to/bptsk8sop" target="_blank">Kubernetes Operator kb entry</a> by installing the operator manifest and then created a simple nginx deployment and service 
@@ -133,7 +133,7 @@ Long story short, at the time of writing in July 2023, the operator didn't work 
 Testing initially took place on a k3s test cluster running ARM64 Ubuntu 22.04 and I documented my findings in this issue:
 <a href="https://q6o.to/ghitsc8735" target="_blank">https://github.com/tailscale/tailscale/issues/8733</a>. 
 
-> As of October 2023 this issue is resolved in the upstream and latest Tailscale container images.  If you are intersted in the gory details including how to install the operator into a cluster from source read on, else jump forward to <a href="#adding-ingress" target="_blank">Ingress below</a>.
+> As of October 2023 this issue is resolved in the upstream and latest Tailscale container images.  If you are interested in the gory details including how to install the operator into a cluster from source read on, else jump forward to <a href="#adding-ingress" target="_blank">Ingress below</a>.
 
 The short form was that although the Tailscale operator installed fine and was correctly detecting my test service, it wasn't able to correctly route traffic to the Kubernetes service through my tailnet.
 
@@ -318,7 +318,7 @@ const svgData = {
 new Matrix(el);
 
 </script>
-Over the course of writing this post, my wish came try when Maism landed the <a href="https://q6o.to/ghptsc9048" target="_blank">initial PR that adds ingress support to the Tailscale Operator</a>.  This provided the final missing link I was looking for. So this post wouldn't be complete with a quick tour of that.  It's also worth noting that because Ingress support doesn't depend on the iptables or nftables layer, my original issue is also solved without any of the concerns I've articulated above.  Time heals all.
+Over the course of writing this post, my wish came try when Maisem landed the <a href="https://q6o.to/ghptsc9048" target="_blank">initial PR that adds ingress support to the Tailscale Operator</a>.  This provided the final missing link I was looking for. So this post wouldn't be complete with a quick tour of that.  It's also worth noting that because Ingress support doesn't depend on the iptables or nftables layer, my original issue is also solved without any of the concerns I've articulated above.  Time heals all.
 
 In order to leverage Ingress support, the earlier example is modified by removing annotation from the service and adding an ingress manifest with a modified tailscale annotation:
 ```yaml
@@ -433,7 +433,6 @@ There is an additional feature that enables Tailscale to perform the duties of a
 For the scenario of enabling one cluster to access other tailnet resources, there is also an egress proxy solution that I need to look at.
 
 ## Wrap-up
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/YyW6XJV1OdA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/N24cEGnovL0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Thanks for reading this far!  I hope you've been able to learn something new.  Would love to know how you get on your journey into the fun world of Containers, Kubernetes and Tailscale.  Stay in touch here <a href="https://q6o.to/czt" target="_blank">`x Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a>
