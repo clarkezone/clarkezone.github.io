@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Experimenting with the Tailscale operator for Kubernetes
-date: 2023-07-29 10:34:00 -0800
+date: 2023-11-02 10:34:00 -0800
 categories: [Tailscale]
 tags: [Tailscale, Kubernetes, OpenSourceContribution]
 mermaid: true
@@ -433,5 +433,7 @@ There is an additional feature that enables Tailscale to perform the duties of a
 For the scenario of enabling one cluster to access other tailnet resources, there is also an egress proxy solution that I need to look at.
 
 ## Wrap-up
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YyW6XJV1OdA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Thanks for reading this far!  I hope you've been able to learn something new.  Would love to know how you get on your journey into the fun world of Containers, Kubernetes and Tailscale.  Stay in touch here <a href="https://q6o.to/czt" target="_blank">`x Twitter`</a> or <a href="https://q6o.to/czm" target="_blank">`Mastodon`</a>
