@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Experimenting with the Tailscale operator for Kubernetes
-date: 2023-11-01 10:34:00 -0800
+date: 2023-10-31 10:34:00 -0800
 categories: [Tailscale]
 tags: [Tailscale, Kubernetes, OpenSourceContribution]
 mermaid: true
