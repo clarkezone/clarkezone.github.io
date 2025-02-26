@@ -20,16 +20,16 @@ timezone:
 
 title: Clarkezone # the main title
 
-tagline: Cloud Native Infra, Programming, Media Production, Tech. # it will display as the sub-title
+tagline: Early adopter, coder, engineer.  Nerd. # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  James Clarke's blog on Cloud Native, Coding, Media Production, Tech.
+  James E. Clarke.  Programming, tech, media.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: "https://clarkezone.github.io"
 
 github:
-  username: clarkezone  # change to your github username
+  username: clarkezone # change to your github username
 
 twitter:
   username: clarkezone # change to your twitter username
@@ -38,11 +38,11 @@ social:
   # change to your full name.
   # it will be displayed as the default author of the posts and the copyright owner in the footer
   name: James E. Clarke
-  email: example@doamin.com             # change to your email address
+  email: example@doamin.com # change to your email address
   links:
     # the first element serves as the copyright owner's link
-    - https://twitter.com/clarkezone      # change to your twitter homepage
-    - https://github.com/clarkezone       # change to your github homepage
+    - https://twitter.com/clarkezone # change to your twitter homepage
+    - https://github.com/clarkezone # change to your github homepage
     - https://www.linkedin.com/in/clarkezone
     # uncomment below to add more social links
     # - https://www.facebook.com/username
