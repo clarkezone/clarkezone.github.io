@@ -1,5 +1,5 @@
 ---
-title: How to get in touch with me
+title: Contact
 icon: fas fa-contact
 order: 5
 ---
