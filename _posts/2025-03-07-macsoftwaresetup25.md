@@ -15,21 +15,19 @@ categories: [macos, setup, software]
 | 4 | Fantastical | <img src="https://flexibits.com/favicon.ico" width="64" alt="Fantastical"> | Calendar | A powerful calendar app with natural language processing, allowing you to quickly add events and manage your schedule. |
 | 5 | Day One | <img src="https://dayoneapp.com/wp-content/themes/day-one-app/assets/img/day-one-app-logo.svg"  alt="Day One"> | Lifestyle | A journaling app that helps you record your life with text, photos, and location data in a beautiful interface. |
 
-## Development
-
-### GUI Tools
+## Development GUI Tools
 
 | Install Order | Application | Screenshot | Category | Description |
 |--------------|-------------|------------|----------|-------------|
-| 1 | Zed | | Development | A high-performance, collaborative code editor designed for speed and modern collaboration. |
-| 2 | Xcode | | Development | Apple's integrated development environment for creating apps for macOS, iOS, watchOS, and tvOS. |
-| 3 | Ghostty | | Development | A fast, feature-rich terminal emulator designed for developers with modern UI elements. |
-| 4 | Ghost remote | | Development | Terminal connection utility using the command: `infocmp -x \| ssh YOUR-SERVER -- tic -x -` |
-| 5 | Wakatime for Mac | | Developer Tools | An automatic time tracking tool that measures your programming activity across different editors and projects. |
-| 6 | LM Studio | | AI & ML | A desktop app for running and experimenting with large language models locally on your device. |
-| 7 | VSCode | | Development | Microsoft's powerful code editor with support for debugging, syntax highlighting, and thousands of extensions. |
+| 1 | Zed | <img src="https://avatars.githubusercontent.com/u/123878921" width="64" alt="Zed"> | Development | A high-performance, collaborative code editor designed for speed and modern collaboration. |
+| 2 | Xcode | <img src="https://developer.apple.com/favicon.ico" width="64" alt="Xcode"> | Development | Apple's integrated development environment for creating apps for macOS, iOS, watchOS, and tvOS. |
+| 3 | Ghostty | <img src="https://ghostty.org/favicon.ico" width="64" alt="Ghostty"> | Development | A fast, feature-rich terminal emulator designed for developers with modern UI elements. |
+| 4 | Ghost remote | <img src="https://cdn-icons-png.flaticon.com/512/5261/5261905.png" width="64" alt="Ghost remote"> | Development | Terminal connection utility using the command: `infocmp -x \| ssh YOUR-SERVER -- tic -x -` |
+| 5 | Wakatime for Mac | <img src="https://wakatime.com/apple-touch-icon.png" width="64" alt="Wakatime"> | Developer Tools | An automatic time tracking tool that measures your programming activity across different editors and projects. |
+| 6 | LM Studio | <img src="https://lmstudio.ai/favicon.ico" width="64" alt="LM Studio"> | AI & ML | A desktop app for running and experimenting with large language models locally on your device. |
+| 7 | VSCode | <img src="https://code.visualstudio.com/favicon.ico" width="64" alt="VSCode"> | Development | Microsoft's powerful code editor with support for debugging, syntax highlighting, and thousands of extensions. |
 
-### CLI Tools
+## Development CLI Tools
 
 | Install Order | Tool | Screenshot | Category | Description |
 |--------------|------|------------|----------|-------------|
