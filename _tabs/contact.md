@@ -1,6 +1,6 @@
 ---
 title: Contact
-icon: fas fa-contact
+icon: fas fa-archive
 order: 5
 ---
 
